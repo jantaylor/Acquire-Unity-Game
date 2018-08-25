@@ -3,39 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Wallet class holds the player id/Player and the amount of money
-/// </summary>
-public class Wallet {
-    // Set class attributes
-    #region Class Attributes
-    
-    private int _player;
-    private int _amount;
-
-    public int Player {
-        get { return _player; }
-        set { _player = value; }
-    }
-
-    public int Amount {
-        get { return _amount; }
-        set {
-            if (value < 0)
-                _amount = 0;
-            else
-                _amount = value;
-        }
-    }
-
-    public Wallet(int player, int amount) {
-        _player = player;
-        _amount = amount;
-    }
-
-    #endregion
-}
-
-/// <summary>
 /// The MoneyController is what controls who has what, it's a single point of truth versus on each player
 /// </summary>
 public class MoneyController : MonoBehaviour {
