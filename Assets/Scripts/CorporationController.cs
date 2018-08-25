@@ -219,8 +219,11 @@ public class CorporationController : MonoBehaviour {
         return corporations[id].IsSafe;
     }
 
-    public void Reset() {
-        //TODO: Clear out array of corporations and re-fill them in or set data on all
+    /// <summary>
+    /// Since Build Corporations writes over the existing array, we will just do that again
+    /// </summary>
+    public void ResetCorporations() {
+        BuildCorporations();
     }
 
     #endregion
