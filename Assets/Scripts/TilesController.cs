@@ -36,7 +36,8 @@ public class TilesController : MonoBehaviour {
     // Set class attributes
     #region Class Attributes
 
-    private Tile[] tiles;
+    private Queue<Tile> tiles;
+    private Tile[] tileArray; // For shuffling the queue
 
     enum Letter { A, B, C, D, E, F, G, H, I, J };
 
@@ -46,13 +47,13 @@ public class TilesController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        tiles = new Tile[100];
-        Create();
+        tiles = new Queue<Tile>();
+        CreatePile();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
     #endregion
@@ -62,11 +63,11 @@ public class TilesController : MonoBehaviour {
     /// <summary>
     /// Create a tile array of 100 tiles rather than a 2D array of 10, 10.
     /// </summary>
-    public void Create() {
+    public void CreatePile() {
         int letter = 0;
         int number = 0;
-        for (int i = 0; i < tiles.Length; ++i) {
-            tiles[i] = new Tile(i, GetLetterFromInt(letter) + (number + 1).ToString());
+        for (int i = 0; i < tiles.Count; ++i) {
+            tiles.Enqueue(new Tile(i, GetLetterFromInt(letter) + (number + 1).ToString()));
             number++;
             if (number >= 9)
                 letter++;
@@ -86,7 +87,8 @@ public class TilesController : MonoBehaviour {
     /// <summary>
     /// Print a list of the tiles left
     /// </summary>
-    public void PrintAvailableTiles() {
+    public void PrintPile() {
+        // TODO: Print to somewhere or return string
         foreach (Tile tile in tiles)
             Debug.Log("Tile: " + tile.Name);
     }
@@ -94,25 +96,29 @@ public class TilesController : MonoBehaviour {
     /// <summary>
     /// Return the number of tiles left, what's remaining in the tiles array
     /// </summary>
-    /// <returns></returns>
-    public int AvailableTilesLeft() {
-        return tiles.Length;
+    /// <returns>Count of tiles queue</returns>
+    public int LeftInPile() {
+        return tiles.Count;
     }
 
     /// <summary>
     /// Shuffles the array of tiles using CommonFunctions
     /// </summary>
-    public void Shuffle() {
-        CommonFunctions.Shuffle<Tile>(new System.Random(), tiles);
+    public void ShufflePile() {
+        // TODO: Look into using a List instead or benchmark this
+        tileArray = tiles.ToArray();
+        tiles.Clear();
+        CommonFunctions.Shuffle<Tile>(new System.Random(), tileArray);
+        foreach (Tile tile in tileArray)
+            tiles.Enqueue(tile);
     }
 
-    public Tile Draw() {
-        // TODO: refactor tiles to be Stack or Queue instead
-        return tiles[0];
-    }
-
-    public void ReturnTile(Tile tile) {
-        // TODO: return the tile to the stack/queue
+    /// <summary>
+    /// Draws a tile from the queue of available tiles
+    /// </summary>
+    /// <returns>First tile off queue</returns>
+    public Tile DrawTile() {
+        return tiles.Dequeue();
     }
 
     /// <summary>
@@ -120,14 +126,14 @@ public class TilesController : MonoBehaviour {
     /// </summary>
     /// <param name="oldTile">Tile being traded in</param>
     /// <returns>New Tile from pile, never oldTile</returns>
-    public Tile Replace(Tile oldTile) {
-        Tile newTile = Draw();
-        ReturnTile(oldTile);
-        Shuffle();
+    public Tile TradeTile(Tile oldTile) {
+        Tile newTile = DrawTile();
+        tiles.Enqueue(oldTile);
+        ShufflePile();
         return newTile;
     }
 
-    public void Place(Tile tile) {
+    public void PlaceTile(Tile tile) {
         // TODO: Place the tile on the board
     }
 
