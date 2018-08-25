@@ -6,13 +6,13 @@ public class PlayerController : MonoBehaviour {
 
     #region Class Imports
 
-    public List<Tile> tiles;
-
     #endregion
 
     #region Class Attributes
     
-    private Player[] players;
+    private Player[] _players;
+    public TilesController tilesController;
+    public CorporationController corporationController;
 
     enum Colors { red, green, blue, cyan, magenta, yellow };
 
@@ -35,9 +35,9 @@ public class PlayerController : MonoBehaviour {
     #region Class Functions
 
     public void CreatePlayers(int numberOfPlayers = 3) {
-        players = new Player[numberOfPlayers];
+        _players = new Player[numberOfPlayers];
         for (int i = 0; i < numberOfPlayers; ++i)
-            players[i] = new Player(i, "Player 1", GetColorById(i));
+            _players[i] = new Player(i, "Player 1", GetColorById(i));
     }
 
     /// <summary>
@@ -51,12 +51,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     public string GetPlayerName(int id) {
-        return players[id].Name;
+        return _players[id].Name;
     }
 
     public string SetPlayerName(int id, string newName) {
-        players[id].Name = newName;
-        return players[id].Name;
+        _players[id].Name = newName;
+        return _players[id].Name;
     }
 
     public void GetPlayerStocks(int id) {

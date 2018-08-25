@@ -11,8 +11,7 @@ public class TilesController : MonoBehaviour {
     // Set class attributes
     #region Class Attributes
 
-    private Queue<Tile> tiles;
-    private Tile[] tileArray; // For shuffling the queue
+    private Queue<Tile> _tiles;
 
     enum Letter { A, B, C, D, E, F, G, H, I, J };
 
@@ -22,7 +21,7 @@ public class TilesController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        tiles = new Queue<Tile>();
+        _tiles = new Queue<Tile>();
         CreatePile();
 	}
 	
@@ -41,8 +40,8 @@ public class TilesController : MonoBehaviour {
     public void CreatePile() {
         int letter = 0;
         int number = 0;
-        for (int i = 0; i < tiles.Count; ++i) {
-            tiles.Enqueue(new Tile(i, GetLetterFromInt(letter) + (number + 1).ToString()));
+        for (int i = 0; i < _tiles.Count; ++i) {
+            _tiles.Enqueue(new Tile(i, GetLetterFromInt(letter) + (number + 1).ToString()));
             number++;
             if (number >= 9)
                 letter++;
@@ -65,7 +64,7 @@ public class TilesController : MonoBehaviour {
     /// </summary>
     public void PrintPile() {
         // TODO: Print to somewhere or return string
-        foreach (Tile tile in tiles)
+        foreach (Tile tile in _tiles)
             Debug.Log("Tile: " + tile.Name);
     }
 
@@ -74,7 +73,7 @@ public class TilesController : MonoBehaviour {
     /// </summary>
     /// <returns>Count of tiles queue</returns>
     public int LeftInPile() {
-        return tiles.Count;
+        return _tiles.Count;
     }
 
     /// <summary>
@@ -82,11 +81,11 @@ public class TilesController : MonoBehaviour {
     /// </summary>
     public void ShufflePile() {
         // TODO: Look into using a List instead or benchmark this
-        tileArray = tiles.ToArray();
-        tiles.Clear();
+        Tile[] tileArray = _tiles.ToArray();
+        _tiles.Clear();
         CommonFunctions.Shuffle<Tile>(new System.Random(), tileArray);
         foreach (Tile tile in tileArray)
-            tiles.Enqueue(tile);
+            _tiles.Enqueue(tile);
     }
 
     /// <summary>
@@ -94,7 +93,7 @@ public class TilesController : MonoBehaviour {
     /// </summary>
     /// <returns>First tile off queue</returns>
     public Tile DrawTile() {
-        return tiles.Dequeue();
+        return _tiles.Dequeue();
     }
 
     /// <summary>
@@ -104,7 +103,7 @@ public class TilesController : MonoBehaviour {
     /// <returns>New Tile from pile, never oldTile</returns>
     public Tile TradeTile(Tile oldTile) {
         Tile newTile = DrawTile();
-        tiles.Enqueue(oldTile);
+        _tiles.Enqueue(oldTile);
         ShufflePile();
         return newTile;
     }

@@ -6,6 +6,7 @@ public class Tile {
 
     private int _id;
     private string _name;
+    private Corporation _corporation;
 
     #endregion
 
@@ -19,9 +20,15 @@ public class Tile {
         set { _name = value; }
     }
 
-    public Tile(int id, string name) {
+    public Corporation Corporation {
+        get { return _corporation; }
+        set { _corporation = value; }
+    }
+
+    public Tile(int id, string name, Corporation corporation = null) {
         _id = id;
         _name = name;
+        _corporation = corporation;
     }
 
     ~Tile() {

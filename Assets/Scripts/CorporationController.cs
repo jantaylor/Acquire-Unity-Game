@@ -11,14 +11,14 @@ public class CorporationController : MonoBehaviour {
     // Set class attributes
     #region Class Attributes
 
-    private Corporation[] corporations;
+    private Corporation[] _corporations;
 
     #endregion
 
     #region Unity Specific
 
     void Start() {
-        corporations = new Corporation[7];
+        _corporations = new Corporation[7];
         BuildCorporations();
     }
 
@@ -30,18 +30,18 @@ public class CorporationController : MonoBehaviour {
     /// Build out all 6 corporations
     /// </summary>
     public void BuildCorporations() {
-        corporations[0] = new Corporation(0, "Nestor");
-        corporations[1] = new Corporation(1, "Spark");
-        corporations[2] = new Corporation(2, "Etch");
-        corporations[3] = new Corporation(3, "Rove");
-        corporations[4] = new Corporation(4, "Fleet");
-        corporations[5] = new Corporation(5, "Bolt");
-        corporations[6] = new Corporation(6, "Echo");
+        _corporations[0] = new Corporation(0, "Nestor");
+        _corporations[1] = new Corporation(1, "Spark");
+        _corporations[2] = new Corporation(2, "Etch");
+        _corporations[3] = new Corporation(3, "Rove");
+        _corporations[4] = new Corporation(4, "Fleet");
+        _corporations[5] = new Corporation(5, "Bolt");
+        _corporations[6] = new Corporation(6, "Echo");
     }
 
     //TODO: change return type
     public void OptionsToBuy() {
-        foreach (Corporation corp in corporations) {
+        foreach (Corporation corp in _corporations) {
             Debug.Log("Corporation: " + corp.Name + " Available Stocks: " + corp.StockAvailable);
         }
     }
@@ -57,8 +57,8 @@ public class CorporationController : MonoBehaviour {
             throw new System.Exception("Unable to purchase more than 2 stocks a turn.");
         }
 
-        if (corporations[id].StockAvailable >= amount)
-            corporations[id].StockAvailable -= amount;
+        if (_corporations[id].StockAvailable >= amount)
+            _corporations[id].StockAvailable -= amount;
 
         // TODO return something or error handling
     }
@@ -69,7 +69,7 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation ID</param>
     /// <param name="amount">Amount to sell</param>
     public void SellStock(int id, int amount) {
-        corporations[id].StockAvailable += amount;
+        _corporations[id].StockAvailable += amount;
         // TODO return something or error handling
     }
 
@@ -80,12 +80,12 @@ public class CorporationController : MonoBehaviour {
     /// <param name="amount"></param>
     /// <param name="newId"></param>
     public void TradeStock(int id, int amount, int newId) {
-        corporations[id].StockAvailable += amount;
+        _corporations[id].StockAvailable += amount;
 
-        if (corporations[newId].StockAvailable >= (amount / 2))
-            corporations[newId].StockAvailable -= (amount / 2);
+        if (_corporations[newId].StockAvailable >= (amount / 2))
+            _corporations[newId].StockAvailable -= (amount / 2);
         else
-            corporations[newId].StockAvailable -= corporations[newId].StockAvailable;
+            _corporations[newId].StockAvailable -= _corporations[newId].StockAvailable;
 
         // TODO return something or error handling
     }
@@ -96,7 +96,7 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation ID</param>
     /// <returns></returns>
     public int Value(int id) {
-        return corporations[id].StockValue;
+        return _corporations[id].StockValue;
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation ID</param>
     /// <returns></returns>
     public int Available(int id) {
-        return corporations[id].StockAvailable;
+        return _corporations[id].StockAvailable;
     }
 
     /// <summary>
@@ -113,8 +113,8 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <param name="id">Corporation ID</param>
     public void MakeDefunct(int id) {
-        corporations[id].TileSize = 0;
-        corporations[id].StockValue = 0;
+        _corporations[id].TileSize = 0;
+        _corporations[id].StockValue = 0;
     }
 
     /// <summary>
@@ -123,7 +123,7 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation ID</param>
     /// <returns></returns>
     public int Size(int id) {
-        return corporations[id].TileSize;
+        return _corporations[id].TileSize;
     }
 
     /// <summary>
@@ -132,7 +132,7 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation ID</param>
     /// <param name="tiles">Number of new Tiles</param>
     public void IncreaseSize(int id, int tiles) {
-        corporations[id].TileSize += tiles;
+        _corporations[id].TileSize += tiles;
     }
 
     /// <summary>
@@ -141,7 +141,7 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation ID</param>
     /// <returns></returns>
     public bool IsSafe(int id) {
-        return corporations[id].IsSafe;
+        return _corporations[id].IsSafe;
     }
 
     /// <summary>

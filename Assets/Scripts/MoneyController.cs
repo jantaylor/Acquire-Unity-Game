@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// The MoneyController is what controls who has what, it's a single point of truth versus on each player
+/// The MoneyController holds each players wallet instead of on each player
 /// </summary>
 public class MoneyController : MonoBehaviour {
 
     #region Class Imports
 
-    //public PlayerController players;
-
     #endregion
 
-    // Set class attributes
     #region Class Attributes
 
     private List<Wallet> wallets;
@@ -22,36 +19,25 @@ public class MoneyController : MonoBehaviour {
 
     #region Unity Specific
 
-    // Use this for initialization
-    void Start() {
-        // TODO: Pass players or player id
-        CreateWallets(3);
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
-
     #endregion
 
     #region Class Functions
 
     /// <summary>
-    /// Create wallets for each player
+    /// Create wallets for player, call for each new player
     /// </summary>
-    /// <param name="players">Players or int</param>
-    public void CreateWallets(int players) {
-        for (int i = 0; i < players; ++i)
-            wallets.Add(new Wallet(i, 6000));
+    /// <param name="players">Players</param>
+    public void CreateWallets(List<Player> players) {
+        foreach (Player player in players)
+            wallets.Add(new Wallet(player, 6000));
     }
 
     /// <summary>
     /// Get the player's amount of money in their wallet
     /// </summary>
-    /// <param name="player">Id of player or Player</param>
+    /// <param name="player">Player</param>
     /// <returns>int amount</returns>
-    public int PlayerAmount(int player) {
+    public int PlayerAmount(Player player) {
         Wallet playerWallet = wallets.Find(wallet => wallet.Player == player);
         return playerWallet.Amount;
     }
@@ -59,9 +45,9 @@ public class MoneyController : MonoBehaviour {
     /// <summary>
     /// Increase the amount of money in player's wallet
     /// </summary>
-    /// <param name="player">Id of player or Player</param>
+    /// <param name="player">Player</param>
     /// <returns>int amount</returns>
-    public int GainMoney(int player, int earned) {
+    public int EarnMoney(Player player, int earned) {
         Wallet playerWallet = wallets.Find(wallet => wallet.Player == player);
         playerWallet.Amount += earned;
         return playerWallet.Amount;
@@ -70,9 +56,9 @@ public class MoneyController : MonoBehaviour {
     /// <summary>
     /// Reduce the amount of money in player's wallet
     /// </summary>
-    /// <param name="player">Id of player or Player</param>
+    /// <param name="player">Player</param>
     /// <returns>int amount</returns>
-    public int SpendMoney(int player, int spent) {
+    public int SpendMoney(Player player, int spent) {
         Wallet playerWallet = wallets.Find(wallet => wallet.Player == player);
         playerWallet.Amount -= spent;
         return playerWallet.Amount;
