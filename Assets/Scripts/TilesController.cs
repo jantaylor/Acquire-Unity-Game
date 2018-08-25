@@ -72,6 +72,7 @@ public class TilesController : MonoBehaviour {
             if (number >= 9)
                 letter++;
         }
+        ShufflePile();
     }
 
     /// <summary>
