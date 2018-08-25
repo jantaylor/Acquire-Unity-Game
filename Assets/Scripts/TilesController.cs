@@ -2,31 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tile {
-    // Set class attributes
-    #region Class Attributes
-
-    private int _id;
-    private string _name;
-
-    public int Id {
-        get { return _id; }
-        set { _id = value; }
-    }
-
-    public string Name {
-        get { return _name; }
-        set { _name = value; }
-    }
-
-    public Tile(int id, string name) {
-        _id = id;
-        _name = name;
-    }
-
-    #endregion
-}
-
 public class TilesController : MonoBehaviour {
 
     #region Class Imports
