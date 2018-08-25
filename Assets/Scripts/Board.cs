@@ -39,7 +39,7 @@ public class Board {
         set { _corporationTiles = value; }
     }
 
-    public Board(int columns = 10, int rows = 10, GameObject[] emptyTiles, GameObject[] boardTiles = null, GameObject[] corporationTiles = null) {
+    public Board(int columns = 10, int rows = 10, GameObject[] emptyTiles = null, GameObject[] boardTiles = null, GameObject[] corporationTiles = null) {
         _columns = columns;
         _rows = rows;
         _emptyTiles = emptyTiles;
