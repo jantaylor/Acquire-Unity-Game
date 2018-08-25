@@ -41,7 +41,7 @@ public class Player {
         set { _tiles = value; }
     }
 
-    public Player(int id, string name, string color, List<Stock> stocks, List<Tile> tiles) {
+    public Player(int id, string name, string color, List<Stock> stocks = null, List<Tile> tiles = null) {
         _id = id;
         _name = name;
         _color = color;
