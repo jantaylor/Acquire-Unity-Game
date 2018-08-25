@@ -93,6 +93,7 @@ public class CorporationController : MonoBehaviour {
     #region Unity Specific
 
     void Start() {
+        corporations = new Corporation[7];
         BuildCorporations();
     }
 
@@ -104,7 +105,6 @@ public class CorporationController : MonoBehaviour {
     /// Build out all 6 corporations
     /// </summary>
     public void BuildCorporations() {
-        corporations = new Corporation[7];
         corporations[0] = new Corporation(0, "Nestor");
         corporations[1] = new Corporation(1, "Spark");
         corporations[2] = new Corporation(2, "Etch");
@@ -217,6 +217,10 @@ public class CorporationController : MonoBehaviour {
     /// <returns></returns>
     public bool IsSafe(int id) {
         return corporations[id].IsSafe;
+    }
+
+    public void Reset() {
+        //TODO: Clear out array of corporations and re-fill them in or set data on all
     }
 
     #endregion
