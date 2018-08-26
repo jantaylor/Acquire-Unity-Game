@@ -11,8 +11,7 @@ public class Corporation {
 
     private int _id;
     private string _name;
-    private int _totalStockAvailable;
-    private int _stockAvailable;
+    private Stack<Stock> _stocks = new Stack<Stock>();
     private int _tileSize;
     private int _stockValue;
     private bool _isSafe;
@@ -29,19 +28,9 @@ public class Corporation {
         set { _name = value; }
     }
 
-    public int TotalStockAvailable {
-        get { return _totalStockAvailable; }
-        set { _totalStockAvailable = value; }
-    }
-
-    public int StockAvailable {
-        get { return _stockAvailable; }
-        set {
-            if (value < 0)
-                _stockAvailable = 0;
-            else
-                _stockAvailable = value;
-        }
+    public Stack<Stock> Stocks {
+        get { return _stocks; }
+        set { _stocks = value; }
     }
 
     public int TileSize {
@@ -69,11 +58,9 @@ public class Corporation {
         set { _isSafe = value; }
     }
 
-    public Corporation(int id, string name, int totalStockAvailable = 12, int stockAvailable = 12, int tileSize = 0, int stockValue = 0, bool isSafe = false) {
+    public Corporation(int id, string name, int tileSize = 0, int stockValue = 0, bool isSafe = false) {
         _id = id;
         _name = name;
-        _totalStockAvailable = totalStockAvailable;
-        _stockAvailable = stockAvailable;
         _tileSize = tileSize;
         _stockValue = stockValue;
         _isSafe = isSafe;
