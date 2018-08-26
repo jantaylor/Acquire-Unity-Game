@@ -8,9 +8,9 @@ public class Board {
 
     private int _columns;
     private int _rows;
-    private GameObject[] _emptyTiles;
-    private GameObject[] _placedtiles;
-    private GameObject[] _corporationTiles;
+    private GameObject[] _emptyTiles = new GameObject[100];
+    private GameObject[] _placedtiles = new GameObject[100];
+    private GameObject[] _corpBuildingTiles = new GameObject[7];
 
     #endregion
 
@@ -34,9 +34,9 @@ public class Board {
         set { _placedtiles = value; }
     }
 
-    public GameObject[] CorporationTiles {
-        get { return _corporationTiles; }
-        set { _corporationTiles = value; }
+    public GameObject[] CorpBuildingTiles {
+        get { return _corpBuildingTiles; }
+        set { _corpBuildingTiles = value; }
     }
 
     public Board(int columns = 10, int rows = 10) {
