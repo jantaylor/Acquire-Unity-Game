@@ -39,14 +39,13 @@ public class Board {
         set { _corporationTiles = value; }
     }
 
-    public Board(int columns = 10, int rows = 10, GameObject[] emptyTiles = null, GameObject[] boardTiles = null, GameObject[] corporationTiles = null) {
+    public Board(int columns = 10, int rows = 10) {
         _columns = columns;
         _rows = rows;
-        _emptyTiles = emptyTiles;
     }
 
     ~Board() {
-        Debug.Log("Cleared the board.");
+        Debug.Log("Removed board.");
     }
 
 }

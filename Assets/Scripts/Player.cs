@@ -11,8 +11,8 @@ public class Player {
     private int _id;
     private string _name;
     private string _color;
-    private List<Stock> _stocks;
-    private List<Tile> _tiles;
+    private List<Stock> _stocks = new List<Stock>();
+    private List<Tile> _tiles = new List<Tile>();
 
     #endregion
 
@@ -41,12 +41,10 @@ public class Player {
         set { _tiles = value; }
     }
 
-    public Player(int id, string name, string color, List<Stock> stocks = null, List<Tile> tiles = null) {
+    public Player(int id, string name, string color) {
         _id = id;
         _name = name;
         _color = color;
-        _stocks = stocks;
-        _tiles = tiles;
     }
 
     ~Player() {

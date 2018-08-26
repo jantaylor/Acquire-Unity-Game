@@ -13,7 +13,7 @@ public class MoneyController : MonoBehaviour {
 
     #region Class Attributes
 
-    private List<Wallet> wallets;
+    private List<Wallet> wallets = new List<Wallet>();
 
     #endregion
 
