@@ -52,6 +52,10 @@ public class CorporationController : MonoBehaviour {
         return newCorp;
     }
 
+    public Corporation Corporation(int id) {
+        return _corporations.Find(c => c.Id.Equals(id));
+    }
+
     //TODO: change return type
     public void OptionsToBuy() {
         foreach (Corporation corp in _corporations) {
@@ -61,21 +65,22 @@ public class CorporationController : MonoBehaviour {
 
     /// <summary>
     /// Buy # stock in the passed Corporation id
+    /// TODO: Overload this with int[] id so that player can buy multiple at a time
     /// </summary>
     /// <param name="id">Corporation ID</param>
     /// <param name="amount">Amount to buy 1 or 2</param>
-    public Stock[] BuyStock(int id, int amount = 1) {
+    public void BuyStock(ref Player player, int id, int amount = 1) {
         if (amount > 3) {
             Debug.LogError("Tried to buy more than 3 stocks - that's cheating.");
             throw new System.Exception("Unable to purchase more than 3 stocks a turn.");
         }
 
-        if (_corporations[id].Stocks.Count >= amount) {
-            Stock[] buyingStock = new Stock[amount];
-            for (int i = 0; i < amount; ++i)
-                buyingStock[i] = _corporations[id].Stocks.Pop();
+        // TODO: Garbage collection is hitting and removing _corporations, find out why
+        Corporation corp = Corporation(id);
 
-            return buyingStock;
+        if (corp.Stocks.Count >= amount) {
+            for (int i = 0; i < amount; ++i)
+                player.Stocks.Add(corp.Stocks.Pop());
         }
 
         throw new System.Exception("Something went wrong, there were no more stocks left.");

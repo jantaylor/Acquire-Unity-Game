@@ -69,4 +69,18 @@ public class Corporation {
     ~Corporation() {
         Debug.Log("Corporation: " + Name + " was removed from game.");
     }
+
+    #region Overrides
+
+    //public override bool Equals(System.Object obj) {
+    //    //Check for null and compare run-time types.
+    //    if ((obj == null) || !this.GetType().Equals(obj.GetType())) {
+    //        return false;
+    //    } else {
+    //        Corporation c = (Corporation)obj;
+    //        return (_id == c.Id) && (_name == c.Name);
+    //    }
+    //}
+
+    #endregion
 }

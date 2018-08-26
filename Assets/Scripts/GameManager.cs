@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     private CorporationController _corporationController;
     private TilesController _tilesController;
     private BoardController _boardController;
+    private HudController _hudController;
 
     private void Awake() {
         // Singleton setup for GameManager
@@ -29,10 +30,21 @@ public class GameManager : MonoBehaviour {
         _corporationController = GetComponent<CorporationController>();
         _tilesController = GetComponent<TilesController>();
         _boardController = GetComponent<BoardController>();
+        _hudController = GetComponent<HudController>();
     }
 
     private void Start() {
         NewGame();
+        UpdateHud();
+    }
+
+    private void UpdateHud() {
+        Player player = _playerController.Player(0); // TODO: Remove - here for testing
+        _corporationController.BuyStock(ref player, 0, 3); // TODO: Remove - here for testing
+        _corporationController.BuyStock(ref player, 4, 2); // TODO: Remove - here for testing
+        _hudController.SetPlayerName(player.Name);
+        _hudController.SetWalletAmount(_moneyController.PlayerAmount(player) + 100); // TODO: Remove + 100
+        _hudController.UpdatePlayerStock(player.Stocks);
     }
 
     private void Update() {
