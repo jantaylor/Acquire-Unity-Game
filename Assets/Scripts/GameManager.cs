@@ -5,24 +5,33 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static GameManager Instance = null;
-    private BoardController _boardController;
     private int _numOfPlayers = 3;
-    private Player[] _players;
-    private Queue<int> _turnOrder;
+    // TODO: Maybe do Queue<Player> and use this for hotseat to pass information on HUD
+    private Queue<Player> _turnOrder = new Queue<Player>();
 
+    private PlayerController _playerController;
+    private MoneyController _moneyController;
+    private CorporationController _corporationController;
+    private TilesController _tilesController;
+    private BoardController _boardController;
 
     private void Awake() {
         // Singleton setup for GameManager
-        if (Instance == null)
+        if (Instance == null) {
+            DontDestroyOnLoad(gameObject);
             Instance = this;
-        else if (Instance != this)
+        } else if (Instance != this) {
             Destroy(gameObject);
-        
-        // Don't destroy this on scene load
-        DontDestroyOnLoad(gameObject);
+        }
 
+        _playerController = GetComponent<PlayerController>();
+        _moneyController = GetComponent<MoneyController>();
+        _corporationController = GetComponent<CorporationController>();
+        _tilesController = GetComponent<TilesController>();
         _boardController = GetComponent<BoardController>();
+    }
 
+    private void Start() {
         NewGame();
     }
 
@@ -64,7 +73,7 @@ public class GameManager : MonoBehaviour {
     /// Returns next players turn for Players[]
     /// </summary>
     /// <returns>int</returns>
-    private int PlayerTurn() {
+    private Player PlayerTurn() {
         return _turnOrder.Peek();
     }
 
@@ -72,15 +81,16 @@ public class GameManager : MonoBehaviour {
     /// TODO
     /// </summary>
     private void AddPlayers() {
-        
+        _playerController.CreatePlayers(_numOfPlayers);
+        _moneyController.CreateWallets(_playerController.Players());
     }
 
     /// <summary>
     /// Returns the next player's id
     /// </summary>
     /// <returns>Next player id</returns>
-    private int NextPlayer() {
-        int nextPlayer = _turnOrder.Dequeue();
+    private Player NextPlayer() {
+        Player nextPlayer = _turnOrder.Dequeue();
         _turnOrder.Enqueue(nextPlayer);
         return nextPlayer;
     }
@@ -90,10 +100,10 @@ public class GameManager : MonoBehaviour {
     /// Shifts the players turn order around and sets it up
     /// </summary>
     private void ShuffleTurnOrder() {
-        int[] turnOrderArray = _turnOrder.ToArray();
+        Player[] turnOrderArray = _turnOrder.ToArray();
         _turnOrder.Clear();
-        CommonFunctions.Shuffle<int>(new System.Random(), turnOrderArray);
-        foreach (int turn in turnOrderArray)
-            _turnOrder.Enqueue(turn);
+        CommonFunctions.Shuffle<Player>(new System.Random(), turnOrderArray);
+        foreach (Player player in turnOrderArray)
+            _turnOrder.Enqueue(player);
     }
 }

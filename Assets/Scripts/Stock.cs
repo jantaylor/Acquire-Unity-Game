@@ -9,20 +9,26 @@ public class Stock {
 
     #region Class Attributes
 
-    private Corporation _corporation;
+    private int _corporationId;
+    private string _corporationName;
 
     #endregion
 
-    public Corporation Corporation {
-        get { return _corporation; }
-        set { _corporation = value; }
+    public int CorporationId {
+        get { return _corporationId; }
+        set { _corporationId = value; }
+    }
+    public string Corporation {
+        get { return _corporationName; }
+        set { _corporationName = value; }
     }
 
-    public Stock(Corporation corporation) {
-        _corporation = corporation;
+    public Stock(int corporationId, string corporationName) {
+        _corporationId = corporationId;
+        _corporationName = corporationName;
     }
 
     ~Stock() {
-        Debug.Log("Stock: " + _corporation.Name + " removed from game.");
+        Debug.Log("Stock: " + _corporationId + " " + _corporationName + " removed from game.");
     }
 }

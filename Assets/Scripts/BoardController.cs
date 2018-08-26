@@ -4,7 +4,7 @@ using UnityEngine;
 public class BoardController : MonoBehaviour {
     public GameObject emptyTile;
     public GameObject placedTile;
-    private Board board;
+    private Board board = new Board();
     private Transform boardObject;
     private List<Vector3> gridPositions = new List<Vector3>();
 
@@ -18,7 +18,7 @@ public class BoardController : MonoBehaviour {
 
     private void BoardSetup() {
         //Instantiate Board and set boardHolder to its transform.
-        boardObject = new GameObject("Board").transform;
+        boardObject = GameObject.Find("Board").transform;
 
         //Loop along x axis, starting from -1 (to fill corner) with floor or outerwall edge tiles.
         for (int x = -1; x < board.Columns + 1; x++) {

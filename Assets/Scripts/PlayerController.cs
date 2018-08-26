@@ -9,10 +9,8 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region Class Attributes
-    
-    private Player[] _players;
-    public TilesController tilesController;
-    public CorporationController corporationController;
+
+    private List<Player> _players = new List<Player>();
 
     enum Colors { red, green, blue, cyan, magenta, yellow };
 
@@ -20,24 +18,17 @@ public class PlayerController : MonoBehaviour {
 
     #region Unity Specific
 
-    // Use this for initialization
-    void Start() {
-        //CreatePlayers(3);
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
-
     #endregion
 
     #region Class Functions
 
+    public List<Player> Players() {
+        return _players;
+    }
+
     public void CreatePlayers(int numberOfPlayers = 3) {
-        _players = new Player[numberOfPlayers];
         for (int i = 0; i < numberOfPlayers; ++i)
-            _players[i] = new Player(i, "Player 1", GetColorById(i));
+            _players.Add(new Player(i, "Player " + i+1, GetColorById(i)));
     }
 
     /// <summary>
@@ -65,6 +56,14 @@ public class PlayerController : MonoBehaviour {
 
     public void GetPlayerTiles(int id) {
         // TODO: return tiles
+    }
+
+    public void GivePlayerStocks(int id) {
+        // TODO: Give player stocks
+    }
+
+    public void GivePlayerTiles(int id) {
+        // TODO: Give player a tile
     }
 
     #endregion
