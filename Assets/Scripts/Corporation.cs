@@ -58,6 +58,13 @@ public class Corporation {
         set { _isSafe = value; }
     }
 
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    public Corporation() {
+
+    }
+
     public Corporation(int id, string name, int tileSize = 0, int stockValue = 0, bool isSafe = false) {
         _id = id;
         _name = name;

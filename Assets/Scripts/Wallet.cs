@@ -29,6 +29,10 @@ public class Wallet {
         }
     }
 
+    public Wallet() {
+
+    }
+
     public Wallet(Player player, int amount) {
         _player = player;
         _amount = amount;

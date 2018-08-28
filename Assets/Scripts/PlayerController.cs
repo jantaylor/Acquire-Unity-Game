@@ -75,8 +75,8 @@ public class PlayerController : MonoBehaviour {
         // TODO: Give player stocks
     }
 
-    public void GivePlayerTiles(int id) {
-        // TODO: Give player a tile
+    public void GivePlayerTiles(int id, Tile newTile) {
+        _players.Find(player => player.Id == id).Tiles.Add(newTile);
     }
 
     #endregion

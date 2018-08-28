@@ -23,6 +23,10 @@ public class Stock {
         set { _corporationName = value; }
     }
 
+    public Stock() {
+
+    }
+
     public Stock(int corporationId, string corporationName) {
         _corporationId = corporationId;
         _corporationName = corporationName;

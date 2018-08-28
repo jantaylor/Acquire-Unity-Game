@@ -38,20 +38,6 @@ public class GameManager : MonoBehaviour {
         UpdateHud();
     }
 
-    private void UpdateHud() {
-        Player player = _playerController.Player(0); // TODO: Remove - here for testing
-        _corporationController.BuyStock(ref player, 0, 3); // TODO: Remove - here for testing
-        _corporationController.BuyStock(ref player, 4, 2); // TODO: Remove - here for testing
-        _hudController.SetPlayerName(player.Name);
-        _hudController.SetWalletAmount(_moneyController.PlayerAmount(player) + 100); // TODO: Remove + 100
-        _hudController.UpdatePlayerStock(player.Stocks);
-    }
-
-    private void Update() {
-        if (IsGameOver())
-            GameOver();
-    }
-
     // Setup a new game
     private void NewGame() {
         _boardController.SetupBoard();
@@ -59,12 +45,28 @@ public class GameManager : MonoBehaviour {
         ShuffleTurnOrder();
     }
 
+    private void UpdateHud() {
+        Player player = _playerController.Player(0); // TODO: Remove - here for testing
+        _corporationController.BuyStock(player, 0, 3); // TODO: Remove - here for testing
+        _corporationController.BuyStock(player, 4, 2); // TODO: Remove - here for testing
+
+        _hudController.SetPlayerName(player.Name); // TODO: Remove - here for testing
+        _hudController.SetWalletAmount(_moneyController.PlayerAmount(player) + 100); // TODO: Remove + 100
+        _hudController.UpdatePlayerStock(player.Stocks); // TODO: Remove - here for testing
+    }
+
     /// <summary>
     /// TODO
     /// </summary>
-    private void RestartGame() {
-
+    public void RestartGame() {
+        // TOOD: Garbage Collection here
+        NewGame();
     }
+
+    //private void Update() {
+    //    if (IsGameOver())
+    //        GameOver();
+    //}
 
     /// <summary>
     /// TODO
@@ -118,4 +120,27 @@ public class GameManager : MonoBehaviour {
         foreach (Player player in turnOrderArray)
             _turnOrder.Enqueue(player);
     }
+
+    #region Tile Controller Public
+
+    public void DrawTile(int playerId) {
+        Tile drawnTile = _tilesController.DrawTile();
+        _playerController.GivePlayerTiles(0, drawnTile);
+    }
+
+    //public void DrawTile(int playerId, int amountToDraw) {
+    //    Tile[] drawnTile = _tilesController.DrawTile(amountToDraw);
+    //    _playerController.GivePlayerTiles(0);
+    //}
+
+    #endregion
+
+    #region Game Manager Public
+
+    public void Endturn() {
+        Debug.Log("Ending turn for Player");
+        // TODO
+    }
+
+    #endregion
 }
