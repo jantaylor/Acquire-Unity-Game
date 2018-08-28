@@ -1,12 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CorporationController : MonoBehaviour {
-
-    #region Class Imports
-
-    #endregion
 
     // Set class attributes
     #region Class Attributes
@@ -17,7 +13,7 @@ public class CorporationController : MonoBehaviour {
 
     #region Unity Specific
 
-    void Start() {
+    private void Awake() {
         BuildCorporations();
     }
 
@@ -44,12 +40,16 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation's Id</param>
     /// <param name="name">Corporation's Name</param>
     /// <returns></returns>
-    public Corporation NewCorporation(int id, string name) {
+    private Corporation NewCorporation(int id, string name) {
         Corporation newCorp = new Corporation(id, name);
         for (int i = 0; i < 24; ++i)
             newCorp.Stocks.Push(new Stock(id, name));
 
         return newCorp;
+    }
+
+    public Corporation Corporation(int id) {
+        return _corporations.Find(c => c.Id.Equals(id));
     }
 
     //TODO: change return type
@@ -61,21 +61,24 @@ public class CorporationController : MonoBehaviour {
 
     /// <summary>
     /// Buy # stock in the passed Corporation id
+    /// TODO: Overload this with int[] id so that player can buy multiple at a time
     /// </summary>
     /// <param name="id">Corporation ID</param>
     /// <param name="amount">Amount to buy 1 or 2</param>
-    public Stock[] BuyStock(int id, int amount = 1) {
+    public void BuyStock(Player player, int id, int amount = 1) {
         if (amount > 3) {
-            Debug.LogError("Tried to buy more than 3 stocks - that's cheating.");
+            Debug.Log("Tried to buy more than 3 stocks - that's cheating.");
             throw new System.Exception("Unable to purchase more than 3 stocks a turn.");
         }
 
-        if (_corporations[id].Stocks.Count >= amount) {
-            Stock[] buyingStock = new Stock[amount];
-            for (int i = 0; i < amount; ++i)
-                buyingStock[i] = _corporations[id].Stocks.Pop();
+        Corporation corp = Corporation(id);
+        //Debug.Log("Player: " + player.Name + " is " + " buying " + amount.ToString() + " " + corp.Name +" stocks when " + corp.Name + " has " + corp.Stocks.Count + " stocks available");
 
-            return buyingStock;
+        if (corp.Stocks.Count >= amount) {
+            for (int i = 0; i < amount; ++i)
+                player.Stocks.Add(corp.Stocks.Pop());
+
+            return;
         }
 
         throw new System.Exception("Something went wrong, there were no more stocks left.");

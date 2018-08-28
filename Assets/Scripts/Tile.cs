@@ -25,6 +25,10 @@ public class Tile {
         set { _corporation = value; }
     }
 
+    public Tile() {
+
+    }
+
     public Tile(int id, string name, Corporation corporation = null) {
         _id = id;
         _name = name;

@@ -22,13 +22,26 @@ public class PlayerController : MonoBehaviour {
 
     #region Class Functions
 
+    /// <summary>
+    /// Return list of all players
+    /// </summary>
+    /// <returns>List of Players</returns>
     public List<Player> Players() {
         return _players;
     }
 
+    /// <summary>
+    /// Return specifc player by passing in their id
+    /// </summary>
+    /// <param name="id">player id</param>
+    /// <returns>Player object</returns>
+    public Player Player(int id) {
+        return _players.Find(player => player.Id.Equals(id));
+    }
+
     public void CreatePlayers(int numberOfPlayers = 3) {
         for (int i = 0; i < numberOfPlayers; ++i)
-            _players.Add(new Player(i, "Player " + i+1, GetColorById(i)));
+            _players.Add(new Player(i, "Player " + (i+1).ToString(), GetColorById(i)));
     }
 
     /// <summary>
@@ -62,8 +75,8 @@ public class PlayerController : MonoBehaviour {
         // TODO: Give player stocks
     }
 
-    public void GivePlayerTiles(int id) {
-        // TODO: Give player a tile
+    public void GivePlayerTiles(int id, Tile newTile) {
+        _players.Find(player => player.Id == id).Tiles.Add(newTile);
     }
 
     #endregion

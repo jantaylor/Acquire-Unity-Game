@@ -20,14 +20,9 @@ public class TilesController : MonoBehaviour {
     #region Unity Specific
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         _tiles = new Queue<Tile>();
         CreatePile();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
 	}
 
     #endregion
