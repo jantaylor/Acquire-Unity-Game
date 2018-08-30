@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     private PlayerController _playerController;
     private MoneyController _moneyController;
     private CorporationController _corporationController;
-    private TilesController _tilesController;
+    private TileController _tileController;
     private BoardController _boardController;
     private HudController _hudController;
 
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
         _playerController = GetComponent<PlayerController>();
         _moneyController = GetComponent<MoneyController>();
         _corporationController = GetComponent<CorporationController>();
-        _tilesController = GetComponent<TilesController>();
+        _tileController = GetComponent<TileController>();
         _boardController = GetComponent<BoardController>();
         _hudController = GetComponent<HudController>();
     }
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour {
         _boardController.SetupBoard();
         AddPlayers();
         ShuffleTurnOrder();
+        _tileController.PrintPile();
     }
 
     private void UpdateHud() {
@@ -121,7 +122,7 @@ public class GameManager : MonoBehaviour {
     #region Tile Controller Public
 
     public void DrawTile(int playerId) {
-        Tile drawnTile = _tilesController.DrawTile();
+        Tile drawnTile = _tileController.DrawTile();
         _playerController.GivePlayerTiles(0, drawnTile);
     }
 

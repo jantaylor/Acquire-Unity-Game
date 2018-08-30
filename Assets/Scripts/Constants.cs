@@ -12,6 +12,8 @@
 
     #region Board
 
+    public const int NumberOfTiles = 100;
+
     #endregion
 
     #region Rules
