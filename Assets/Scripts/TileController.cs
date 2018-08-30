@@ -127,14 +127,11 @@ public class TileController : MonoBehaviour {
 
         // set number and letter of tile
         TextMesh[] tileText = newTile.GetComponentsInChildren<TextMesh>();
-        foreach (TextMesh textMesh in tileText) {
-            Debug.Log(textMesh.name);
+        foreach (TextMesh textMesh in tileText)
             if (textMesh.name == "Letter")
                 textMesh.text = tile.Letter;
             else
-                textMesh.text = tile.Number;
-        }
-            
+                textMesh.text = tile.Number;  
     }
 
     #endregion
