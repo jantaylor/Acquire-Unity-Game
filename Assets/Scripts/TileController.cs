@@ -121,6 +121,9 @@ public class TileController : MonoBehaviour {
         Vector3 scale = new Vector3(1.5f, 1.5f, 1f);
         GameObject newTile = Instantiate(tilePrefab);
 
+        // Give the TileObject script the tile
+        newTile.GetComponent<TileObject>().Tile = tile;
+
         // Move and resize the tile
         newTile.transform.position = position;
         newTile.transform.localScale = scale;

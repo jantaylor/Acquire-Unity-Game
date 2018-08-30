@@ -32,7 +32,7 @@ public class HudController : MonoBehaviour {
     }
 
     public void SetWalletAmount(int newAmount) {
-        _walletAmountText.text = newAmount.ToString();
+        _walletAmountText.text = "$" + newAmount.ToString();
     }
 
     public void UpdatePlayerStock(List<Stock> stocks) {
