@@ -67,16 +67,20 @@ public class PlayerController : MonoBehaviour {
         // TODO: return stocks
     }
 
-    public void GetPlayerTiles(int id) {
-        // TODO: return tiles
+    public void GetPlayerTiles(Player player) {
+        string strTiles = "";
+        foreach (Tile tile in player.Tiles)
+            strTiles += tile.Letter + " " + tile.Number;
+
+        Debug.Log("Player tiles: " + strTiles);
     }
 
     public void GivePlayerStocks(int id) {
         // TODO: Give player stocks
     }
 
-    public void GivePlayerTiles(int id, Tile newTile) {
-        _players.Find(player => player.Id == id).Tiles.Add(newTile);
+    public void GivePlayerTile(Player player, Tile newTile) {
+        player.Tiles.Add(newTile);
     }
 
     #endregion

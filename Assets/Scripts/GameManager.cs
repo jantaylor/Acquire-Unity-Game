@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         NewGame();
-        UpdateHud();
     }
 
     // Setup a new game
@@ -43,11 +42,16 @@ public class GameManager : MonoBehaviour {
         _boardController.SetupBoard();
         AddPlayers();
         ShuffleTurnOrder();
-        _tileController.PrintPile();
+
+        Player player1 = _playerController.Player(0);
+        UpdateHud(player1);
+        DrawTile(player1);
+        _playerController.GetPlayerTiles(player1);
+        DrawTile(player1, 6);
+        _playerController.GetPlayerTiles(player1);
     }
 
-    private void UpdateHud() {
-        Player player = _playerController.Player(0);
+    private void UpdateHud(Player player) {
         _hudController.SetPlayerName(player.Name);
         _hudController.SetWalletAmount(_moneyController.PlayerAmount(player));
         _hudController.UpdatePlayerStock(player.Stocks);
@@ -121,15 +125,16 @@ public class GameManager : MonoBehaviour {
 
     #region Tile Controller Public
 
-    public void DrawTile(int playerId) {
+    public void DrawTile(Player player) {
         Tile drawnTile = _tileController.DrawTile();
-        _playerController.GivePlayerTiles(0, drawnTile);
+        _playerController.GivePlayerTile(player, drawnTile);
     }
 
-    //public void DrawTile(int playerId, int amountToDraw) {
-    //    Tile[] drawnTile = _tilesController.DrawTile(amountToDraw);
-    //    _playerController.GivePlayerTiles(0);
-    //}
+    public void DrawTile(Player player, int amountToDraw) {
+        for (int i = 0; i < amountToDraw; ++i) {
+            _playerController.GivePlayerTile(player, _tileController.DrawTile());
+        }
+    }
 
     #endregion
 

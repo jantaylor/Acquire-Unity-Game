@@ -52,7 +52,7 @@ public class Player {
     }
 
     ~Player() {
-        Debug.Log("Player: " + Name + " removed from the game.");
+        //Debug.Log("Player: " + Name + " removed from the game.");
     }
 
 }

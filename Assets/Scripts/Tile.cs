@@ -43,7 +43,7 @@ public class Tile {
     }
 
     ~Tile() {
-        Debug.Log("Tile: " + _number + _letter + " removed from game.");
+        //Debug.Log("Tile: " + _number + _letter + " removed from game.");
     }
 
 }
