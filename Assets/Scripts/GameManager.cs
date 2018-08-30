@@ -46,13 +46,10 @@ public class GameManager : MonoBehaviour {
     }
 
     private void UpdateHud() {
-        Player player = _playerController.Player(0); // TODO: Remove - here for testing
-        _corporationController.BuyStock(player, 0, 3); // TODO: Remove - here for testing
-        _corporationController.BuyStock(player, 4, 2); // TODO: Remove - here for testing
-
-        _hudController.SetPlayerName(player.Name); // TODO: Remove - here for testing
-        _hudController.SetWalletAmount(_moneyController.PlayerAmount(player) + 100); // TODO: Remove + 100
-        _hudController.UpdatePlayerStock(player.Stocks); // TODO: Remove - here for testing
+        Player player = _playerController.Player(0);
+        _hudController.SetPlayerName(player.Name);
+        _hudController.SetWalletAmount(_moneyController.PlayerAmount(player));
+        _hudController.UpdatePlayerStock(player.Stocks);
     }
 
     /// <summary>
