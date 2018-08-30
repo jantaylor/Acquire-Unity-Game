@@ -4,7 +4,7 @@ using UnityEngine;
 public class BoardController : MonoBehaviour {
     public GameObject emptyTile;
     public GameObject placedTile;
-    private Board board = new Board();
+    private Board board = new Board(10, 10);
     private Transform boardObject;
     private List<Vector3> gridPositions = new List<Vector3>();
 

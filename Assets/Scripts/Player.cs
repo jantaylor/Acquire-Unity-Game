@@ -41,6 +41,10 @@ public class Player {
         set { _tiles = value; }
     }
 
+    public Player() {
+
+    }
+
     public Player(int id, string name, string color) {
         _id = id;
         _name = name;

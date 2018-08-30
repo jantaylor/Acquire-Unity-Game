@@ -26,7 +26,7 @@ public class MoneyController : MonoBehaviour {
     /// <summary>
     /// Create wallets for player, call for each new player
     /// </summary>
-    /// <param name="players">Players</param>
+    /// <param name="players">Lsit of Players</param>
     public void CreateWallets(List<Player> players) {
         foreach (Player player in players)
             wallets.Add(new Wallet(player, 6000));
