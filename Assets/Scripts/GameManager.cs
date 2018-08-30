@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     private CorporationController _corporationController;
     private TilesController _tilesController;
     private BoardController _boardController;
+    private HudController _hudController;
 
     private void Awake() {
         // Singleton setup for GameManager
@@ -29,15 +30,12 @@ public class GameManager : MonoBehaviour {
         _corporationController = GetComponent<CorporationController>();
         _tilesController = GetComponent<TilesController>();
         _boardController = GetComponent<BoardController>();
+        _hudController = GetComponent<HudController>();
     }
 
     private void Start() {
         NewGame();
-    }
-
-    private void Update() {
-        if (IsGameOver())
-            GameOver();
+        UpdateHud();
     }
 
     // Setup a new game
@@ -47,12 +45,25 @@ public class GameManager : MonoBehaviour {
         ShuffleTurnOrder();
     }
 
+    private void UpdateHud() {
+        Player player = _playerController.Player(0);
+        _hudController.SetPlayerName(player.Name);
+        _hudController.SetWalletAmount(_moneyController.PlayerAmount(player));
+        _hudController.UpdatePlayerStock(player.Stocks);
+    }
+
     /// <summary>
     /// TODO
     /// </summary>
-    private void RestartGame() {
-
+    public void RestartGame() {
+        // TOOD: Garbage Collection here
+        NewGame();
     }
+
+    //private void Update() {
+    //    if (IsGameOver())
+    //        GameOver();
+    //}
 
     /// <summary>
     /// TODO
@@ -106,4 +117,27 @@ public class GameManager : MonoBehaviour {
         foreach (Player player in turnOrderArray)
             _turnOrder.Enqueue(player);
     }
+
+    #region Tile Controller Public
+
+    public void DrawTile(int playerId) {
+        Tile drawnTile = _tilesController.DrawTile();
+        _playerController.GivePlayerTiles(0, drawnTile);
+    }
+
+    //public void DrawTile(int playerId, int amountToDraw) {
+    //    Tile[] drawnTile = _tilesController.DrawTile(amountToDraw);
+    //    _playerController.GivePlayerTiles(0);
+    //}
+
+    #endregion
+
+    #region Game Manager Public
+
+    public void Endturn() {
+        Debug.Log("Ending turn for Player");
+        // TODO
+    }
+
+    #endregion
 }
