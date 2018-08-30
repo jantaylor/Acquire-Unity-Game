@@ -12,6 +12,7 @@ public class TileController : MonoBehaviour {
     #region Class Attributes
 
     private Queue<Tile> _tiles;
+    public GameObject tilePrefab;
 
     enum Letter { A, B, C, D, E, F, G, H, I, J };
 
@@ -36,7 +37,7 @@ public class TileController : MonoBehaviour {
         int letter = 0;
         int number = 0;
         for (int i = 0; i < Constants.NumberOfTiles; ++i) {
-            _tiles.Enqueue(new Tile(i, number.ToString(), GetLetterFromInt(letter) + (number + 1).ToString()));
+            _tiles.Enqueue(new Tile(i, number.ToString(), GetLetterFromInt(letter)));
             number++;
             if (number >= 10) {
                 letter++;
@@ -112,6 +113,28 @@ public class TileController : MonoBehaviour {
 
     public void HighLightBoard(Tile tile) {
         // TODO: Highlight where on the board the tile would go
+    }
+
+    public void CreateTileObject(Tile tile, Vector3 position) {
+        // TODO know the transform
+        position = new Vector3(-8, -.5f, 0);
+        Vector3 scale = new Vector3(1.5f, 1.5f, 1f);
+        GameObject newTile = Instantiate(tilePrefab);
+
+        // Move and resize the tile
+        newTile.transform.position = position;
+        newTile.transform.localScale = scale;
+
+        // set number and letter of tile
+        TextMesh[] tileText = newTile.GetComponentsInChildren<TextMesh>();
+        foreach (TextMesh textMesh in tileText) {
+            Debug.Log(textMesh.name);
+            if (textMesh.name == "Letter")
+                textMesh.text = tile.Letter;
+            else
+                textMesh.text = tile.Number;
+        }
+            
     }
 
     #endregion

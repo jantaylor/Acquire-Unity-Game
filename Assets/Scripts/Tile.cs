@@ -37,7 +37,7 @@ public class Tile {
 
     public Tile(int id, string number, string letter, Corporation corporation = null) {
         _id = id;
-        _number = Number;
+        _number = number;
         _letter = letter;
         _corporation = corporation;
     }

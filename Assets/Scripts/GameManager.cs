@@ -44,17 +44,20 @@ public class GameManager : MonoBehaviour {
         ShuffleTurnOrder();
 
         Player player1 = _playerController.Player(0);
-        UpdateHud(player1);
         DrawTile(player1);
         _playerController.GetPlayerTiles(player1);
-        DrawTile(player1, 6);
-        _playerController.GetPlayerTiles(player1);
+        //DrawTile(player1, 6);
+        //_playerController.GetPlayerTiles(player1);
+        UpdateHud(player1);
     }
 
     private void UpdateHud(Player player) {
         _hudController.SetPlayerName(player.Name);
         _hudController.SetWalletAmount(_moneyController.PlayerAmount(player));
         _hudController.UpdatePlayerStock(player.Stocks);
+        // Add Tiles to Side for Player
+        foreach (Tile tile in player.Tiles)
+            _tileController.CreateTileObject(tile, new Vector3(0, 0, 0));
     }
 
     /// <summary>
