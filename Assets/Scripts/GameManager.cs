@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static GameManager Instance = null;
-    private int _numOfPlayers = 3;
+    private int _numOfPlayers = Constants.DefaultNumberOfPlayers;
     // TODO: Maybe do Queue<Player> and use this for hotseat to pass information on HUD
     private Queue<Player> _turnOrder = new Queue<Player>();
 

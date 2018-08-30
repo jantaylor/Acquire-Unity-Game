@@ -2,7 +2,7 @@
 
     #region Player
 
-    public const int DefaultPlayers = 3;
+    public const int DefaultNumberOfPlayers = 3;
 
     #endregion
 
