@@ -17,22 +17,25 @@ public class BoardController : MonoBehaviour {
     }
 
     private void BoardSetup() {
-        //Instantiate Board and set boardHolder to its transform.
+        // Instantiate boardObject and set it to the Board's transform
         boardObject = GameObject.Find("Board").transform;
 
-        //Loop along x axis, starting from -1 (to fill corner) with floor or outerwall edge tiles.
-        for (int x = -1; x < board.Columns + 1; x++) {
-            //Loop along y axis, starting from -1 to place floor or outerwall tiles.
-            for (int y = -1; y < board.Rows + 1; y++) {
-                //Choose a random tile from our array of floor tile prefabs and prepare to instantiate it.
-                GameObject toInstantiate = emptyTile;
+        Debug.Log(board.Columns);
+        // Loop along x axis
+        for (int x = 0; x < board.Columns; ++x) {
+            // Loop along y axis
+            for (int y = 0; y < board.Rows; y++) {
+                // Instantiate the emptyTile prefab
+                GameObject instance = Instantiate(emptyTile);
 
-                //Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
-                GameObject instance =
-                    Instantiate(toInstantiate, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
-
-                //Set the parent of our newly instantiated object instance to boardObject, this is just organizational to avoid cluttering hierarchy.
+                // Set the parent of the new empty Tile to "Board"
                 instance.transform.SetParent(boardObject);
+
+                // Set the position to the x and y (with adding some for placeholder graphics not being perfect
+                instance.transform.localPosition = new Vector3(x + .6f, y + .5f, 0f);
+
+                // Rename emptyTile to ID
+                instance.name = y.ToString() + x.ToString();
             }
         }
     }
