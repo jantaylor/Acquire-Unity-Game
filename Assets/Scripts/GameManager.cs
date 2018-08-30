@@ -5,14 +5,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static GameManager Instance = null;
-    private int _numOfPlayers = 3;
+    private int _numOfPlayers = Constants.DefaultNumberOfPlayers;
     // TODO: Maybe do Queue<Player> and use this for hotseat to pass information on HUD
     private Queue<Player> _turnOrder = new Queue<Player>();
 
     private PlayerController _playerController;
     private MoneyController _moneyController;
     private CorporationController _corporationController;
-    private TilesController _tilesController;
+    private TileController _tileController;
     private BoardController _boardController;
     private HudController _hudController;
 
@@ -28,14 +28,13 @@ public class GameManager : MonoBehaviour {
         _playerController = GetComponent<PlayerController>();
         _moneyController = GetComponent<MoneyController>();
         _corporationController = GetComponent<CorporationController>();
-        _tilesController = GetComponent<TilesController>();
+        _tileController = GetComponent<TileController>();
         _boardController = GetComponent<BoardController>();
         _hudController = GetComponent<HudController>();
     }
 
     private void Start() {
         NewGame();
-        UpdateHud();
     }
 
     // Setup a new game
@@ -43,16 +42,22 @@ public class GameManager : MonoBehaviour {
         _boardController.SetupBoard();
         AddPlayers();
         ShuffleTurnOrder();
+
+        Player player1 = _playerController.Player(0);
+        DrawTile(player1);
+        _playerController.GetPlayerTiles(player1);
+        //DrawTile(player1, 6);
+        //_playerController.GetPlayerTiles(player1);
+        UpdateHud(player1);
     }
 
-    private void UpdateHud() {
-        Player player = _playerController.Player(0); // TODO: Remove - here for testing
-        _corporationController.BuyStock(player, 0, 3); // TODO: Remove - here for testing
-        _corporationController.BuyStock(player, 4, 2); // TODO: Remove - here for testing
-
-        _hudController.SetPlayerName(player.Name); // TODO: Remove - here for testing
-        _hudController.SetWalletAmount(_moneyController.PlayerAmount(player) + 100); // TODO: Remove + 100
-        _hudController.UpdatePlayerStock(player.Stocks); // TODO: Remove - here for testing
+    private void UpdateHud(Player player) {
+        _hudController.SetPlayerName(player.Name);
+        _hudController.SetWalletAmount(_moneyController.PlayerAmount(player));
+        _hudController.UpdatePlayerStock(player.Stocks);
+        // Add Tiles to Side for Player
+        foreach (Tile tile in player.Tiles)
+            _tileController.CreateTileObject(tile, new Vector3(0, 0, 0));
     }
 
     /// <summary>
@@ -123,15 +128,16 @@ public class GameManager : MonoBehaviour {
 
     #region Tile Controller Public
 
-    public void DrawTile(int playerId) {
-        Tile drawnTile = _tilesController.DrawTile();
-        _playerController.GivePlayerTiles(0, drawnTile);
+    public void DrawTile(Player player) {
+        Tile drawnTile = _tileController.DrawTile();
+        _playerController.GivePlayerTile(player, drawnTile);
     }
 
-    //public void DrawTile(int playerId, int amountToDraw) {
-    //    Tile[] drawnTile = _tilesController.DrawTile(amountToDraw);
-    //    _playerController.GivePlayerTiles(0);
-    //}
+    public void DrawTile(Player player, int amountToDraw) {
+        for (int i = 0; i < amountToDraw; ++i) {
+            _playerController.GivePlayerTile(player, _tileController.DrawTile());
+        }
+    }
 
     #endregion
 

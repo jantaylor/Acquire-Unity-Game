@@ -45,7 +45,7 @@ public class Board {
     }
 
     ~Board() {
-        Debug.Log("Removed board.");
+        //Debug.Log("Removed board.");
     }
 
 }

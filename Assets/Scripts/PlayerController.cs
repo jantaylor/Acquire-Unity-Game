@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour {
     public void CreatePlayers(int numberOfPlayers = 3) {
         for (int i = 0; i < numberOfPlayers; ++i)
             _players.Add(new Player(i, "Player " + (i+1).ToString(), GetColorById(i)));
+
+        _players[0].Name = "Cleo"; // Remove - this is for testing
     }
 
     /// <summary>
@@ -67,16 +69,20 @@ public class PlayerController : MonoBehaviour {
         // TODO: return stocks
     }
 
-    public void GetPlayerTiles(int id) {
-        // TODO: return tiles
+    public void GetPlayerTiles(Player player) {
+        string strTiles = "";
+        foreach (Tile tile in player.Tiles)
+            strTiles += tile.Letter + tile.Number + " ";
+
+        Debug.Log("Player tiles: " + strTiles);
     }
 
     public void GivePlayerStocks(int id) {
         // TODO: Give player stocks
     }
 
-    public void GivePlayerTiles(int id, Tile newTile) {
-        _players.Find(player => player.Id == id).Tiles.Add(newTile);
+    public void GivePlayerTile(Player player, Tile newTile) {
+        player.Tiles.Add(newTile);
     }
 
     #endregion

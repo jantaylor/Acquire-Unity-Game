@@ -74,7 +74,7 @@ public class Corporation {
     }
 
     ~Corporation() {
-        Debug.Log("Corporation: " + Name + " was removed from game.");
+        //Debug.Log("Corporation: " + Name + " was removed from game.");
     }
 
     #region Overrides

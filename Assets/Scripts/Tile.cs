@@ -5,7 +5,8 @@ public class Tile {
     #region Class Attributes
 
     private int _id;
-    private string _name;
+    private string _number;
+    private string _letter;
     private Corporation _corporation;
 
     #endregion
@@ -15,9 +16,14 @@ public class Tile {
         set { _id = value; }
     }
 
-    public string Name {
-        get { return _name; }
-        set { _name = value; }
+    public string Number {
+        get { return _number; }
+        set { _number = value; }
+    }
+
+    public string Letter {
+        get { return _letter; }
+        set { _letter = value; }
     }
 
     public Corporation Corporation {
@@ -29,14 +35,15 @@ public class Tile {
 
     }
 
-    public Tile(int id, string name, Corporation corporation = null) {
+    public Tile(int id, string number, string letter, Corporation corporation = null) {
         _id = id;
-        _name = name;
+        _number = number;
+        _letter = letter;
         _corporation = corporation;
     }
 
     ~Tile() {
-        Debug.Log("Tile: " + Name + " removed from game.");
+        //Debug.Log("Tile: " + _number + _letter + " removed from game.");
     }
 
 }

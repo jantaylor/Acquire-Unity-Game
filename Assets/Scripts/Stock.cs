@@ -33,6 +33,6 @@ public class Stock {
     }
 
     ~Stock() {
-        Debug.Log("Stock: " + _corporationId + " " + _corporationName + " removed from game.");
+        //Debug.Log("Stock: " + _corporationId + " " + _corporationName + " removed from game.");
     }
 }

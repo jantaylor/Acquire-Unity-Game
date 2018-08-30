@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TilesController : MonoBehaviour {
+public class TileController : MonoBehaviour {
 
     #region Class Imports
 
@@ -12,6 +12,7 @@ public class TilesController : MonoBehaviour {
     #region Class Attributes
 
     private Queue<Tile> _tiles;
+    public GameObject tilePrefab;
 
     enum Letter { A, B, C, D, E, F, G, H, I, J };
 
@@ -30,17 +31,20 @@ public class TilesController : MonoBehaviour {
     #region Class Functions
 
     /// <summary>
-    /// Create a tile array of 100 tiles rather than a 2D array of 10, 10.
+    /// Create a tile array of 100 tiles rather than a 2D array of 10, 10 and then shuffles it.
     /// </summary>
     public void CreatePile() {
         int letter = 0;
         int number = 0;
-        for (int i = 0; i < _tiles.Count; ++i) {
-            _tiles.Enqueue(new Tile(i, GetLetterFromInt(letter) + (number + 1).ToString()));
+        for (int i = 0; i < Constants.NumberOfTiles; ++i) {
+            _tiles.Enqueue(new Tile(i, number.ToString(), GetLetterFromInt(letter)));
             number++;
-            if (number >= 9)
+            if (number >= 10) {
                 letter++;
+                number = 0;
+            }
         }
+
         ShufflePile();
     }
 
@@ -60,7 +64,7 @@ public class TilesController : MonoBehaviour {
     public void PrintPile() {
         // TODO: Print to somewhere or return string
         foreach (Tile tile in _tiles)
-            Debug.Log("Tile: " + tile.Name);
+            Debug.Log("Tile: " + tile.Number + tile.Letter);
     }
 
     /// <summary>
@@ -109,6 +113,28 @@ public class TilesController : MonoBehaviour {
 
     public void HighLightBoard(Tile tile) {
         // TODO: Highlight where on the board the tile would go
+    }
+
+    public void CreateTileObject(Tile tile, Vector3 position) {
+        // TODO know the transform
+        position = new Vector3(-8, -.5f, 0);
+        Vector3 scale = new Vector3(1.5f, 1.5f, 1f);
+        GameObject newTile = Instantiate(tilePrefab);
+
+        // Give the TileObject script the tile
+        newTile.GetComponent<TileObject>().Tile = tile;
+
+        // Move and resize the tile
+        newTile.transform.position = position;
+        newTile.transform.localScale = scale;
+
+        // set number and letter of tile
+        TextMesh[] tileText = newTile.GetComponentsInChildren<TextMesh>();
+        foreach (TextMesh textMesh in tileText)
+            if (textMesh.name == "Letter")
+                textMesh.text = tile.Letter;
+            else
+                textMesh.text = tile.Number;  
     }
 
     #endregion

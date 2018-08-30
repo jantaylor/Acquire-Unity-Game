@@ -39,6 +39,6 @@ public class Wallet {
     }
 
     ~Wallet() {
-        Debug.Log("Wallet was removed");
+        //Debug.Log("Wallet was removed");
     }
 }
