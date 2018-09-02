@@ -34,14 +34,12 @@ public class TileController : MonoBehaviour {
     /// Create a tile array of 100 tiles rather than a 2D array of 10, 10 and then shuffles it.
     /// </summary>
     public void CreatePile() {
-        int letter = 0;
-        int number = 0;
-        for (int i = 0; i < Constants.NumberOfTiles; ++i) {
-            _tiles.Enqueue(new Tile(i, number.ToString(), GetLetterFromInt(letter)));
-            number++;
-            if (number >= 10) {
-                letter++;
-                number = 0;
+        int id = 0;
+        for (int x = 0; x < 10; ++x) {
+            // Loop along y axis
+            for (int y = 0; y < 10; ++y) {
+                _tiles.Enqueue(new Tile(id, y.ToString(), GetLetterFromInt(x)));
+                ++id;
             }
         }
 
