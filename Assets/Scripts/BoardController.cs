@@ -2,49 +2,54 @@
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
-    public GameObject emptyTile;
-    public GameObject placedTile;
-    private Board board = new Board(10, 10);
-    private Transform boardObject;
-    private List<Vector3> gridPositions = new List<Vector3>();
+    public GameObject tile;
+    private Board _board = new Board(10, 10);
+    private Transform _boardObject;
+    private Vector3[] _gridPositions = new Vector3[100];
 
-    public void SetupBoard() {
+    public void Awake() {
         //Creates the empty tiles
-        BoardSetup();
-
-        //Reset our list of gridpositions.
-        InitialiseTileList();
+        //BoardSetup();
+        InitializeTileList();
+        _boardObject = GameObject.Find("Board").transform;
     }
 
-    private void BoardSetup() {
-        //Instantiate Board and set boardHolder to its transform.
-        boardObject = GameObject.Find("Board").transform;
-
-        //Loop along x axis, starting from -1 (to fill corner) with floor or outerwall edge tiles.
-        for (int x = -1; x < board.Columns + 1; x++) {
-            //Loop along y axis, starting from -1 to place floor or outerwall tiles.
-            for (int y = -1; y < board.Rows + 1; y++) {
-                //Choose a random tile from our array of floor tile prefabs and prepare to instantiate it.
-                GameObject toInstantiate = emptyTile;
-
-                //Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
-                GameObject instance =
-                    Instantiate(toInstantiate, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
-
-                //Set the parent of our newly instantiated object instance to boardObject, this is just organizational to avoid cluttering hierarchy.
-                instance.transform.SetParent(boardObject);
+    /// <summary>
+    /// Create list of Tiles on the "game board"
+    /// </summary>
+    private void InitializeTileList() {
+        int id = 0;
+        for (int y = _board.Columns - 1; y > -1; --y) {
+            for (int x = -1; x < _board.Rows -1; ++x) {
+                _gridPositions[id] = new Vector3(x + .6f, y + .5f, 0f); // TODO: should be perfect
+                ++id;
             }
         }
     }
 
-    private void InitialiseTileList() {
-        //Clear our list gridPositions.
-        gridPositions.Clear();
+    /// <summary>
+    /// Get the position of the tile on the board by passing in the id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public Vector3 GetTilePositionOnBoard(int id) {
+        return _gridPositions[id];
+    }
 
-        for (int x = 1; x < board.Columns - 1; x++) {
-            for (int y = 1; y < board.Columns - 1; y++) {
-                gridPositions.Add(new Vector3(x, y, 0f));
-            }
-        }
+    /// <summary>
+    /// Moves tile from HUD to game board
+    /// </summary>
+    /// <param name="tile"></param>
+    public void PlaceTileOnBoard(GameObject tile) {
+        // Set the parent of the new empty Tile to "Board"
+        tile.transform.SetParent(_boardObject);
+        tile.transform.localPosition = tile.GetComponent<TileObject>().Tile.Position;
+
+        // Update board class with placed tiles and empty tiles
+        _board.PlacedTiles[GameManager.Instance.turnNumber] = tile;
+    }
+
+    public void HighLightBoard(Tile tile) {
+        // TODO: Highlight where on the board the tile would go
     }
 }

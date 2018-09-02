@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour {
     public void GetPlayerTiles(Player player) {
         string strTiles = "";
         foreach (Tile tile in player.Tiles)
-            strTiles += tile.Letter + tile.Number + " ";
+            strTiles += tile.Number + tile.Letter + " ";
 
         Debug.Log("Player tiles: " + strTiles);
     }

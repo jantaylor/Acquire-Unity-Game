@@ -14,6 +14,10 @@ public class TileController : MonoBehaviour {
     private Queue<Tile> _tiles;
     public GameObject tilePrefab;
 
+    public Queue<Tile> Tiles {
+        get { return _tiles; }
+    }
+
     enum Letter { A, B, C, D, E, F, G, H, I, J };
 
     #endregion
@@ -21,7 +25,7 @@ public class TileController : MonoBehaviour {
     #region Unity Specific
 
     // Use this for initialization
-    void Awake () {
+    void Start () {
         _tiles = new Queue<Tile>();
         CreatePile();
 	}
@@ -34,14 +38,13 @@ public class TileController : MonoBehaviour {
     /// Create a tile array of 100 tiles rather than a 2D array of 10, 10 and then shuffles it.
     /// </summary>
     public void CreatePile() {
-        int letter = 0;
-        int number = 0;
-        for (int i = 0; i < Constants.NumberOfTiles; ++i) {
-            _tiles.Enqueue(new Tile(i, number.ToString(), GetLetterFromInt(letter)));
-            number++;
-            if (number >= 10) {
-                letter++;
-                number = 0;
+        int id = 0;
+        for (int x = 0; x < 10; ++x) {
+            // Loop along y axis
+            for (int y = 0; y < 10; ++y) {
+                Tile newTile = new Tile(id, y.ToString(), GetLetterFromInt(x), null, GameManager.Instance.boardController.GetTilePositionOnBoard(id));
+                _tiles.Enqueue(newTile);
+                ++id;
             }
         }
 
@@ -65,6 +68,14 @@ public class TileController : MonoBehaviour {
         // TODO: Print to somewhere or return string
         foreach (Tile tile in _tiles)
             Debug.Log("Tile: " + tile.Number + tile.Letter);
+    }
+
+    /// <summary>
+    /// Print the tile information
+    /// </summary>
+    /// <param name="tile"></param>
+    public void PrintTile(Tile tile) {
+        Debug.Log("Tile ID: " + tile.Id + ", Text: " + tile.Number + tile.Letter + ", Corp: " + tile.Corporation + ", Position: " + tile.Position);
     }
 
     /// <summary>
@@ -107,18 +118,10 @@ public class TileController : MonoBehaviour {
         return newTile;
     }
 
-    public void PlaceTile(Tile tile) {
-        // TODO: Place the tile on the board
-    }
+    public void CreateTileObject(Tile tile, Vector3 position, Vector3 scale) {
+        if (position == Vector3.zero) position = new Vector3(-8, -.5f, 0); // HUD Position
 
-    public void HighLightBoard(Tile tile) {
-        // TODO: Highlight where on the board the tile would go
-    }
-
-    public void CreateTileObject(Tile tile, Vector3 position) {
-        // TODO know the transform
-        position = new Vector3(-8, -.5f, 0);
-        Vector3 scale = new Vector3(1.5f, 1.5f, 1f);
+       if (scale == Vector3.zero) scale = new Vector3(1.5f, 1.5f, 1f);
         GameObject newTile = Instantiate(tilePrefab);
 
         // Give the TileObject script the tile
@@ -128,13 +131,24 @@ public class TileController : MonoBehaviour {
         newTile.transform.position = position;
         newTile.transform.localScale = scale;
 
-        // set number and letter of tile
-        TextMesh[] tileText = newTile.GetComponentsInChildren<TextMesh>();
+        SetTileText(newTile, tile.Letter, tile.Number);
+
+    }
+
+    /// <summary>
+    /// // set number and letter of tile
+    /// </summary>
+    /// <param name="tile"></param>
+    /// <param name="letter"></param>
+    /// <param name="number"></param>
+    public void SetTileText(GameObject tile, string letter, string number) {
+        
+        TextMesh[] tileText = tile.GetComponentsInChildren<TextMesh>();
         foreach (TextMesh textMesh in tileText)
             if (textMesh.name == "Letter")
-                textMesh.text = tile.Letter;
+                textMesh.text = letter;
             else
-                textMesh.text = tile.Number;  
+                textMesh.text = number;
     }
 
     #endregion
