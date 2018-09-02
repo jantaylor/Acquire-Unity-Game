@@ -8,6 +8,7 @@ public class Tile {
     private string _number;
     private string _letter;
     private Corporation _corporation;
+    private Vector3 _position;
 
     #endregion
 
@@ -31,15 +32,21 @@ public class Tile {
         set { _corporation = value; }
     }
 
+    public Vector3 Position {
+        get { return _position; }
+        set { _position = value; }
+    }
+
     public Tile() {
 
     }
 
-    public Tile(int id, string number, string letter, Corporation corporation = null) {
+    public Tile(int id, string number, string letter, Corporation corporation = null, Vector3 position = new Vector3()) {
         _id = id;
         _number = number;
         _letter = letter;
         _corporation = corporation;
+        _position = position;
     }
 
     ~Tile() {

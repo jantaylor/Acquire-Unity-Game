@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour {
 
     // Setup a new game
     private void NewGame() {
-        boardController.SetupBoard();
         AddPlayers();
         ShuffleTurnOrder();
 
@@ -57,7 +56,7 @@ public class GameManager : MonoBehaviour {
         hudController.UpdatePlayerStock(player.Stocks);
         // Add Tiles to Side for Player
         foreach (Tile tile in player.Tiles)
-            tileController.CreateTileObject(tile, new Vector3(0, 0, 0));
+            tileController.CreateTileObject(tile, new Vector3(), new Vector3());
     }
 
     /// <summary>
@@ -131,6 +130,7 @@ public class GameManager : MonoBehaviour {
     public void DrawTile(Player player) {
         Tile drawnTile = tileController.DrawTile();
         playerController.GivePlayerTile(player, drawnTile);
+        tileController.PrintTile(drawnTile);
     }
 
     public void DrawTile(Player player, int amountToDraw) {

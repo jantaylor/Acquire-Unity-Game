@@ -21,7 +21,7 @@ public class TileController : MonoBehaviour {
     #region Unity Specific
 
     // Use this for initialization
-    void Awake () {
+    void Start () {
         _tiles = new Queue<Tile>();
         CreatePile();
 	}
@@ -38,7 +38,7 @@ public class TileController : MonoBehaviour {
         for (int x = 0; x < 10; ++x) {
             // Loop along y axis
             for (int y = 0; y < 10; ++y) {
-                _tiles.Enqueue(new Tile(id, y.ToString(), GetLetterFromInt(x)));
+                _tiles.Enqueue(new Tile(id, y.ToString(), GetLetterFromInt(x), null, GameManager.Instance.boardController.GetTilePositionOnBoard(id)));
                 ++id;
             }
         }
@@ -63,6 +63,14 @@ public class TileController : MonoBehaviour {
         // TODO: Print to somewhere or return string
         foreach (Tile tile in _tiles)
             Debug.Log("Tile: " + tile.Number + tile.Letter);
+    }
+
+    /// <summary>
+    /// Print the tile information
+    /// </summary>
+    /// <param name="tile"></param>
+    public void PrintTile(Tile tile) {
+        Debug.Log("Tile ID: " + tile.Id + ", Text: " + tile.Number + tile.Letter + ", Corp: " + tile.Corporation + ", Position: " + tile.Position);
     }
 
     /// <summary>
@@ -105,18 +113,10 @@ public class TileController : MonoBehaviour {
         return newTile;
     }
 
-    public void PlaceTile(Tile tile) {
-        // TODO: Place the tile on the board
-    }
+    public void CreateTileObject(Tile tile, Vector3 position, Vector3 scale) {
+        if (position == Vector3.zero) position = new Vector3(-8, -.5f, 0); // HUD Position
 
-    public void HighLightBoard(Tile tile) {
-        // TODO: Highlight where on the board the tile would go
-    }
-
-    public void CreateTileObject(Tile tile, Vector3 position) {
-        // TODO know the transform
-        position = new Vector3(-8, -.5f, 0);
-        Vector3 scale = new Vector3(1.5f, 1.5f, 1f);
+       if (scale == Vector3.zero) scale = new Vector3(1.5f, 1.5f, 1f);
         GameObject newTile = Instantiate(tilePrefab);
 
         // Give the TileObject script the tile
