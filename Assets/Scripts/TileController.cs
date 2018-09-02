@@ -14,6 +14,10 @@ public class TileController : MonoBehaviour {
     private Queue<Tile> _tiles;
     public GameObject tilePrefab;
 
+    public Queue<Tile> Tiles {
+        get { return _tiles; }
+    }
+
     enum Letter { A, B, C, D, E, F, G, H, I, J };
 
     #endregion
@@ -38,7 +42,8 @@ public class TileController : MonoBehaviour {
         for (int x = 0; x < 10; ++x) {
             // Loop along y axis
             for (int y = 0; y < 10; ++y) {
-                _tiles.Enqueue(new Tile(id, y.ToString(), GetLetterFromInt(x), null, GameManager.Instance.boardController.GetTilePositionOnBoard(id)));
+                Tile newTile = new Tile(id, y.ToString(), GetLetterFromInt(x), null, GameManager.Instance.boardController.GetTilePositionOnBoard(id));
+                _tiles.Enqueue(newTile);
                 ++id;
             }
         }

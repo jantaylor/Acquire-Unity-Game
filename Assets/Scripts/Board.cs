@@ -8,7 +8,6 @@ public class Board {
 
     private int _columns;
     private int _rows;
-    private GameObject[] _emptyTiles = new GameObject[100];
     private GameObject[] _placedtiles = new GameObject[100];
     private GameObject[] _corpBuildingTiles = new GameObject[7];
 
@@ -22,11 +21,6 @@ public class Board {
     public int Rows {
         get { return _rows; }
         set { _rows = value; }
-    }
-
-    public GameObject[] EmptyTiles {
-        get { return _emptyTiles; }
-        set { _emptyTiles = value; }
     }
 
     public GameObject[] PlacedTiles {

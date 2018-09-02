@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
     // TODO: Maybe do Queue<Player> and use this for hotseat to pass information on HUD
     private Queue<Player> _turnOrder = new Queue<Player>();
 
+    public int turnNumber = 0;
+
     public PlayerController playerController;
     public MoneyController moneyController;
     public CorporationController corporationController;
