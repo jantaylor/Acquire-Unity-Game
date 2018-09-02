@@ -9,12 +9,12 @@ public class GameManager : MonoBehaviour {
     // TODO: Maybe do Queue<Player> and use this for hotseat to pass information on HUD
     private Queue<Player> _turnOrder = new Queue<Player>();
 
-    private PlayerController _playerController;
-    private MoneyController _moneyController;
-    private CorporationController _corporationController;
-    private TileController _tileController;
-    private BoardController _boardController;
-    private HudController _hudController;
+    public PlayerController playerController;
+    public MoneyController moneyController;
+    public CorporationController corporationController;
+    public TileController tileController;
+    public BoardController boardController;
+    public HudController hudController;
 
     private void Awake() {
         // Singleton setup for GameManager
@@ -25,12 +25,12 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        _playerController = GetComponent<PlayerController>();
-        _moneyController = GetComponent<MoneyController>();
-        _corporationController = GetComponent<CorporationController>();
-        _tileController = GetComponent<TileController>();
-        _boardController = GetComponent<BoardController>();
-        _hudController = GetComponent<HudController>();
+        playerController = GetComponent<PlayerController>();
+        moneyController = GetComponent<MoneyController>();
+        corporationController = GetComponent<CorporationController>();
+        tileController = GetComponent<TileController>();
+        boardController = GetComponent<BoardController>();
+        hudController = GetComponent<HudController>();
     }
 
     private void Start() {
@@ -39,25 +39,25 @@ public class GameManager : MonoBehaviour {
 
     // Setup a new game
     private void NewGame() {
-        _boardController.SetupBoard();
+        boardController.SetupBoard();
         AddPlayers();
         ShuffleTurnOrder();
 
-        Player player1 = _playerController.Player(0);
+        Player player1 = playerController.Player(0);
         DrawTile(player1);
-        _playerController.GetPlayerTiles(player1);
+        playerController.GetPlayerTiles(player1);
         //DrawTile(player1, 6);
-        //_playerController.GetPlayerTiles(player1);
+        //playerController.GetPlayerTiles(player1);
         UpdateHud(player1);
     }
 
     private void UpdateHud(Player player) {
-        _hudController.SetPlayerName(player.Name);
-        _hudController.SetWalletAmount(_moneyController.PlayerAmount(player));
-        _hudController.UpdatePlayerStock(player.Stocks);
+        hudController.SetPlayerName(player.Name);
+        hudController.SetWalletAmount(moneyController.PlayerAmount(player));
+        hudController.UpdatePlayerStock(player.Stocks);
         // Add Tiles to Side for Player
         foreach (Tile tile in player.Tiles)
-            _tileController.CreateTileObject(tile, new Vector3(0, 0, 0));
+            tileController.CreateTileObject(tile, new Vector3(0, 0, 0));
     }
 
     /// <summary>
@@ -100,8 +100,8 @@ public class GameManager : MonoBehaviour {
     /// TODO
     /// </summary>
     private void AddPlayers() {
-        _playerController.CreatePlayers(_numOfPlayers);
-        _moneyController.CreateWallets(_playerController.Players());
+        playerController.CreatePlayers(_numOfPlayers);
+        moneyController.CreateWallets(playerController.Players());
     }
 
     /// <summary>
@@ -129,13 +129,13 @@ public class GameManager : MonoBehaviour {
     #region Tile Controller Public
 
     public void DrawTile(Player player) {
-        Tile drawnTile = _tileController.DrawTile();
-        _playerController.GivePlayerTile(player, drawnTile);
+        Tile drawnTile = tileController.DrawTile();
+        playerController.GivePlayerTile(player, drawnTile);
     }
 
     public void DrawTile(Player player, int amountToDraw) {
         for (int i = 0; i < amountToDraw; ++i) {
-            _playerController.GivePlayerTile(player, _tileController.DrawTile());
+            playerController.GivePlayerTile(player, tileController.DrawTile());
         }
     }
 

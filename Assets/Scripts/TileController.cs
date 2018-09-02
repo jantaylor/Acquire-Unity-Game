@@ -126,13 +126,24 @@ public class TileController : MonoBehaviour {
         newTile.transform.position = position;
         newTile.transform.localScale = scale;
 
-        // set number and letter of tile
-        TextMesh[] tileText = newTile.GetComponentsInChildren<TextMesh>();
+        SetTileText(newTile, tile.Letter, tile.Number);
+
+    }
+
+    /// <summary>
+    /// // set number and letter of tile
+    /// </summary>
+    /// <param name="tile"></param>
+    /// <param name="letter"></param>
+    /// <param name="number"></param>
+    public void SetTileText(GameObject tile, string letter, string number) {
+        
+        TextMesh[] tileText = tile.GetComponentsInChildren<TextMesh>();
         foreach (TextMesh textMesh in tileText)
             if (textMesh.name == "Letter")
-                textMesh.text = tile.Letter;
+                textMesh.text = letter;
             else
-                textMesh.text = tile.Number;  
+                textMesh.text = number;
     }
 
     #endregion

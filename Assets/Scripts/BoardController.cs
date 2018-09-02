@@ -2,8 +2,7 @@
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
-    public GameObject emptyTile;
-    public GameObject placedTile;
+    public GameObject tile;
     private Board board = new Board(10, 10);
     private Transform boardObject;
     private List<Vector3> gridPositions = new List<Vector3>();
@@ -24,7 +23,11 @@ public class BoardController : MonoBehaviour {
         for (int y = board.Columns - 1; y > -1; --y) {
             for (int x = 0; x < board.Rows; ++x) {
                 // Instantiate the emptyTile prefab
-                GameObject instance = Instantiate(emptyTile);
+                GameObject instance = Instantiate(tile);
+
+                // Don't render the tile or text
+                instance.GetComponent<SpriteRenderer>().enabled = false;
+                GameManager.Instance.tileController.SetTileText(instance, "", "");
 
                 // Set the parent of the new empty Tile to "Board"
                 instance.transform.SetParent(boardObject);

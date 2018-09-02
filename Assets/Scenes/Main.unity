@@ -216,8 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc52975aa21c18b45aac3771992703eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emptyTile: {fileID: 1978599507292062, guid: 5388a1e2b53c32240a27a6396e0d896a, type: 2}
-  placedTile: {fileID: 1428967412142920, guid: 8dbffff6b7ba0704da9fa5a99992ecca, type: 2}
+  tile: {fileID: 1428967412142920, guid: 8dbffff6b7ba0704da9fa5a99992ecca, type: 2}
 --- !u!114 &203811137 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114444883462559064, guid: d39987b1881caac4994540ab05858f2c,
