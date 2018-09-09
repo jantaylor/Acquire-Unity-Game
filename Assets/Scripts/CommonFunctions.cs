@@ -23,8 +23,4 @@ public static class CommonFunctions {
             array[k] = temp;
         }
     }
-
-    public static IEnumerator WaitForASecond() {
-        yield return new WaitForSeconds(5f);
-    }
 }

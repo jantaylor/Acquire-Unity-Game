@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
@@ -17,10 +18,16 @@ public class BoardController : MonoBehaviour {
         _boardObject = GameObject.Find("Board").transform;
     }
 
+    IEnumerator ChangeTileColorAfterSeconds(GameObject tile, Color color, float waitTime) {
+        yield return new WaitForSeconds(waitTime);
+        tile.GetComponent<SpriteRenderer>().color = color;
+    }
+
     /// <summary>
     /// Create list of Tiles on the "game board"
     /// </summary>
     private void InitializeTileList() {
+        // TODO: Set 0 (10) to be on right side...
         int id = 0;
         for (int y = _board.Columns - 1; y > -1; --y) {
             for (int x = -1; x < _board.Rows -1; ++x) {
@@ -46,9 +53,8 @@ public class BoardController : MonoBehaviour {
     public void PlaceTileOnBoard(GameObject tile) {
         tile.GetComponent<SpriteRenderer>().color = _green;
 
-        StartCoroutine(CommonFunctions.WaitForASecond());
+        StartCoroutine(ChangeTileColorAfterSeconds(tile, Color.white, .3f));
 
-        tile.GetComponent<SpriteRenderer>().color = Color.white;
         // Set the parent of the new empty Tile to "Board"
         tile.transform.SetParent(_boardObject);
         tile.transform.localPosition = tile.GetComponent<TileObject>().Tile.Position;
