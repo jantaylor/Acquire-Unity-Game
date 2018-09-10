@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf6ced06bccd07b4da3bb7e2e6001ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnNumber: 0
   playerController: {fileID: 0}
   moneyController: {fileID: 0}
   corporationController: {fileID: 0}
@@ -109,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0d6bfea9b5c114aa2b2a0ae5fcda3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilePrefab: {fileID: 1334540948483170, guid: e0744eacf7699f047be8822531026d05, type: 2}
 --- !u!114 &114869037749771754
 MonoBehaviour:
   m_ObjectHideFlags: 1

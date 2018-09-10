@@ -119,9 +119,6 @@ public class TileController : MonoBehaviour {
     }
 
     public void CreateTileObject(Tile tile, Vector3 position, Vector3 scale) {
-        if (position == Vector3.zero) position = new Vector3(-8, -.5f, 0); // HUD Position
-
-       if (scale == Vector3.zero) scale = new Vector3(1.5f, 1.5f, 1f);
         GameObject newTile = Instantiate(tilePrefab);
 
         // Give the TileObject script the tile
@@ -132,7 +129,6 @@ public class TileController : MonoBehaviour {
         newTile.transform.localScale = scale;
 
         SetTileText(newTile, tile.Letter, tile.Number);
-
     }
 
     /// <summary>

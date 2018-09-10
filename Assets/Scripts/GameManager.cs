@@ -45,10 +45,11 @@ public class GameManager : MonoBehaviour {
         ShuffleTurnOrder();
 
         Player player1 = playerController.Player(0);
-        DrawTile(player1);
+        // Draw starting tile
+        //DrawTile(player1);
+        // Draw rest of tiles
+        DrawTile(player1, 6);
         playerController.GetPlayerTiles(player1);
-        //DrawTile(player1, 6);
-        //playerController.GetPlayerTiles(player1);
         UpdateHud(player1);
     }
 
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour {
         hudController.UpdatePlayerStock(player.Stocks);
         // Add Tiles to Side for Player
         foreach (Tile tile in player.Tiles)
-            tileController.CreateTileObject(tile, new Vector3(), new Vector3());
+            hudController.SetPlayerTiles(tile);
     }
 
     /// <summary>
