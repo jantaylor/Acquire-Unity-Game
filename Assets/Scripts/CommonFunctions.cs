@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 /// <summary>
 /// Static class of common functions to be used throughout the game
@@ -13,7 +14,7 @@ public static class CommonFunctions {
     /// <typeparam name="T">Any type</typeparam>
     /// <param name="rng">new Random()</param>
     /// <param name="array">Array to be shuffled</param>
-    public static void Shuffle<T>(this Random rng, T[] array) {
+    public static void Shuffle<T>(this System.Random rng, T[] array) {
         int n = array.Length;
         while (n > 1) {
             int k = rng.Next(n--);

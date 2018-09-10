@@ -14,6 +14,9 @@ public class HudController : MonoBehaviour {
     private Text _fleetStockText;
     private Text _echoStockText;
     private Text _boltStockText;
+    private Transform _tileGrid;
+
+    public GameObject tilePrefab;
 
     private void Awake() {
         _playerNameText = GameObject.Find("PlayerName").GetComponent<Text>();
@@ -25,9 +28,10 @@ public class HudController : MonoBehaviour {
     	_fleetStockText = GameObject.Find("PlayerStockFleet").GetComponent<Text>();
     	_echoStockText = GameObject.Find("PlayerStockEcho").GetComponent<Text>();
     	_boltStockText = GameObject.Find("PlayerStockBolt").GetComponent<Text>();
+        _tileGrid = GameObject.Find("Tile Grid").transform;
 }
 
-    public void SetPlayerName (string newName) {
+    public void SetPlayerName(string newName) {
         _playerNameText.text = newName;
     }
 
@@ -45,4 +49,34 @@ public class HudController : MonoBehaviour {
         _boltStockText.text = "BOLT: " + stocks.FindAll(stock => stock.CorporationId.Equals(6)).Count.ToString();
     }
 
+    public void SetPlayerTiles(Tile tile) {
+        GameObject newTile = Instantiate(tilePrefab);
+        newTile.transform.SetParent(_tileGrid);
+
+        // Give the TileObject script the tile
+        newTile.GetComponent<TileObject>().Tile = tile;
+
+        SetTileText(newTile, tile.Letter, tile.Number);
+    }
+
+    public void SetPlayerTiles(Tile[] tiles) {
+        foreach (Tile tile in tiles) {
+            GameObject newTile = Instantiate(tilePrefab);
+            newTile.transform.SetParent(_tileGrid, true);
+
+            // Give the TileObject script the tile
+            newTile.GetComponent<TileObject>().Tile = tile;
+
+            SetTileText(newTile, tile.Letter, tile.Number);
+        }
+    }
+
+    private void SetTileText(GameObject tile, string letter, string number) {
+        Text[] tileText = tile.GetComponentsInChildren<Text>();
+        foreach (Text text in tileText)
+            if (text.name == "Letter")
+                text.text = letter;
+            else
+                text.text = number;
+    }
 }

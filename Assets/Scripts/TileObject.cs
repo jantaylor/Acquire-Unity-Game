@@ -1,22 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.EventSystems; // Required when using Event data.
 
-public class TileObject : MonoBehaviour {
+public class TileObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
 
-    private Vector3 _hudScale = new Vector3(1.5f, 1.5f, 1f);
-    private Vector3 _boardScale = new Vector3(1f, 1f, 1f);
+    private Color _yellow = new Color(1, 1, 0.4f, 0.9f);
+    private GameObject _boardTile;
+
     public Tile Tile { get; set; }
 
-    public void OnMouseDown() {
+    public void OnPointerClick(PointerEventData eventData) {
         Debug.Log("You clicked Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
 
-        this.gameObject.transform.localScale = _boardScale;
-        this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-        GameManager.Instance.boardController.PlaceTileOnBoard(this.gameObject);
+        GameManager.Instance.boardController.PlaceTileOnBoard(_boardTile);
+
+        Destroy(this.gameObject);
     }
 
-    public void OnMouseEnter() {
+    public void OnPointerEnter(PointerEventData eventData) {
         Debug.Log("You hovered over Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
+
+        _boardTile = Instantiate(GameManager.Instance.tileController.tilePrefab);
+        GameManager.Instance.boardController.HighlightBoard(_boardTile, this.gameObject);
+
+        _boardTile.GetComponent<SpriteRenderer>().color = _yellow;
     }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        Destroy(_boardTile);
+    }
+
 }
