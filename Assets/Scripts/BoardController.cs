@@ -61,7 +61,7 @@ public class BoardController : MonoBehaviour {
         tile.transform.localPosition = tile.GetComponent<TileObject>().Tile.Position;
 
         // Update board class with placed tiles and empty tiles
-        _board.PlacedTiles[GameManager.Instance.turnNumber] = tile;
+        _board.PlacedTiles[GameManager.Instance.TurnNumber] = tile;
     }
 
     public void HighlightBoard(GameObject highlight, GameObject tile) {

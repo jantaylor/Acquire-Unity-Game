@@ -12,16 +12,17 @@ public class TileObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerClick(PointerEventData eventData) {
         Debug.Log("You clicked Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
 
-        GameManager.Instance.boardController.PlaceTileOnBoard(_boardTile);
+        GameManager.Instance.BoardController.PlaceTileOnBoard(_boardTile);
 
         Destroy(this.gameObject);
+        //GameManager.Instance.PlayerController.PlayTile();
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
         Debug.Log("You hovered over Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
 
-        _boardTile = GameManager.Instance.tileController.CreateTileObject(Tile, Tile.Position, new Vector3(1f, 1f, 0.1f));
-        GameManager.Instance.boardController.HighlightBoard(_boardTile, this.gameObject);
+        _boardTile = GameManager.Instance.TileController.CreateTileObject(Tile, Tile.Position);
+        GameManager.Instance.BoardController.HighlightBoard(_boardTile, this.gameObject);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
