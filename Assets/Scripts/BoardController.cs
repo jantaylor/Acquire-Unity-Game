@@ -7,6 +7,7 @@ public class BoardController : MonoBehaviour {
     private Board _board = new Board(10, 10);
     private Transform _boardObject;
     private Color _green = new Color(0.32f, 0.85f, .3f, 0.9f);
+    private Color _yellow = new Color(1, 1, 0.4f, 0.9f);
     private Vector3[] _gridPositions = new Vector3[100];
 
     public GameObject tile;
@@ -60,10 +61,11 @@ public class BoardController : MonoBehaviour {
         tile.transform.localPosition = tile.GetComponent<TileObject>().Tile.Position;
 
         // Update board class with placed tiles and empty tiles
-        _board.PlacedTiles[GameManager.Instance.turnNumber] = tile;
+        _board.PlacedTiles[GameManager.Instance.TurnNumber] = tile;
     }
 
     public void HighlightBoard(GameObject highlight, GameObject tile) {
+        highlight.GetComponent<SpriteRenderer>().color = _yellow;
         highlight.transform.SetParent(_boardObject);
         highlight.transform.localPosition = tile.GetComponent<TileObject>().Tile.Position;
     }

@@ -42,7 +42,7 @@ public class TileController : MonoBehaviour {
         for (int x = 0; x < 10; ++x) {
             // Loop along y axis
             for (int y = 0; y < 10; ++y) {
-                Tile newTile = new Tile(id, y.ToString(), GetLetterFromInt(x), null, GameManager.Instance.boardController.GetTilePositionOnBoard(id));
+                Tile newTile = new Tile(id, y.ToString(), GetLetterFromInt(x), null, GameManager.Instance.BoardController.GetTilePositionOnBoard(id));
                 _tiles.Enqueue(newTile);
                 ++id;
             }
@@ -118,17 +118,18 @@ public class TileController : MonoBehaviour {
         return newTile;
     }
 
-    public void CreateTileObject(Tile tile, Vector3 position, Vector3 scale) {
+    public GameObject CreateTileObject(Tile tile, Vector3 position) {
         GameObject newTile = Instantiate(tilePrefab);
 
         // Give the TileObject script the tile
         newTile.GetComponent<TileObject>().Tile = tile;
 
-        // Move and resize the tile
+        // Move the tile to it's position
         newTile.transform.position = position;
-        newTile.transform.localScale = scale;
 
         SetTileText(newTile, tile.Letter, tile.Number);
+
+        return newTile;
     }
 
     /// <summary>

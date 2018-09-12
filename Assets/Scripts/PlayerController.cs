@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour {
             _players.Add(new Player(i, "Player " + (i+1).ToString(), GetColorById(i)));
 
         _players[0].Name = "Cleo"; // Remove - this is for testing
+        _players[1].Name = "Jan"; // Remove - this is for testing
     }
 
     /// <summary>
@@ -74,15 +75,19 @@ public class PlayerController : MonoBehaviour {
         foreach (Tile tile in player.Tiles)
             strTiles += tile.Number + tile.Letter + " ";
 
-        Debug.Log("Player tiles: " + strTiles);
+        Debug.Log(player.Name + " tiles: " + strTiles);
     }
 
     public void GivePlayerStocks(int id) {
         // TODO: Give player stocks
     }
 
-    public void GivePlayerTile(Player player, Tile newTile) {
-        player.Tiles.Add(newTile);
+    public void GivePlayerTile(Player player, Tile tile) {
+        player.Tiles.Add(tile);
+    }
+
+    public void RemovePlayerTile(Player player, Tile tile) {
+        player.Tiles.Remove(tile);
     }
 
     #endregion
