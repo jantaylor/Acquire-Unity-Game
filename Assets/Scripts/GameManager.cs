@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -42,19 +43,22 @@ public class GameManager : MonoBehaviour {
         AddPlayers();
         StartingTiles();
         StartingHands();
+        PlayerTurn();
     }
 
     private void StartingTiles() {
         // Draw starting tile per player
-        int[] drawnTileIds = new int[_numOfPlayers];
         foreach (Player player in PlayerController.Players()) {
             DrawTile(player);
+        }
+
+        EstablishTurnOrder();
+        PrintTurnOrder(); // TODO: Debugging
+
+        foreach (Player player in PlayerController.Players()) {
             Tile drawnTile = player.Tiles[0];
             PlayTile(player, drawnTile);
-            drawnTileIds[player.Id] = drawnTile.Id;
         }
-        EstablishTurnOrder(drawnTileIds);
-        PrintTurnOrder();
     }
 
     private void StartingHands() {
@@ -66,35 +70,20 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void EstablishTurnOrder(int[] drawnTiles) {
-        // 0 - 23, 1 - 13, 2 - 24
-        int min = 0;
-        Player[] playerArray = new Player[_numOfPlayers];
-        for (int i = 0; i < _numOfPlayers; ++i) {
-            int curr = drawnTiles[i];
-            if (curr >= min) {
-                _turnOrder.Enqueue(PlayerController.Player(i));
-                min = curr;
-            } else {
-                for (int j = 0; j < i; ++j) {
-                    playerArray[j] = _turnOrder.Dequeue();
-                }
-                for (int k = 0; k < i; ++k) {
-                    if (curr > drawnTiles[playerArray[k].Id]) {
-                        _turnOrder.Enqueue(playerArray[k]);
-                    } else {
-                        _turnOrder.Enqueue(PlayerController.Player(i));
-                        curr = 0;
-                    }
-                }
-            }
-        }
+    private void EstablishTurnOrder() {
+        List<Player> sortedList = new List<Player>();
+        sortedList = PlayerController.Players().OrderBy(p => p.Tiles[0].Id).ToList();
+        foreach (Player player in sortedList)
+            _turnOrder.Enqueue(player);
+        sortedList = null; // Remove sortedList
     }
 
     private void PrintTurnOrder() {
         for (int i = 0; i < _turnOrder.Count; ++i) {
             Player player = _turnOrder.Dequeue();
-            Debug.Log("#" + (i + 1) + " - " + player.Name);
+            Debug.Log("#" + (i + 1) + " - " + player.Name + " drew tile "
+                + player.Tiles[0].Number + player.Tiles[0].Letter
+                + " (" + player.Tiles[0].Id + ").");
             _turnOrder.Enqueue(player);
         }
     }
@@ -140,8 +129,9 @@ public class GameManager : MonoBehaviour {
     /// Returns next players turn for Players[]
     /// </summary>
     /// <returns>int</returns>
-    private Player PlayerTurn() {
-        return _turnOrder.Peek();
+    private void PlayerTurn() {
+        if (TurnNumber == 0) Debug.Log("Player " + _turnOrder.Peek().Name + " goes first!");
+        //return _turnOrder.Peek();
     }
 
     /// <summary>
