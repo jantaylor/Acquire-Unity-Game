@@ -5,7 +5,6 @@ using UnityEngine.EventSystems; // Required when using Event data.
 
 public class TileObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
 
-    private Color _yellow = new Color(1, 1, 0.4f, 0.9f);
     private GameObject _boardTile;
 
     public Tile Tile { get; set; }
@@ -21,10 +20,8 @@ public class TileObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerEnter(PointerEventData eventData) {
         Debug.Log("You hovered over Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
 
-        _boardTile = Instantiate(GameManager.Instance.tileController.tilePrefab);
+        _boardTile = GameManager.Instance.tileController.CreateTileObject(Tile, Tile.Position, new Vector3(1f, 1f, 0.1f));
         GameManager.Instance.boardController.HighlightBoard(_boardTile, this.gameObject);
-
-        _boardTile.GetComponent<SpriteRenderer>().color = _yellow;
     }
 
     public void OnPointerExit(PointerEventData eventData) {

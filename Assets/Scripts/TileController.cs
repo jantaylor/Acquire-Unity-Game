@@ -118,7 +118,7 @@ public class TileController : MonoBehaviour {
         return newTile;
     }
 
-    public void CreateTileObject(Tile tile, Vector3 position, Vector3 scale) {
+    public GameObject CreateTileObject(Tile tile, Vector3 position, Vector3 scale) {
         GameObject newTile = Instantiate(tilePrefab);
 
         // Give the TileObject script the tile
@@ -129,6 +129,8 @@ public class TileController : MonoBehaviour {
         newTile.transform.localScale = scale;
 
         SetTileText(newTile, tile.Letter, tile.Number);
+
+        return newTile;
     }
 
     /// <summary>
