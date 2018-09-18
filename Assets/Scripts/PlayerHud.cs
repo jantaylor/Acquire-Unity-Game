@@ -16,20 +16,40 @@ public class PlayerHud : MonoBehaviour {
     public Text FleetStockText;
     public Text EchoStockText;
     public Text BoltStockText;
+    public Button BuyStockButton;
+    public Button EndTurnButton;
     public Transform TileGrid;
 
     public GameObject tilePrefab;
 
+    private void Start() {
+        // TODO: Buy Stock
+        //BuyStockButton.onClick.AddListener();
+        EndTurnButton.onClick.AddListener(GameManager.Instance.Endturn);
+    }
+
+    private void Update() {
+        if (GameManager.Instance.PlayerController.ActivePlayer != Player) {
+            BuyStockButton.interactable = false;
+            EndTurnButton.interactable = false;
+        } else {
+            // TODO: change 0 to 3
+            if (GameManager.Instance.StocksPurchased < 0)
+                BuyStockButton.interactable = true;
+            EndTurnButton.interactable = true;
+        }
+}
+
     public void AssignPlayerToHud(Player player) {
         Player = player;
         UpdatePlayerHud();
+        SetPlayerTiles(Player, Player.Tiles);
     }
 
     public void UpdatePlayerHud() {
         SetPlayerName(Player.Name);
         SetWalletAmount(GameManager.Instance.MoneyController.PlayerAmount(Player));
         UpdatePlayerStocks(Player.Stocks);
-        SetPlayerTiles(Player, Player.Tiles);
     }
 
     public void SetPlayerName(string newName) {
@@ -50,13 +70,14 @@ public class PlayerHud : MonoBehaviour {
         BoltStockText.text = "BOLT: " + stocks.FindAll(stock => stock.CorporationId.Equals(6)).Count.ToString();
     }
 
-    public void SetPlayerTiles(Player player, Tile tile) {
+    public void AddPlayerTile(Player player, Tile tile) {
         GameObject newTile = Instantiate(tilePrefab);
         newTile.transform.SetParent(TileGrid);
 
         // Give the TileObject script the tile & player
         newTile.GetComponent<TileObject>().Tile = tile;
         newTile.GetComponent<TileObject>().Player = player;
+        newTile.gameObject.name = tile.Id.ToString();
 
         SetTileText(newTile, tile.Letter, tile.Number);
     }
@@ -69,9 +90,16 @@ public class PlayerHud : MonoBehaviour {
             // Give the TileObject script the tile & player
             newTile.GetComponent<TileObject>().Tile = tile;
             newTile.GetComponent<TileObject>().Player = player;
+            newTile.gameObject.name = tile.Id.ToString();
 
             SetTileText(newTile, tile.Letter, tile.Number);
         }
+    }
+
+    public void RemovePlayerTile(Player player, Tile tile) {
+        GameObject tileToRemove = TileGrid.Find(tile.Id.ToString()).gameObject;
+        Destroy(tileToRemove);
+
     }
 
     private void SetTileText(GameObject tile, string letter, string number) {

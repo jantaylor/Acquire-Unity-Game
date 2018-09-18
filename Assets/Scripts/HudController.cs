@@ -59,11 +59,15 @@ public class HudController : MonoBehaviour {
         _playerHuds.Find(p => p.Player == player).UpdatePlayerStocks(stocks);
     }
 
-    public void SetPlayerTiles(Player player, Tile tile) {
-        _playerHuds.Find(p => p.Player == player).SetPlayerTiles(player, tile);
+    public void AddPlayerTile(Player player, Tile tile) {
+        _playerHuds.Find(p => p.Player == player).AddPlayerTile(player, tile);
     }
 
     public void SetPlayerTiles(Player player, List<Tile> tiles) {
         _playerHuds.Find(p => p.Player == player).SetPlayerTiles(player, tiles);
+    }
+
+    public void RemovePlayerTile(Player player, Tile tile) {
+        _playerHuds.Find(p => p.Player == player).RemovePlayerTile(player, tile);
     }
 }

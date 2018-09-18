@@ -12,7 +12,7 @@ public class TileObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public void OnPointerClick(PointerEventData eventData) {
         // Only the active player can place a tile once
-        if (Player == GameManager.Instance.PlayerController.ActivePlayer && !GameManager.Instance.BoardController.TilePlaced) {
+        if (Player == GameManager.Instance.PlayerController.ActivePlayer && !GameManager.Instance.TilePlaced) {
             Debug.Log("You clicked Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
 
             GameManager.Instance.BoardController.PlaceTileOnBoard(_boardTile);
@@ -22,7 +22,7 @@ public class TileObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        if (Player == GameManager.Instance.PlayerController.ActivePlayer && !GameManager.Instance.BoardController.TilePlaced) {
+        if (Player == GameManager.Instance.PlayerController.ActivePlayer && !GameManager.Instance.TilePlaced) {
             Debug.Log("You hovered over Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
 
             _boardTile = GameManager.Instance.TileController.CreateTileObject(Tile, Tile.Position);

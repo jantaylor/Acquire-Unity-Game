@@ -156,6 +156,8 @@ GameObject:
   - component: {fileID: 222821048340460424}
   - component: {fileID: 114112658983854722}
   - component: {fileID: 114794923697373748}
+  - component: {fileID: 223651811225727442}
+  - component: {fileID: 114035563578929230}
   m_Layer: 5
   m_Name: Buy Stock Button
   m_TagString: Untagged
@@ -191,6 +193,8 @@ GameObject:
   - component: {fileID: 222853838237347258}
   - component: {fileID: 114797248768739204}
   - component: {fileID: 114083867839061812}
+  - component: {fileID: 223059420127313906}
+  - component: {fileID: 114189980352193448}
   m_Layer: 5
   m_Name: End Turn Button
   m_TagString: Untagged
@@ -356,6 +360,22 @@ MonoBehaviour:
   m_Spacing: {x: 15, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 2
+--- !u!114 &114035563578929230
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1737745467119694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &114046702178558742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -376,6 +396,8 @@ MonoBehaviour:
   FleetStockText: {fileID: 114173416573933594}
   EchoStockText: {fileID: 114853393351314306}
   BoltStockText: {fileID: 114913378154554260}
+  BuyStockButton: {fileID: 114794923697373748}
+  EndTurnButton: {fileID: 114083867839061812}
   TileGrid: {fileID: 224342888923336566}
   tilePrefab: {fileID: 1334540948483170, guid: e0744eacf7699f047be8822531026d05, type: 2}
 --- !u!114 &114083867839061812
@@ -416,18 +438,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114797248768739204}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Endturn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114112658983854722
@@ -556,6 +567,22 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'FLEET: 0'
+--- !u!114 &114189980352193448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1771344887148998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &114199653343366474
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -606,7 +633,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 10
+  m_Spacing: 5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -895,7 +922,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114112658983854722}
   m_OnClick:
     m_PersistentCalls:
@@ -1123,6 +1150,46 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1974956622815706}
   m_CullTransparentMesh: 0
+--- !u!223 &223059420127313906
+Canvas:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1771344887148998}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!223 &223651811225727442
+Canvas:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1737745467119694}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!224 &224011021967174868
 RectTransform:
   m_ObjectHideFlags: 1
@@ -1253,7 +1320,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 105, y: -405.68}
+  m_AnchoredPosition: {x: 105, y: -355.68}
   m_SizeDelta: {x: 210, y: 275}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224419494163145344
@@ -1314,8 +1381,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -10}
-  m_SizeDelta: {x: 210, y: 550}
+  m_AnchoredPosition: {x: 10, y: -594}
+  m_SizeDelta: {x: 210, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224540592833693558
 RectTransform:
@@ -1443,8 +1510,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 105, y: -223.18}
-  m_SizeDelta: {x: 210, y: 70}
+  m_AnchoredPosition: {x: 105, y: -198.18}
+  m_SizeDelta: {x: 210, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224846318620536594
 RectTransform:

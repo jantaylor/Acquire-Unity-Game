@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
 
     private Queue<Player> _turnOrder = new Queue<Player>();
 
+    public bool TilePlaced = false;
+    public int StocksPurchased = 0;
     public int NumOfPlayers = Constants.DefaultNumberOfPlayers;
     public int TurnNumber = 0;
     public static GameManager Instance = null;
@@ -43,7 +45,8 @@ public class GameManager : MonoBehaviour {
         AddPlayers();
         StartingTiles();
         StartingHands();
-        Debug.Log("Player " + _turnOrder.Peek().Name + " goes first!");
+        SetStartPlayer();
+        Debug.Log(PlayerController.ActivePlayer.Name + " goes first!");
     }
 
     private void StartingTiles() {
@@ -61,22 +64,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void StartingHands() {
-        foreach (Player player in PlayerController.Players()) {
-            // Draw rest of tiles for starting hand
-            DrawTile(player, 6);
-            PlayerController.GetPlayerTiles(player);
-            HudController.UpdatePlayerHud(player);
-        }
-    }
-
     private void EstablishTurnOrder() {
         List<Player> sortedList = new List<Player>();
         sortedList = PlayerController.Players().OrderBy(p => p.Tiles[0].Id).ToList();
         foreach (Player player in sortedList)
             _turnOrder.Enqueue(player);
         sortedList = null; // Remove sortedList
-        PlayerController.ActivePlayer = _turnOrder.Peek();
     }
 
     private void PrintTurnOrder() {
@@ -86,6 +79,15 @@ public class GameManager : MonoBehaviour {
                 + player.Tiles[0].Number + player.Tiles[0].Letter
                 + " (" + player.Tiles[0].Id + ").");
             _turnOrder.Enqueue(player);
+        }
+    }
+
+    private void StartingHands() {
+        foreach (Player player in PlayerController.Players()) {
+            // Draw rest of tiles for starting hand
+            DrawTile(player, 6);
+            PlayerController.GetPlayerTiles(player);
+            HudController.UpdatePlayerHud(player);
         }
     }
 
@@ -126,14 +128,18 @@ public class GameManager : MonoBehaviour {
         HudController.CreatePlayerHuds(PlayerController.Players());
     }
 
+    private void SetStartPlayer() {
+        PlayerController.ActivePlayer = _turnOrder.Dequeue();
+        _turnOrder.Enqueue(PlayerController.ActivePlayer);
+    }
+
     /// <summary>
     /// Returns the next player's id
     /// </summary>
     /// <returns>Next player id</returns>
     private void NextPlayer() {
-        Player nextPlayer = _turnOrder.Dequeue();
         _turnOrder.Enqueue(PlayerController.ActivePlayer);
-        PlayerController.ActivePlayer = nextPlayer;
+        PlayerController.ActivePlayer = _turnOrder.Dequeue();
     }
 
 
@@ -154,11 +160,14 @@ public class GameManager : MonoBehaviour {
         Tile drawnTile = TileController.DrawTile();
         PlayerController.GivePlayerTile(player, drawnTile);
         TileController.PrintTile(drawnTile);
+        HudController.AddPlayerTile(player, drawnTile);
     }
 
     public void DrawTile(Player player, int amountToDraw) {
         for (int i = 0; i < amountToDraw; ++i) {
-            PlayerController.GivePlayerTile(player, TileController.DrawTile());
+            Tile drawnTile = TileController.DrawTile();
+            PlayerController.GivePlayerTile(player, drawnTile);
+            HudController.AddPlayerTile(player, drawnTile);
         }
     }
 
@@ -170,14 +179,21 @@ public class GameManager : MonoBehaviour {
         PlayerController.RemovePlayerTile(player, tile);
         GameObject newTile = TileController.CreateTileObject(tile, tile.Position);
         BoardController.PlaceTileOnBoard(newTile, true);
+        HudController.RemovePlayerTile(player, tile);
     }
 
     public void Endturn() {
-        Debug.Log("Ending " + PlayerController.ActivePlayer.Name + "'s turn.");
-        NextPlayer();
-        BoardController.TilePlaced = false;
-        Debug.Log("It's your turn " + PlayerController.ActivePlayer.Name + ".");
-        ++TurnNumber;
+        if (TilePlaced) {
+            Debug.Log("Ending " + PlayerController.ActivePlayer.Name + "'s turn.");
+            DrawTile(PlayerController.ActivePlayer);
+            TilePlaced = false;
+            StocksPurchased = 0;
+            NextPlayer();
+            Debug.Log("It's your turn " + PlayerController.ActivePlayer.Name + ".");
+            ++TurnNumber;
+        } else {
+            Debug.Log("Can't end your turn before placing a tile!");
+        }
     }
 
     #endregion

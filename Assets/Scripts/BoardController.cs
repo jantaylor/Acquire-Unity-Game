@@ -10,7 +10,6 @@ public class BoardController : MonoBehaviour {
     private Color _yellow = new Color(1, 1, 0.4f, 0.9f);
     private Vector3[] _gridPositions = new Vector3[100];
 
-    public bool TilePlaced = false;
     public GameObject tile;
 
     public void Awake() {
@@ -57,7 +56,7 @@ public class BoardController : MonoBehaviour {
         if (!placeInstantly) {
             tile.GetComponent<SpriteRenderer>().color = _green;
             StartCoroutine(ChangeTileColorAfterSeconds(tile, Color.white, .3f));
-            TilePlaced = true;
+            GameManager.Instance.TilePlaced = true;
         }
         // Set the parent of the new empty Tile to "Board"
         tile.transform.SetParent(_boardObject);
