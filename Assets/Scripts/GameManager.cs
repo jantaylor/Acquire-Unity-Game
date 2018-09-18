@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    private int _numOfPlayers = Constants.DefaultNumberOfPlayers;
     private Queue<Player> _turnOrder = new Queue<Player>();
 
+    public int NumOfPlayers = Constants.DefaultNumberOfPlayers;
     public int TurnNumber = 0;
     public static GameManager Instance = null;
     public PlayerController PlayerController;
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour {
             // Draw rest of tiles for starting hand
             DrawTile(player, 6);
             PlayerController.GetPlayerTiles(player);
-            UpdateHud(player);
+            HudController.UpdatePlayerHud(player);
         }
     }
 
@@ -86,15 +86,6 @@ public class GameManager : MonoBehaviour {
                 + " (" + player.Tiles[0].Id + ").");
             _turnOrder.Enqueue(player);
         }
-    }
-
-    private void UpdateHud(Player player) {
-        HudController.SetPlayerName(player.Name);
-        HudController.SetWalletAmount(MoneyController.PlayerAmount(player));
-        HudController.UpdatePlayerStock(player.Stocks);
-        // Add Tiles to Side for Player
-        foreach (Tile tile in player.Tiles)
-            HudController.SetPlayerTiles(tile);
     }
 
     /// <summary>
@@ -138,8 +129,9 @@ public class GameManager : MonoBehaviour {
     /// TODO
     /// </summary>
     private void AddPlayers() {
-        PlayerController.CreatePlayers(_numOfPlayers);
+        PlayerController.CreatePlayers(NumOfPlayers);
         MoneyController.CreateWallets(PlayerController.Players());
+        HudController.CreatePlayerHuds(PlayerController.Players());
     }
 
     /// <summary>
