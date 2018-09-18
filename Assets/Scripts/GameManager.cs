@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour {
     private void NewGame() {
         AddPlayers();
         StartingTiles();
-        NextPlayer();
         StartingHands();
         Debug.Log("Player " + _turnOrder.Peek().Name + " goes first!");
     }
@@ -77,6 +76,7 @@ public class GameManager : MonoBehaviour {
         foreach (Player player in sortedList)
             _turnOrder.Enqueue(player);
         sortedList = null; // Remove sortedList
+        PlayerController.ActivePlayer = _turnOrder.Peek();
     }
 
     private void PrintTurnOrder() {
@@ -166,12 +166,6 @@ public class GameManager : MonoBehaviour {
 
     #region Game Manager Public
 
-    public void PlayTile(Player player, Tile tile) {
-        PlayerController.RemovePlayerTile(player, tile);
-        GameObject newTile = TileController.CreateTileObject(tile, tile.Position);
-        BoardController.PlaceTileOnBoard(newTile);
-    }
-
     public void PlaceStartingTile(Player player, Tile tile) {
         PlayerController.RemovePlayerTile(player, tile);
         GameObject newTile = TileController.CreateTileObject(tile, tile.Position);
@@ -181,6 +175,7 @@ public class GameManager : MonoBehaviour {
     public void Endturn() {
         Debug.Log("Ending " + PlayerController.ActivePlayer.Name + "'s turn.");
         NextPlayer();
+        BoardController.TilePlaced = false;
         Debug.Log("It's your turn " + PlayerController.ActivePlayer.Name + ".");
         ++TurnNumber;
     }
