@@ -6,11 +6,13 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     private Queue<Player> _turnOrder = new Queue<Player>();
-
+    public Player ActivePlayer;
+    public string ActivePlayerName;
     public bool TilePlaced = false;
     public int StocksPurchased = 0;
     public int NumOfPlayers = Constants.DefaultNumberOfPlayers;
     public int TurnNumber = 0;
+
     public static GameManager Instance = null;
     public PlayerController PlayerController;
     public MoneyController MoneyController;
@@ -45,8 +47,8 @@ public class GameManager : MonoBehaviour {
         AddPlayers();
         StartingTiles();
         StartingHands();
-        SetStartPlayer();
-        Debug.Log(PlayerController.ActivePlayer.Name + " goes first!");
+        NextPlayer();
+        Debug.Log(ActivePlayer.Name + " goes first!");
     }
 
     private void StartingTiles() {
@@ -128,20 +130,11 @@ public class GameManager : MonoBehaviour {
         HudController.CreatePlayerHuds(PlayerController.Players());
     }
 
-    private void SetStartPlayer() {
-        PlayerController.ActivePlayer = _turnOrder.Dequeue();
-        _turnOrder.Enqueue(PlayerController.ActivePlayer);
-    }
-
-    /// <summary>
-    /// Returns the next player's id
-    /// </summary>
-    /// <returns>Next player id</returns>
     private void NextPlayer() {
-        _turnOrder.Enqueue(PlayerController.ActivePlayer);
-        PlayerController.ActivePlayer = _turnOrder.Dequeue();
+        ActivePlayer = _turnOrder.Dequeue();
+        _turnOrder.Enqueue(ActivePlayer);
+        ActivePlayerName = ActivePlayer.Name;
     }
-
 
     /// <summary>
     /// Shifts the players turn order around and sets it up
@@ -184,12 +177,12 @@ public class GameManager : MonoBehaviour {
 
     public void Endturn() {
         if (TilePlaced) {
-            Debug.Log("Ending " + PlayerController.ActivePlayer.Name + "'s turn.");
-            DrawTile(PlayerController.ActivePlayer);
+            Debug.Log("Ending " + ActivePlayer.Name + "'s turn.");
+            DrawTile(ActivePlayer);
             TilePlaced = false;
             StocksPurchased = 0;
             NextPlayer();
-            Debug.Log("It's your turn " + PlayerController.ActivePlayer.Name + ".");
+            Debug.Log("It's your turn " + ActivePlayer.Name + ".");
             ++TurnNumber;
         } else {
             Debug.Log("Can't end your turn before placing a tile!");

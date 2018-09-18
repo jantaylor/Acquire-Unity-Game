@@ -31,8 +31,8 @@ public class BoardController : MonoBehaviour {
         // TODO: Set 0 (10) to be on right side...
         int id = 0;
         for (int y = _board.Columns - 1; y > -1; --y) {
-            for (int x = -1; x < _board.Rows -1; ++x) {
-                _gridPositions[id] = new Vector3(x + .6f, y + .5f, 0f); // TODO: should be perfect
+            for (int x = 0; x < _board.Rows; ++x) {
+                _gridPositions[id] = new Vector3(x + .6f, y + .5f); // TODO: should be perfect
                 ++id;
             }
         }

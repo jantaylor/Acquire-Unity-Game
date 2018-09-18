@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour {
     private List<Player> _players = new List<Player>();
     enum Colors { red, green, blue, cyan, magenta, yellow };
 
-    public Player ActivePlayer;
-
     #endregion
 
     #region Class Functions

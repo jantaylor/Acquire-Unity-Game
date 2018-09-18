@@ -29,14 +29,19 @@ public class PlayerHud : MonoBehaviour {
     }
 
     private void Update() {
-        if (GameManager.Instance.PlayerController.ActivePlayer != Player) {
+        if (GameManager.Instance.ActivePlayer != Player) {
             BuyStockButton.interactable = false;
             EndTurnButton.interactable = false;
+            foreach (Transform child in TileGrid)
+                child.gameObject.SetActive(false);
+                
         } else {
             // TODO: change 0 to 3
             if (GameManager.Instance.StocksPurchased < 0)
                 BuyStockButton.interactable = true;
             EndTurnButton.interactable = true;
+            foreach (Transform child in TileGrid)
+                child.gameObject.SetActive(true);
         }
 }
 

@@ -41,9 +41,11 @@ public class TileController : MonoBehaviour {
         int id = 0;
         for (int x = 0; x < 10; ++x) {
             // Loop along y axis
-            for (int y = 0; y < 10; ++y) {
+            for (int y = 1; y < 11; ++y) {
+                if (y == 10) y = 0;
                 Tile newTile = new Tile(id, y.ToString(), GetLetterFromInt(x), null, GameManager.Instance.BoardController.GetTilePositionOnBoard(id));
                 _tiles.Enqueue(newTile);
+                if (y == 0) y = 10;
                 ++id;
             }
         }
