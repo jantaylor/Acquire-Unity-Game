@@ -29,7 +29,7 @@ public class PlayerHud : MonoBehaviour {
         SetPlayerName(Player.Name);
         SetWalletAmount(GameManager.Instance.MoneyController.PlayerAmount(Player));
         UpdatePlayerStocks(Player.Stocks);
-        SetPlayerTiles(Player.Tiles);
+        SetPlayerTiles(Player, Player.Tiles);
     }
 
     public void SetPlayerName(string newName) {
@@ -50,23 +50,25 @@ public class PlayerHud : MonoBehaviour {
         BoltStockText.text = "BOLT: " + stocks.FindAll(stock => stock.CorporationId.Equals(6)).Count.ToString();
     }
 
-    public void SetPlayerTiles(Tile tile) {
+    public void SetPlayerTiles(Player player, Tile tile) {
         GameObject newTile = Instantiate(tilePrefab);
         newTile.transform.SetParent(TileGrid);
 
-        // Give the TileObject script the tile
+        // Give the TileObject script the tile & player
         newTile.GetComponent<TileObject>().Tile = tile;
+        newTile.GetComponent<TileObject>().Player = player;
 
         SetTileText(newTile, tile.Letter, tile.Number);
     }
 
-    public void SetPlayerTiles(List<Tile> tiles) {
+    public void SetPlayerTiles(Player player, List<Tile> tiles) {
         foreach (Tile tile in tiles) {
             GameObject newTile = Instantiate(tilePrefab);
             newTile.transform.SetParent(TileGrid, true);
 
-            // Give the TileObject script the tile
+            // Give the TileObject script the tile & player
             newTile.GetComponent<TileObject>().Tile = tile;
+            newTile.GetComponent<TileObject>().Player = player;
 
             SetTileText(newTile, tile.Letter, tile.Number);
         }

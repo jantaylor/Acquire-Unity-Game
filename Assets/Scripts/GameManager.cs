@@ -42,8 +42,9 @@ public class GameManager : MonoBehaviour {
     private void NewGame() {
         AddPlayers();
         StartingTiles();
+        NextPlayer();
         StartingHands();
-        PlayerTurn();
+        Debug.Log("Player " + _turnOrder.Peek().Name + " goes first!");
     }
 
     private void StartingTiles() {
@@ -53,11 +54,11 @@ public class GameManager : MonoBehaviour {
         }
 
         EstablishTurnOrder();
-        PrintTurnOrder(); // TODO: Debugging
+        PrintTurnOrder(); // TODO: For Debugging
 
         foreach (Player player in PlayerController.Players()) {
             Tile drawnTile = player.Tiles[0];
-            PlayTile(player, drawnTile);
+            PlaceStartingTile(player, drawnTile);
         }
     }
 
@@ -117,15 +118,6 @@ public class GameManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// Returns next players turn for Players[]
-    /// </summary>
-    /// <returns>int</returns>
-    private void PlayerTurn() {
-        if (TurnNumber == 0) Debug.Log("Player " + _turnOrder.Peek().Name + " goes first!");
-        //return _turnOrder.Peek();
-    }
-
-    /// <summary>
     /// TODO
     /// </summary>
     private void AddPlayers() {
@@ -138,10 +130,10 @@ public class GameManager : MonoBehaviour {
     /// Returns the next player's id
     /// </summary>
     /// <returns>Next player id</returns>
-    private Player NextPlayer() {
+    private void NextPlayer() {
         Player nextPlayer = _turnOrder.Dequeue();
-        _turnOrder.Enqueue(nextPlayer);
-        return nextPlayer;
+        _turnOrder.Enqueue(PlayerController.ActivePlayer);
+        PlayerController.ActivePlayer = nextPlayer;
     }
 
 
@@ -180,8 +172,16 @@ public class GameManager : MonoBehaviour {
         BoardController.PlaceTileOnBoard(newTile);
     }
 
+    public void PlaceStartingTile(Player player, Tile tile) {
+        PlayerController.RemovePlayerTile(player, tile);
+        GameObject newTile = TileController.CreateTileObject(tile, tile.Position);
+        BoardController.PlaceTileOnBoard(newTile, true);
+    }
+
     public void Endturn() {
-        Debug.Log("Ending turn for Player");
+        Debug.Log("Ending " + PlayerController.ActivePlayer.Name + "'s turn.");
+        NextPlayer();
+        Debug.Log("It's your turn " + PlayerController.ActivePlayer.Name + ".");
         ++TurnNumber;
     }
 

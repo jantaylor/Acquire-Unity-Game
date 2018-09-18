@@ -51,11 +51,12 @@ public class BoardController : MonoBehaviour {
     /// Moves tile from HUD to game board
     /// </summary>
     /// <param name="tile"></param>
-    public void PlaceTileOnBoard(GameObject tile) {
-        tile.GetComponent<SpriteRenderer>().color = _green;
-
-        StartCoroutine(ChangeTileColorAfterSeconds(tile, Color.white, .3f));
-
+    public void PlaceTileOnBoard(GameObject tile, bool placeInstantly = false) {
+        // Skip the yellow/green delay
+        if (!placeInstantly) {
+            tile.GetComponent<SpriteRenderer>().color = _green;
+            StartCoroutine(ChangeTileColorAfterSeconds(tile, Color.white, .3f));
+        }
         // Set the parent of the new empty Tile to "Board"
         tile.transform.SetParent(_boardObject);
         tile.transform.localPosition = tile.GetComponent<TileObject>().Tile.Position;

@@ -60,10 +60,10 @@ public class HudController : MonoBehaviour {
     }
 
     public void SetPlayerTiles(Player player, Tile tile) {
-        _playerHuds.Find(p => p.Player == player).SetPlayerTiles(tile);
+        _playerHuds.Find(p => p.Player == player).SetPlayerTiles(player, tile);
     }
 
     public void SetPlayerTiles(Player player, List<Tile> tiles) {
-        _playerHuds.Find(p => p.Player == player).SetPlayerTiles(tiles);
+        _playerHuds.Find(p => p.Player == player).SetPlayerTiles(player, tiles);
     }
 }
