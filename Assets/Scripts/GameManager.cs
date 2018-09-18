@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    private int _numOfPlayers = Constants.DefaultNumberOfPlayers;
     private Queue<Player> _turnOrder = new Queue<Player>();
-
+    public Player ActivePlayer;
+    public string ActivePlayerName;
+    public bool TilePlaced = false;
+    public int StocksPurchased = 0;
+    public int NumOfPlayers = Constants.DefaultNumberOfPlayers;
     public int TurnNumber = 0;
+
     public static GameManager Instance = null;
     public PlayerController PlayerController;
     public MoneyController MoneyController;
@@ -43,7 +47,8 @@ public class GameManager : MonoBehaviour {
         AddPlayers();
         StartingTiles();
         StartingHands();
-        PlayerTurn();
+        NextPlayer();
+        Debug.Log(ActivePlayer.Name + " goes first!");
     }
 
     private void StartingTiles() {
@@ -53,20 +58,11 @@ public class GameManager : MonoBehaviour {
         }
 
         EstablishTurnOrder();
-        PrintTurnOrder(); // TODO: Debugging
+        PrintTurnOrder(); // TODO: For Debugging
 
         foreach (Player player in PlayerController.Players()) {
             Tile drawnTile = player.Tiles[0];
-            PlayTile(player, drawnTile);
-        }
-    }
-
-    private void StartingHands() {
-        foreach (Player player in PlayerController.Players()) {
-            // Draw rest of tiles for starting hand
-            DrawTile(player, 6);
-            PlayerController.GetPlayerTiles(player);
-            UpdateHud(player);
+            PlaceStartingTile(player, drawnTile);
         }
     }
 
@@ -88,13 +84,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void UpdateHud(Player player) {
-        HudController.SetPlayerName(player.Name);
-        HudController.SetWalletAmount(MoneyController.PlayerAmount(player));
-        HudController.UpdatePlayerStock(player.Stocks);
-        // Add Tiles to Side for Player
-        foreach (Tile tile in player.Tiles)
-            HudController.SetPlayerTiles(tile);
+    private void StartingHands() {
+        foreach (Player player in PlayerController.Players()) {
+            // Draw rest of tiles for starting hand
+            DrawTile(player, 6);
+            PlayerController.GetPlayerTiles(player);
+            HudController.UpdatePlayerHud(player);
+        }
     }
 
     /// <summary>
@@ -126,32 +122,19 @@ public class GameManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// Returns next players turn for Players[]
-    /// </summary>
-    /// <returns>int</returns>
-    private void PlayerTurn() {
-        if (TurnNumber == 0) Debug.Log("Player " + _turnOrder.Peek().Name + " goes first!");
-        //return _turnOrder.Peek();
-    }
-
-    /// <summary>
     /// TODO
     /// </summary>
     private void AddPlayers() {
-        PlayerController.CreatePlayers(_numOfPlayers);
+        PlayerController.CreatePlayers(NumOfPlayers);
         MoneyController.CreateWallets(PlayerController.Players());
+        HudController.CreatePlayerHuds(PlayerController.Players());
     }
 
-    /// <summary>
-    /// Returns the next player's id
-    /// </summary>
-    /// <returns>Next player id</returns>
-    private Player NextPlayer() {
-        Player nextPlayer = _turnOrder.Dequeue();
-        _turnOrder.Enqueue(nextPlayer);
-        return nextPlayer;
+    private void NextPlayer() {
+        ActivePlayer = _turnOrder.Dequeue();
+        _turnOrder.Enqueue(ActivePlayer);
+        ActivePlayerName = ActivePlayer.Name;
     }
-
 
     /// <summary>
     /// Shifts the players turn order around and sets it up
@@ -170,11 +153,14 @@ public class GameManager : MonoBehaviour {
         Tile drawnTile = TileController.DrawTile();
         PlayerController.GivePlayerTile(player, drawnTile);
         TileController.PrintTile(drawnTile);
+        HudController.AddPlayerTile(player, drawnTile);
     }
 
     public void DrawTile(Player player, int amountToDraw) {
         for (int i = 0; i < amountToDraw; ++i) {
-            PlayerController.GivePlayerTile(player, TileController.DrawTile());
+            Tile drawnTile = TileController.DrawTile();
+            PlayerController.GivePlayerTile(player, drawnTile);
+            HudController.AddPlayerTile(player, drawnTile);
         }
     }
 
@@ -182,15 +168,25 @@ public class GameManager : MonoBehaviour {
 
     #region Game Manager Public
 
-    public void PlayTile(Player player, Tile tile) {
+    public void PlaceStartingTile(Player player, Tile tile) {
         PlayerController.RemovePlayerTile(player, tile);
         GameObject newTile = TileController.CreateTileObject(tile, tile.Position);
-        BoardController.PlaceTileOnBoard(newTile);
+        BoardController.PlaceTileOnBoard(newTile, true);
+        HudController.RemovePlayerTile(player, tile);
     }
 
     public void Endturn() {
-        Debug.Log("Ending turn for Player");
-        ++TurnNumber;
+        if (TilePlaced) {
+            Debug.Log("Ending " + ActivePlayer.Name + "'s turn.");
+            DrawTile(ActivePlayer);
+            TilePlaced = false;
+            StocksPurchased = 0;
+            NextPlayer();
+            Debug.Log("It's your turn " + ActivePlayer.Name + ".");
+            ++TurnNumber;
+        } else {
+            Debug.Log("Can't end your turn before placing a tile!");
+        }
     }
 
     #endregion

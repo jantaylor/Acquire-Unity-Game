@@ -4,19 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    #region Class Imports
-
-    #endregion
-
     #region Class Attributes
 
     private List<Player> _players = new List<Player>();
-
     enum Colors { red, green, blue, cyan, magenta, yellow };
-
-    #endregion
-
-    #region Unity Specific
 
     #endregion
 

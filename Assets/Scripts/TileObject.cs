@@ -7,26 +7,33 @@ public class TileObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private GameObject _boardTile;
 
+    public Player Player { get; set; }
     public Tile Tile { get; set; }
 
     public void OnPointerClick(PointerEventData eventData) {
-        Debug.Log("You clicked Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
+        // Only the active player can place a tile once
+        if (Player == GameManager.Instance.ActivePlayer && !GameManager.Instance.TilePlaced) {
+            Debug.Log("You clicked Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
 
-        GameManager.Instance.BoardController.PlaceTileOnBoard(_boardTile);
+            GameManager.Instance.BoardController.PlaceTileOnBoard(_boardTile);
 
-        Destroy(this.gameObject);
-        //GameManager.Instance.PlayerController.PlayTile();
+            Destroy(this.gameObject);
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        Debug.Log("You hovered over Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
+        if (Player == GameManager.Instance.ActivePlayer && !GameManager.Instance.TilePlaced) {
+            Debug.Log("You hovered over Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
 
-        _boardTile = GameManager.Instance.TileController.CreateTileObject(Tile, Tile.Position);
-        GameManager.Instance.BoardController.HighlightBoard(_boardTile, this.gameObject);
+            _boardTile = GameManager.Instance.TileController.CreateTileObject(Tile, Tile.Position);
+            GameManager.Instance.BoardController.HighlightBoard(_boardTile, this.gameObject);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        Destroy(_boardTile);
+        if (Player == GameManager.Instance.ActivePlayer) {
+            Destroy(_boardTile);
+        }
     }
 
 }

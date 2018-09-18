@@ -5,78 +5,69 @@ using UnityEngine.UI;
 
 public class HudController : MonoBehaviour {
 
-    private Text _playerNameText;
-    private Text _walletAmountText;
-    private Text _nestorStockText;
-    private Text _sparkStockText;
-    private Text _etchStockText;
-    private Text _roveStockText;
-    private Text _fleetStockText;
-    private Text _echoStockText;
-    private Text _boltStockText;
-    private Transform _tileGrid;
+    private List<PlayerHud> _playerHuds = new List<PlayerHud>();
+    private Vector3[] _hudPositions = new Vector3[2];
+    private Vector2[] _pivotAnchorPositions = new Vector2[2];
+    public GameObject PlayerHudPrefab;
+    public GameObject HudCanvas;
 
-    public GameObject tilePrefab;
-
-    private void Awake() {
-        _playerNameText = GameObject.Find("PlayerName").GetComponent<Text>();
-    	_walletAmountText = GameObject.Find("PlayerWalletAmount").GetComponent<Text>();
-    	_nestorStockText = GameObject.Find("PlayerStockNestor").GetComponent<Text>();
-    	_sparkStockText = GameObject.Find("PlayerStockSpark").GetComponent<Text>();
-    	_etchStockText = GameObject.Find("PlayerStockEtch").GetComponent<Text>();
-    	_roveStockText = GameObject.Find("PlayerStockRove").GetComponent<Text>();
-    	_fleetStockText = GameObject.Find("PlayerStockFleet").GetComponent<Text>();
-    	_echoStockText = GameObject.Find("PlayerStockEcho").GetComponent<Text>();
-    	_boltStockText = GameObject.Find("PlayerStockBolt").GetComponent<Text>();
-        _tileGrid = GameObject.Find("Tile Grid").transform;
-}
-
-    public void SetPlayerName(string newName) {
-        _playerNameText.text = newName;
+    void Awake() {
+        _hudPositions[0] = new Vector3(10f, -10f);
+        _hudPositions[1] = new Vector3(-10f, -10f);
+        _pivotAnchorPositions[0] = new Vector2(0f, 1f);
+        _pivotAnchorPositions[1] = new Vector2(1f, 1f);
+        // TODO: Add additional hud positions
     }
 
-    public void SetWalletAmount(int newAmount) {
-        _walletAmountText.text = "$" + newAmount.ToString();
-    }
+    public void CreatePlayerHuds(List<Player> players) {
+        int playerNum = 0;
+        foreach (Player player in players) {
+            GameObject newPlayerHudObj = Instantiate(PlayerHudPrefab);
 
-    public void UpdatePlayerStock(List<Stock> stocks) {
-        _nestorStockText.text = "NESTOR: " + stocks.FindAll(stock => stock.CorporationId.Equals(0)).Count.ToString();
-        _sparkStockText.text = "SPARK: " + stocks.FindAll(stock => stock.CorporationId.Equals(1)).Count.ToString();
-        _etchStockText.text = "ETCH: " + stocks.FindAll(stock => stock.CorporationId.Equals(2)).Count.ToString();
-        _roveStockText.text = "ROVE: " + stocks.FindAll(stock => stock.CorporationId.Equals(3)).Count.ToString();
-        _fleetStockText.text = "FLEET: " + stocks.FindAll(stock => stock.CorporationId.Equals(4)).Count.ToString();
-        _echoStockText.text = "ECHO: " + stocks.FindAll(stock => stock.CorporationId.Equals(5)).Count.ToString();
-        _boltStockText.text = "BOLT: " + stocks.FindAll(stock => stock.CorporationId.Equals(6)).Count.ToString();
-    }
+            RectTransform newPlayerRect = newPlayerHudObj.GetComponent<RectTransform>();
+            newPlayerHudObj.transform.SetParent(HudCanvas.transform);
+            newPlayerRect.pivot = _pivotAnchorPositions[playerNum];
+            newPlayerRect.anchorMin = _pivotAnchorPositions[playerNum];
+            newPlayerRect.anchorMax = _pivotAnchorPositions[playerNum];
+            newPlayerRect.anchoredPosition = _hudPositions[playerNum];
 
-    public void SetPlayerTiles(Tile tile) {
-        GameObject newTile = Instantiate(tilePrefab);
-        newTile.transform.SetParent(_tileGrid);
-
-        // Give the TileObject script the tile
-        newTile.GetComponent<TileObject>().Tile = tile;
-
-        SetTileText(newTile, tile.Letter, tile.Number);
-    }
-
-    public void SetPlayerTiles(Tile[] tiles) {
-        foreach (Tile tile in tiles) {
-            GameObject newTile = Instantiate(tilePrefab);
-            newTile.transform.SetParent(_tileGrid, true);
-
-            // Give the TileObject script the tile
-            newTile.GetComponent<TileObject>().Tile = tile;
-
-            SetTileText(newTile, tile.Letter, tile.Number);
+            PlayerHud newPlayerHud = newPlayerHudObj.GetComponent<PlayerHud>();
+            newPlayerHud.AssignPlayerToHud(player);
+            _playerHuds.Add(newPlayerHud);
+            ++playerNum;
         }
     }
 
-    private void SetTileText(GameObject tile, string letter, string number) {
-        Text[] tileText = tile.GetComponentsInChildren<Text>();
-        foreach (Text text in tileText)
-            if (text.name == "Letter")
-                text.text = letter;
-            else
-                text.text = number;
+    public void UpdatePlayerHud(Player player) {
+        _playerHuds.Find(p => p.Player == player).UpdatePlayerHud();
+    }
+
+    public void UpdatePlayersHud(List<Player> players) {
+        foreach (Player player in players)
+            _playerHuds.Find(p => p.Player == player).UpdatePlayerHud();
+    }
+
+    public void SetPlayerName(Player player, string newName) {
+        _playerHuds.Find(p => p.Player == player).SetPlayerName(newName);
+    }
+
+    public void SetWalletAmount(Player player, int newAmount) {
+        _playerHuds.Find(p => p.Player == player).SetWalletAmount(newAmount);
+    }
+
+    public void UpdatePlayerStocks(Player player, List<Stock> stocks) {
+        _playerHuds.Find(p => p.Player == player).UpdatePlayerStocks(stocks);
+    }
+
+    public void AddPlayerTile(Player player, Tile tile) {
+        _playerHuds.Find(p => p.Player == player).AddPlayerTile(player, tile);
+    }
+
+    public void SetPlayerTiles(Player player, List<Tile> tiles) {
+        _playerHuds.Find(p => p.Player == player).SetPlayerTiles(player, tiles);
+    }
+
+    public void RemovePlayerTile(Player player, Tile tile) {
+        _playerHuds.Find(p => p.Player == player).RemovePlayerTile(player, tile);
     }
 }

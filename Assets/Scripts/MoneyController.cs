@@ -13,7 +13,7 @@ public class MoneyController : MonoBehaviour {
 
     #region Class Attributes
 
-    private List<Wallet> wallets = new List<Wallet>();
+    private List<Wallet> _wallets = new List<Wallet>();
 
     #endregion
 
@@ -29,7 +29,7 @@ public class MoneyController : MonoBehaviour {
     /// <param name="players">Lsit of Players</param>
     public void CreateWallets(List<Player> players) {
         foreach (Player player in players)
-            wallets.Add(new Wallet(player, 6000));
+            _wallets.Add(new Wallet(player, 6000));
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class MoneyController : MonoBehaviour {
     /// <param name="player">Player</param>
     /// <returns>int amount</returns>
     public int PlayerAmount(Player player) {
-        Wallet playerWallet = wallets.Find(wallet => wallet.Player == player);
+        Wallet playerWallet = _wallets.Find(wallet => wallet.Player == player);
         return playerWallet.Amount;
     }
 
@@ -48,7 +48,7 @@ public class MoneyController : MonoBehaviour {
     /// <param name="player">Player</param>
     /// <returns>int amount</returns>
     public int EarnMoney(Player player, int earned) {
-        Wallet playerWallet = wallets.Find(wallet => wallet.Player == player);
+        Wallet playerWallet = _wallets.Find(wallet => wallet.Player == player);
         playerWallet.Amount += earned;
         return playerWallet.Amount;
     }
@@ -59,7 +59,7 @@ public class MoneyController : MonoBehaviour {
     /// <param name="player">Player</param>
     /// <returns>int amount</returns>
     public int SpendMoney(Player player, int spent) {
-        Wallet playerWallet = wallets.Find(wallet => wallet.Player == player);
+        Wallet playerWallet = _wallets.Find(wallet => wallet.Player == player);
         playerWallet.Amount -= spent;
         return playerWallet.Amount;
     }
