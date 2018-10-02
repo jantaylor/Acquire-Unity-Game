@@ -52,6 +52,10 @@ public class CorporationController : MonoBehaviour {
         return _corporations.Find(c => c.Id.Equals(id));
     }
 
+    public Corporation[] Corporation() {
+        return _corporations.ToArray();
+    }
+
     //TODO: change return type
     public void OptionsToBuy() {
         foreach (Corporation corp in _corporations) {
