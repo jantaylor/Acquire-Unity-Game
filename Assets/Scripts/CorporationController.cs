@@ -6,7 +6,7 @@ public class CorporationController : MonoBehaviour {
 
     // Set class attributes
     #region Class Attributes
-
+    private StockValue _stockValueTable;
     private List<Corporation> _corporations = new List<Corporation>();
 
     #endregion
@@ -45,6 +45,7 @@ public class CorporationController : MonoBehaviour {
         for (int i = 0; i < 24; ++i)
             newCorp.Stocks.Push(new Stock(id, name));
 
+       newCorp.StockValueTable = _stockValueTable.GenerateStockValueTable(newCorp);
         return newCorp;
     }
 
@@ -130,6 +131,12 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation ID</param>
     /// <returns></returns>
     public int Value(int id) {
+        foreach (StockValue sv in _corporations[id].StockValueTable) {
+            if (_corporations[id].TileSize >= sv.MinSize && _corporations[id].TileSize <= sv.MaxSize) {
+                _corporations[id].StockValue = sv.Price;
+            }
+        }
+
         return _corporations[id].StockValue;
     }
 

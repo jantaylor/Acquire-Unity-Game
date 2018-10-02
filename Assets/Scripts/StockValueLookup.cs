@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
 
-public class StockValueLookup {
+public class StockValue {
+    public int MinSize { get; set; }
+    public int MaxSize { get; set; }
+    public int CorporationId { get; set; }
+    public int Price { get; set; }
+    public int PrimaryShare { get; set; }
+    public int SecondaryShare { get; set; }
+    public int TertiaryShare { get; set; }
 
-    public class StockValue {
-        private int MinSize { get; set; }
-        private int MaxSize { get; set; }
-        private int CorporationId { get; set; }
-        private int Price { get; set; }
-        private int PrimaryShare { get; set; }
-        private int SecondaryShare { get; set; }
-        private int TertiaryShare { get; set; }
-
-        public StockValue(int minSize, int maxSize, int corpId, int price, int pShare, int sShare, int tShare) {
-            MinSize = minSize;
-            MaxSize = maxSize;
-            CorporationId = corpId;
-            Price = price;
-            PrimaryShare = pShare;
-            SecondaryShare = sShare;
-            TertiaryShare = tShare;
-        }
+    public StockValue() {
     }
 
-    public HashSet<StockValue> GenerateStockValueTables(Corporation corp) {
+    public StockValue(int minSize, int maxSize, int corpId, int price, int pShare, int sShare, int tShare) {
+        MinSize = minSize;
+        MaxSize = maxSize;
+        CorporationId = corpId;
+        Price = price;
+        PrimaryShare = pShare;
+        SecondaryShare = sShare;
+        TertiaryShare = tShare;
+    }
+
+    public HashSet<StockValue> GenerateStockValueTable(Corporation corp) {
         HashSet<StockValue> stockTable = new HashSet<StockValue>();
 
         // 0-1, 2-4, and 5-6 have the same values - just different corporations

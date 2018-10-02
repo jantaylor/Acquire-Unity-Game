@@ -14,6 +14,7 @@ public class Corporation {
     private Stack<Stock> _stocks = new Stack<Stock>();
     private int _tileSize;
     private int _stockValue;
+    private HashSet<StockValue> _stockValueLookup;
     private bool _isSafe;
 
     #endregion
@@ -53,6 +54,8 @@ public class Corporation {
         }
     }
 
+    public HashSet<StockValue> StockValueTable { get; set; }
+
     public bool IsSafe {
         get { return _isSafe; }
         set { _isSafe = value; }
@@ -65,11 +68,13 @@ public class Corporation {
 
     }
 
-    public Corporation(int id, string name, int tileSize = 0, int stockValue = 0, bool isSafe = false) {
+    public Corporation(int id, string name, int tileSize = 0, int stockValue = 0, HashSet<StockValue> stockValueLookup = null, bool isSafe = false) {
+
         _id = id;
         _name = name;
         _tileSize = tileSize;
         _stockValue = stockValue;
+        _stockValueLookup = stockValueLookup;
         _isSafe = isSafe;
     }
 
