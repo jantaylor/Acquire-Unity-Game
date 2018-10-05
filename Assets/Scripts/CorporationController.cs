@@ -61,7 +61,8 @@ public class CorporationController : MonoBehaviour {
     //TODO: change return type
     public void OptionsToBuy() {
         foreach (Corporation corp in Corporations) {
-            Debug.Log("Corporation: " + corp.Name + " Available Stocks: " + corp.Stocks.Count);
+            if (corp.TileSize > 0)
+                Debug.Log("Corporation: " + corp.Name + " Available Stocks: " + corp.Stocks.Count);
         }
     }
 
