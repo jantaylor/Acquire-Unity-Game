@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class Corporation {
     private string _name;
     private Stack<Stock> _stocks = new Stack<Stock>();
     private int _tileSize;
+    private List<GameObject> _tiles = new List<GameObject>();
     private int _stockValue;
     private HashSet<StockValue> _stockValueTable = new HashSet<StockValue>();
     private bool _isSafe;
@@ -44,6 +46,11 @@ public class Corporation {
         }
     }
 
+    public List<GameObject> Tiles {
+        get { return _tiles; }
+        set { _tiles = value; }
+    }
+
     public int StockValue {
         get { return _stockValue; }
         set {
@@ -59,9 +66,20 @@ public class Corporation {
         set { _stockValueTable = value; }
     }
 
+    /// <summary>
+    /// Checks and Sets if the Corporation is Safe
+    /// </summary>
     public bool IsSafe {
-        get { return _isSafe; }
-        set { _isSafe = value; }
+        get {
+            if (_tileSize >= Constants.NumberOfTilesForSafeCorporation)
+                _isSafe = true;
+            return _isSafe;
+        }
+        private set {
+            if (!_isSafe) {
+                _isSafe = value;
+            }
+        }
     }
 
     /// <summary>
@@ -78,6 +96,52 @@ public class Corporation {
         _tileSize = tileSize;
         _stockValue = stockValue;
         _isSafe = isSafe;
+    }
+
+    /// <summary>
+    /// Get and Set for Boolean Operations of Corporation Class
+    /// https://stackoverflow.com/a/22358498
+    /// </summary>
+    public bool Result { get; set; }
+
+    public static implicit operator bool(Corporation corporation) {
+        return !object.ReferenceEquals(corporation, null) && corporation.Result;
+    }
+
+    public static bool operator ==(Corporation a, Corporation b) {
+        if (object.ReferenceEquals(a, b)) {
+            return true;
+        } else if (object.ReferenceEquals(a, null)) {
+            return !b.Result;
+        } else if (object.ReferenceEquals(b, null)) {
+            return !a.Result;
+        } else {
+            return a.Result == b.Result;
+        }
+    }
+
+    public static bool operator !=(Corporation a, Corporation b) {
+        return !(a == b);
+    }
+
+    public override int GetHashCode() {
+        return this.Result ? 1 : 0;
+    }
+
+    public override bool Equals(object obj) {
+        if (object.ReferenceEquals(obj, null)) {
+            return !this.Result;
+        }
+
+        Type t = obj.GetType();
+
+        if (t == typeof(Corporation)) {
+            return this.Result == ((Corporation)obj).Result;
+        } else if (t == typeof(bool)) {
+            return this.Result == (bool)obj;
+        } else {
+            return false;
+        }
     }
 
     ~Corporation() {

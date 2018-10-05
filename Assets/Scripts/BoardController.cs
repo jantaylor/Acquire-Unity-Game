@@ -64,11 +64,72 @@ public class BoardController : MonoBehaviour {
 
         // Update board class with placed tiles and empty tiles
         _board.PlacedTiles[GameManager.Instance.TurnNumber] = tile;
+
+        // Check for adjacent tiles
+        CheckForAdjacentTiles(tile);
     }
 
     public void HighlightBoard(GameObject highlight, GameObject tile) {
         highlight.GetComponent<SpriteRenderer>().color = _yellow;
         highlight.transform.SetParent(_boardObject);
         highlight.transform.localPosition = tile.GetComponent<TileObject>().Tile.Position;
+    }
+
+    public void CheckForAdjacentTiles(GameObject placedTile) {
+        Corporation placedTileCorp = placedTile.GetComponent<TileObject>().Tile.Corporation;
+        int layerMask = LayerMask.GetMask("Tile");
+        Collider2D tileCollider = placedTile.GetComponent<Collider2D>();
+        RaycastHit2D tempTileHit;
+        List<GameObject> tilesHit = new List<GameObject>();
+        Corporation tileHitCorporation;
+
+        // Raycast from the tile and see if it hits an adacent tile up, down, left, right
+        tempTileHit = Physics2D.Raycast(transform.position, Vector2.up, tileCollider.bounds.size.y, layerMask);
+        if (tempTileHit) tilesHit.Add(tempTileHit.transform.parent.gameObject);
+
+        tempTileHit = Physics2D.Raycast(transform.position, -Vector2.up, tileCollider.bounds.size.y, layerMask);
+        if (tempTileHit) tilesHit.Add(tempTileHit.transform.parent.gameObject);
+
+        tempTileHit = Physics2D.Raycast(transform.position, Vector2.left, tileCollider.bounds.size.x, layerMask);
+        if (tempTileHit) tilesHit.Add(tempTileHit.transform.parent.gameObject);
+
+        tempTileHit = Physics2D.Raycast(transform.position, Vector2.right, tileCollider.bounds.size.x, layerMask);
+        if (tempTileHit) tilesHit.Add(tempTileHit.transform.parent.gameObject);
+
+        if (tilesHit.Count > 0) Debug.Log(tilesHit.Count.ToString() + "Tiles Hit!");
+        // Loop through list of RayCast2D hit tiles and check for tiles with corporations and without
+        // TODO: Figure out 3-4 way Merger
+        foreach (GameObject tileHit in tilesHit) {
+            tileHitCorporation = tileHit.GetComponent<TileObject>().Tile.Corporation;
+            if (tileHitCorporation && placedTileCorp) {
+                // If hit tile is part of corporation and we are part of a corporation, then MERGER
+                if (tileHitCorporation.TileSize > placedTileCorp.TileSize) {
+                    // TileHitCorporation survives merger
+                    if (!placedTileCorp.IsSafe)
+                        GameManager.Instance.CorporationController.MergeCorporations(tileHitCorporation, placedTileCorp);
+                } else if (tileHitCorporation.TileSize == placedTileCorp.TileSize) {
+                    // TileHitCorporation and placedTileCorp are same, players choice on who survives
+                    // TODO: Players choice, for now placed tile
+                    if (!tileHitCorporation.IsSafe)
+                        GameManager.Instance.CorporationController.MergeCorporations(placedTileCorp, tileHitCorporation);
+                } else {
+                    // PlacedtileCorp survives merger
+                    if (!tileHitCorporation.IsSafe)
+                        GameManager.Instance.CorporationController.MergeCorporations(placedTileCorp, tileHitCorporation);
+                }
+            } else if (tileHitCorporation && !placedTileCorp) {
+                // If hit tile is part of a corporation and the placed tile is not, then add it to existing corporation
+                // Set placed tile corp to hit corp
+                placedTileCorp = tileHitCorporation;
+                GameManager.Instance.CorporationController.IncreaseSize(tileHitCorporation, 1, placedTile);
+            } else {
+                // If both tiles are not part of corporation, then found a corporation!
+                // TODO: Players Choice, for now random
+                placedTileCorp = GameManager.Instance.CorporationController.RandomCorporation();
+                tileHitCorporation = placedTileCorp;
+            }
+        }
+
+        tilesHit = null; // Destroy List
     }
 }

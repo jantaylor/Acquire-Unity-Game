@@ -10,6 +10,12 @@
 
     #endregion
 
+    #region Corporation
+
+    public const int NumberOfTilesForSafeCorporation = 36;
+
+    #endregion
+
     #region Board
 
     public const int NumberOfTiles = 100;

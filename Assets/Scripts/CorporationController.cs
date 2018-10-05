@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -150,12 +151,21 @@ public class CorporationController : MonoBehaviour {
     }
 
     /// <summary>
-    /// Make company's tilesize & stockvalue 0
+    /// Make Corporation's tilesize & stockvalue 0
     /// </summary>
     /// <param name="id">Corporation ID</param>
     public void MakeDefunct(int id) {
         Corporations[id].TileSize = 0;
         Corporations[id].StockValue = 0;
+    }
+
+    /// <summary>
+    /// Make Corporation's tilesize & stockvalue 0
+    /// </summary>
+    /// <param name="id">Corporation</param>
+    public void MakeDefunct(Corporation corporation) {
+        corporation.TileSize = 0;
+        corporation.StockValue = 0;
     }
 
     /// <summary>
@@ -173,16 +183,39 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation ID</param>
     /// <param name="tiles">Number of new Tiles</param>
     public void IncreaseSize(int id, int tiles) {
-        Corporations[id].TileSize += tiles;
+        Corporation corp = Corporations[id];
+        corp.TileSize += tiles;
+
     }
 
     /// <summary>
-    /// Is the corporation safe from a merger, bigger than 11 tile size
+    /// Increases the company's size
     /// </summary>
     /// <param name="id">Corporation ID</param>
-    /// <returns></returns>
-    public bool IsSafe(int id) {
-        return Corporations[id].IsSafe;
+    /// <param name="tiles">Number of new Tiles</param>
+    public void IncreaseSize(Corporation corporation, int tiles, GameObject tile) {
+        corporation.TileSize += tiles;
+        corporation.Tiles.Add(tile);
+    }
+
+    /// <summary>
+    /// Merge the Corporations - Check if Defunct Corp is safe first
+    /// </summary>
+    /// <param name="corporation">Surviving Corp</param>
+    /// <param name="defunctCorp">Corp becoming Defunct</param>
+    public void MergeCorporations(Corporation corporation, Corporation defunctCorp) {
+        try {
+            if (defunctCorp.IsSafe)
+                throw new System.Exception("Invalid Merge, defunctCorp is Safe from mergers.");
+            corporation.TileSize += defunctCorp.TileSize;
+            foreach (GameObject tile in defunctCorp.Tiles) {
+                corporation.Tiles.Add(tile);
+                defunctCorp.Tiles.Remove(tile);
+            }
+            MakeDefunct(defunctCorp);
+        } catch (Exception e) {
+            Debug.Log(e.Message);
+        }
     }
 
     /// <summary>
@@ -191,6 +224,14 @@ public class CorporationController : MonoBehaviour {
     public void ResetCorporations() {
         Corporations = null;
         BuildCorporations();
+    }
+
+    /// <summary>
+    /// Get a random Corporation
+    /// </summary>
+    /// <returns>Corporation</returns>
+    public Corporation RandomCorporation() {
+        return Corporations.RandomElement();
     }
 
     #endregion
