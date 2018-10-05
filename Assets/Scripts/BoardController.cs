@@ -71,6 +71,4 @@ public class BoardController : MonoBehaviour {
         highlight.transform.SetParent(_boardObject);
         highlight.transform.localPosition = tile.GetComponent<TileObject>().Tile.Position;
     }
-
-    public 
 }
