@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour {
-
     private Board _board = new Board(10, 10);
     private Transform _boardObject;
     private Color _green = new Color(0.32f, 0.85f, .3f, 0.9f);
@@ -19,7 +18,7 @@ public class BoardController : MonoBehaviour {
         _boardObject = GameObject.Find("Board").transform;
     }
 
-    IEnumerator ChangeTileColorAfterSeconds(GameObject tile, Color color, float waitTime) {
+    private IEnumerator ChangeTileColorAfterSeconds(GameObject tile, Color color, float waitTime) {
         yield return new WaitForSeconds(waitTime);
         tile.GetComponent<SpriteRenderer>().color = color;
     }
@@ -70,11 +69,56 @@ public class BoardController : MonoBehaviour {
     }
 
     public void HighlightBoard(GameObject highlight, GameObject tile) {
+        RaycastHit2D tempTileHit;
+
         highlight.GetComponent<SpriteRenderer>().color = _yellow;
         highlight.transform.SetParent(_boardObject);
         highlight.transform.localPosition = tile.GetComponent<TileObject>().Tile.Position;
+        tempTileHit = RayCastFromTile(highlight, "up");
+        tempTileHit = RayCastFromTile(highlight, "down");
+        tempTileHit = RayCastFromTile(highlight, "left");
+        tempTileHit = RayCastFromTile(highlight, "right");
     }
-    
+
+    public RaycastHit2D RayCastFromTile(GameObject tile, string dir) {
+        Collider2D collider = tile.GetComponent<Collider2D>();
+        int layerMask = LayerMask.GetMask("Tile");
+        RaycastHit2D hit;
+
+        Debug.Log("Starting Raycast - Distance: " + collider.bounds.size.y.ToString() + " Direction: " + dir + " " + " Layer Mastk: " + layerMask.ToString());
+
+        if (dir.ToLower() == "up") {
+            Debug.DrawRay(tile.transform.position, Vector2.up, Color.red, 1);
+            hit = Physics2D.Raycast(tile.transform.position, Vector2.up, collider.bounds.size.y, layerMask);
+            if (hit.collider != null) {
+                Debug.Log("Hit a tile - " + hit.transform.parent.name);
+                return hit;
+            }
+        } else if (dir.ToLower() == "down") {
+            Debug.DrawRay(tile.transform.position, -Vector2.up, Color.red, 1);
+            hit = Physics2D.Raycast(tile.transform.position, -Vector2.up, collider.bounds.size.y, layerMask);
+            if (hit.collider != null) {
+                Debug.Log("Hit a tile - " + hit.transform.parent.name);
+                return hit;
+            }
+        } else if (dir.ToLower() == "left") {
+            Debug.DrawRay(tile.transform.position, Vector2.left, Color.red, 2);
+            hit = Physics2D.Raycast(tile.transform.position, Vector2.left, collider.bounds.size.x, layerMask);
+            if (hit.collider != null) {
+                Debug.Log("Hit a tile - " + hit.transform.parent.name);
+                return hit;
+            }
+        } else {
+            Debug.DrawRay(tile.transform.position, Vector2.right, Color.red, 2);
+            hit = Physics2D.Raycast(tile.transform.position, Vector2.right, collider.bounds.size.x, layerMask, layerMask);
+            if (hit.collider != null) {
+                Debug.Log("Hit a tile - " + hit.transform.parent.name);
+                return hit;
+            }
+        }
+        return hit;
+    }
+
     /// <summary>
     /// Check for tiles around the placed tile to create/merge a corporation
     /// </summary>
@@ -88,19 +132,24 @@ public class BoardController : MonoBehaviour {
         Corporation tileHitCorporation;
 
         // Raycast from the tile and see if it hits an adacent tile up, down, left, right
-        tempTileHit = Physics2D.Raycast(transform.position, Vector2.up, tileCollider.bounds.size.y, layerMask);
+        tempTileHit = Physics2D.Raycast(transform.position, Vector2.up, tileCollider.bounds.size.y);
+        if (tempTileHit) {
+            tilesHit.Add(tempTileHit.transform.parent.gameObject);
+            Debug.Log("Hit something?");
+        }
+
+        tempTileHit = Physics2D.Raycast(transform.position, -Vector2.up, tileCollider.bounds.size.y);
         if (tempTileHit) tilesHit.Add(tempTileHit.transform.parent.gameObject);
 
-        tempTileHit = Physics2D.Raycast(transform.position, -Vector2.up, tileCollider.bounds.size.y, layerMask);
+        tempTileHit = Physics2D.Raycast(transform.position, Vector2.left, tileCollider.bounds.size.x);
         if (tempTileHit) tilesHit.Add(tempTileHit.transform.parent.gameObject);
 
-        tempTileHit = Physics2D.Raycast(transform.position, Vector2.left, tileCollider.bounds.size.x, layerMask);
-        if (tempTileHit) tilesHit.Add(tempTileHit.transform.parent.gameObject);
-
-        tempTileHit = Physics2D.Raycast(transform.position, Vector2.right, tileCollider.bounds.size.x, layerMask);
+        tempTileHit = Physics2D.Raycast(transform.position, Vector2.right, tileCollider.bounds.size.x);
         if (tempTileHit) tilesHit.Add(tempTileHit.transform.parent.gameObject);
 
         if (tilesHit.Count > 0) Debug.Log(tilesHit.Count.ToString() + "Tiles Hit!");
+        else Debug.Log("No Tiles Hit...");
+
         // Loop through list of RayCast2D hit tiles and check for tiles with corporations and without
         // TODO: Figure out 3-4 way Merger
         foreach (GameObject tileHit in tilesHit) {
