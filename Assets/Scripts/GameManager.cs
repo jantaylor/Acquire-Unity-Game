@@ -173,6 +173,7 @@ public class GameManager : MonoBehaviour {
         GameObject newTile = TileController.CreateTileObject(tile, tile.Position);
         BoardController.PlaceTileOnBoard(newTile, true);
         HudController.RemovePlayerTile(player, tile);
+        ++GameManager.Instance.TurnNumber; // We still need to increase the turn order for the history array
     }
 
     public void Endturn() {

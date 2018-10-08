@@ -8,6 +8,7 @@ public class TileObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private GameObject _boardTile;
 
     public Player Player { get; set; }
+    [SerializeField]
     public Tile Tile { get; set; }
 
     public void OnPointerClick(PointerEventData eventData) {
