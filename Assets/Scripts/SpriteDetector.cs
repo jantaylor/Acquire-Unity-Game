@@ -1,23 +1,37 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SpriteDetector : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler {
+public class SpriteDetector : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
 
     Physics2DRaycaster physicsRaycaster;
     public float distance = 100f;
+    private GameObject _boardTile;
+    public Player Player { get; set; }
+    public Tile Tile { get; set; }
 
-    private void Start() {
-        physicsRaycaster = GameObject.FindObjectOfType<Physics2DRaycaster>();
-        if (physicsRaycaster == null) {
-            Camera.main.gameObject.AddComponent<Physics2DRaycaster>();
+    public void OnPointerClick(PointerEventData eventData) {
+        // Only the active player can place a tile once
+        if (Player == GameManager.Instance.ActivePlayer && !GameManager.Instance.TilePlaced) {
+            Debug.Log("You clicked Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
+
+            GameManager.Instance.BoardController.PlaceTileOnBoard(_boardTile);
+
+            Destroy(this.gameObject);
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData) {
-        Debug.Log("Clicked: " + eventData.pointerCurrentRaycast.gameObject.name);
+    public void OnPointerEnter(PointerEventData eventData) {
+        if (Player == GameManager.Instance.ActivePlayer && !GameManager.Instance.TilePlaced) {
+            Debug.Log("You hovered over Tile: " + Tile.Id + " - " + Tile.Number + Tile.Letter);
+
+            _boardTile = GameManager.Instance.TileController.CreateTileObject(Tile, Tile.Position);
+            GameManager.Instance.BoardController.HighlightBoard(_boardTile, this.gameObject);
+        }
     }
 
-    public void OnPointerEnter(PointerEventData eventData) {
-        Debug.Log("Mouse Enter: " + eventData.pointerCurrentRaycast.gameObject.name);
+    public void OnPointerExit(PointerEventData eventData) {
+        if (Player == GameManager.Instance.ActivePlayer) {
+            Destroy(_boardTile);
+        }
     }
 }
