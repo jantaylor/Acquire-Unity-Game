@@ -129,7 +129,11 @@ public class TileController : MonoBehaviour {
         // Move the tile to it's position
         newTile.transform.position = position;
 
+        // Set the tile's text
         SetTileText(newTile, tile.Letter, tile.Number);
+
+        // Set the Tile's name
+        newTile.name = "Tile " + tile.Letter + tile.Number + " (" + tile.Id + ")";
 
         return newTile;
     }
