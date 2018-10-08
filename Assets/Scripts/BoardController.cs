@@ -91,28 +91,28 @@ public class BoardController : MonoBehaviour {
             Debug.DrawRay(tile.transform.position, Vector2.up, Color.red, 1);
             hit = Physics2D.Raycast(tile.transform.position, Vector2.up, collider.bounds.size.y, layerMask);
             if (hit.collider != null) {
-                Debug.Log("Hit a tile - " + hit.transform.parent.name);
+                Debug.Log("Hit a tile - " + hit.transform.gameObject.name);
                 return hit;
             }
         } else if (dir.ToLower() == "down") {
             Debug.DrawRay(tile.transform.position, -Vector2.up, Color.red, 1);
             hit = Physics2D.Raycast(tile.transform.position, -Vector2.up, collider.bounds.size.y, layerMask);
             if (hit.collider != null) {
-                Debug.Log("Hit a tile - " + hit.transform.parent.name);
+                Debug.Log("Hit a tile - " + hit.transform.gameObject.name);
                 return hit;
             }
         } else if (dir.ToLower() == "left") {
-            Debug.DrawRay(tile.transform.position, Vector2.left, Color.red, 2);
+            Debug.DrawRay(tile.transform.position, Vector2.left, Color.red, 1);
             hit = Physics2D.Raycast(tile.transform.position, Vector2.left, collider.bounds.size.x, layerMask);
             if (hit.collider != null) {
-                Debug.Log("Hit a tile - " + hit.transform.parent.name);
+                Debug.Log("Hit a tile - " + hit.transform.gameObject.name);
                 return hit;
             }
         } else {
-            Debug.DrawRay(tile.transform.position, Vector2.right, Color.red, 2);
+            Debug.DrawRay(tile.transform.position, Vector2.right, Color.red, 1);
             hit = Physics2D.Raycast(tile.transform.position, Vector2.right, collider.bounds.size.x, layerMask, layerMask);
             if (hit.collider != null) {
-                Debug.Log("Hit a tile - " + hit.transform.parent.name);
+                Debug.Log("Hit a tile - " + hit.transform.gameObject.name);
                 return hit;
             }
         }
