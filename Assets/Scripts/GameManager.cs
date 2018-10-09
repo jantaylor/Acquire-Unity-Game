@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     public int StocksPurchased = 0;
     public int NumOfPlayers = Constants.DefaultNumberOfPlayers;
     public int TurnNumber = 0;
+    public bool AllCorporationsOnBoard = false;
 
     public static GameManager Instance = null;
     public PlayerController PlayerController;
@@ -40,6 +41,10 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         NewGame();
+    }
+
+    private void Update() {
+        CheckForAllCorpsOnBoard();
     }
 
     // Setup a new game
@@ -101,10 +106,13 @@ public class GameManager : MonoBehaviour {
         NewGame();
     }
 
-    //private void Update() {
-    //    if (IsGameOver())
-    //        GameOver();
-    //}
+    private void CheckForAllCorpsOnBoard() {
+        foreach (Corporation corp in CorporationController.Corporations)
+            if (corp.TileSize > 0)
+                AllCorporationsOnBoard = true;
+            else
+                AllCorporationsOnBoard = false;
+    }
 
     /// <summary>
     /// TODO

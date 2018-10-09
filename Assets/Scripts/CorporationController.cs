@@ -232,7 +232,15 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <returns>Corporation</returns>
     public Corporation RandomCorporation() {
-        return Corporations.RandomElement();
+        Corporation temp = null;
+        if (!GameManager.Instance.AllCorporationsOnBoard) {
+            temp = Corporations.RandomElement();
+            while (temp.TileSize > 0) {
+                temp = Corporations.RandomElement();
+            }
+        }
+
+        return temp;
     }
 
     #endregion
