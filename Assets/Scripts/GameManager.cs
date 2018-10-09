@@ -191,11 +191,20 @@ public class GameManager : MonoBehaviour {
             TilePlaced = false;
             StocksPurchased = 0;
             NextPlayer();
+            HudController.HideBuyStockHud();
             Debug.Log("It's your turn " + ActivePlayer.Name + ".");
             ++TurnNumber;
         } else {
             Debug.Log("Can't end your turn before placing a tile!");
         }
+    }
+
+    #endregion
+
+    #region Stock Related Public
+
+    public void BuyStock() {
+        HudController.ShowBuyStockHUD();
     }
 
     #endregion

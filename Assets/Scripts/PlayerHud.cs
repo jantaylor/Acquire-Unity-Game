@@ -23,8 +23,7 @@ public class PlayerHud : MonoBehaviour {
     public GameObject tilePrefab;
 
     private void Start() {
-        // TODO: Buy Stock
-        //BuyStockButton.onClick.AddListener();
+        BuyStockButton.onClick.AddListener(GameManager.Instance.BuyStock);
         EndTurnButton.onClick.AddListener(GameManager.Instance.Endturn);
     }
 
@@ -37,7 +36,7 @@ public class PlayerHud : MonoBehaviour {
                 
         } else {
             // TODO: change 0 to 3
-            if (GameManager.Instance.StocksPurchased < 0)
+            if (GameManager.Instance.StocksPurchased <= 3 && GameManager.Instance.TilePlaced)
                 BuyStockButton.interactable = true;
             EndTurnButton.interactable = true;
             foreach (Transform child in TileGrid)
