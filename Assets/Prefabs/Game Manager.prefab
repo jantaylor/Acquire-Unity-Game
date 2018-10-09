@@ -80,8 +80,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf6ced06bccd07b4da3bb7e2e6001ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ActivePlayerName: 
+  TilePlaced: 0
+  StocksPurchased: 0
   NumOfPlayers: 2
   TurnNumber: 0
+  AllCorporationsOnBoard: 0
   PlayerController: {fileID: 0}
   MoneyController: {fileID: 0}
   CorporationController: {fileID: 0}
@@ -114,6 +118,7 @@ MonoBehaviour:
   PlayerHudPrefab: {fileID: 1811849604538502, guid: c5f1b1914eeccf0478f1ba6c17f0d9bf,
     type: 2}
   HudCanvas: {fileID: 0}
+  BuyStockCanvas: {fileID: 0}
 --- !u!114 &114869037749771754
 MonoBehaviour:
   m_ObjectHideFlags: 1

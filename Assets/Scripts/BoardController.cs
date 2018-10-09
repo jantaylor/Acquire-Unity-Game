@@ -116,8 +116,6 @@ public class BoardController : MonoBehaviour {
     /// <param name="placedTile">Tile GameObject</param>
     public void CheckForAdjacentTiles(GameObject placedTile) {
         Corporation placedTileCorp = placedTile.GetComponent<TileObject>().Tile.Corporation;
-        int layerMask = LayerMask.GetMask("Tile");
-        Collider2D tileCollider = placedTile.GetComponent<Collider2D>();
         List<GameObject> tilesHit = new List<GameObject>();
         Corporation tileHitCorporation;
 

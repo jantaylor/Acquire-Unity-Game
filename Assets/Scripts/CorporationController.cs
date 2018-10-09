@@ -58,18 +58,11 @@ public class CorporationController : MonoBehaviour {
         return Corporations.ToArray();
     }
 
-    //TODO: change return type
-    public void OptionsToBuy() {
-        foreach (Corporation corp in Corporations) {
-            if (corp.TileSize > 0)
-                Debug.Log("Corporation: " + corp.Name + " Available Stocks: " + corp.Stocks.Count);
-        }
-    }
-
     /// <summary>
     /// Buy # stock in the passed Corporation id
     /// TODO: Overload this with int[] id so that player can buy multiple at a time
     /// </summary>
+    /// <param name="player">Player buying (ActivePlayer)</param>
     /// <param name="id">Corporation ID</param>
     /// <param name="amount">Amount to buy 1 or 2</param>
     public void BuyStock(Player player, int id, int amount = 1) {
@@ -85,6 +78,7 @@ public class CorporationController : MonoBehaviour {
             for (int i = 0; i < amount; ++i)
                 player.Stocks.Add(corp.Stocks.Pop());
 
+            ++GameManager.Instance.StocksPurchased;
             return;
         }
 
