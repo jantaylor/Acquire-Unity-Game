@@ -145,6 +145,14 @@ public class CorporationController : MonoBehaviour {
         return Corporations[id].Stocks.Count;
     }
 
+    public List<Corporation> AvailableToFound() {
+        List <Corporation> availableList = new List<Corporation>();
+        foreach (Corporation corp in Corporations)
+            if (corp.TileSize == 0)
+                availableList.Add(corp);
+        return availableList;
+    }
+
     /// <summary>
     /// Make Corporation's tilesize & stockvalue 0
     /// </summary>
@@ -226,15 +234,8 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <returns>Corporation</returns>
     public Corporation RandomCorporation() {
-        Corporation temp = null;
-        if (!GameManager.Instance.AllCorporationsOnBoard) {
-            temp = Corporations.RandomElement();
-            while (temp.TileSize > 0) {
-                temp = Corporations.RandomElement();
-            }
-        }
-
-        return temp;
+        List<Corporation> tempList = AvailableToFound();
+        return tempList.RandomElement();
     }
 
     #endregion

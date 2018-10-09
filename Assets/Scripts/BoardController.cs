@@ -65,7 +65,7 @@ public class BoardController : MonoBehaviour {
         _board.PlacedTiles[GameManager.Instance.TurnNumber] = tile;
 
         // Check for adjacent tiles, unless it's the first draw & place of the game
-        if (GameManager.Instance.TurnNumber >= GameManager.Instance.NumOfPlayers - 1)
+        if (!placeInstantly)
             CheckForAdjacentTiles(tile);
     }
 
@@ -132,6 +132,8 @@ public class BoardController : MonoBehaviour {
             Debug.Log("Checking for corporation starts and mergers");
             foreach (GameObject tileHit in tilesHit) {
                 tileHitCorporation = tileHit.GetComponent<TileObject>().Tile.Corporation;
+                if (tileHitCorporation) Debug.Log("Tile hit corp: " + tileHitCorporation.Name);
+                if (placedTileCorp) Debug.Log("Placed tile corp: " + placedTileCorp.Name);
                 if (tileHitCorporation && placedTileCorp) {
                     // If hit tile is part of corporation and we are part of a corporation, then MERGER
                     Debug.Log("If hit tile is part of corporation and we are part of a corporation, then MERGER");
@@ -153,7 +155,7 @@ public class BoardController : MonoBehaviour {
                         if (!tileHitCorporation.IsSafe)
                             GameManager.Instance.CorporationController.MergeCorporations(placedTileCorp, tileHitCorporation);
                     }
-                } else if (tileHitCorporation && !placedTileCorp) {
+                } else if ((tileHitCorporation && !placedTileCorp) || (!tileHitCorporation && placedTileCorp)) {
                     // If hit tile is part of a corporation and the placed tile is not, then add it to existing corporation
                     Debug.Log(tileHit.name + " is part of Corporation: " + tileHitCorporation.Name
                         + ". Adding " + placedTile.name + " to " + tileHitCorporation.Name);
@@ -166,10 +168,17 @@ public class BoardController : MonoBehaviour {
                     // If both tiles are not part of corporation, then found a corporation!
                     Debug.Log("Both tiles are not part of a corp, so founding new corp!");
                     // TODO: Players Choice, for now random
-                    placedTileCorp = GameManager.Instance.CorporationController.RandomCorporation();
-                    Debug.Log("Randomly chose: " + placedTileCorp.Name);
-                    tileHitCorporation = placedTileCorp;
-                    Debug.Log("TileHit Corporation is now also " + tileHitCorporation.Name);
+                    List<Corporation> availableCorporations = GameManager.Instance.CorporationController.AvailableToFound();
+                    if (availableCorporations.Count > 0) {
+                        placedTileCorp = GameManager.Instance.CorporationController.RandomCorporation();
+                        Debug.Log("Randomly chose: " + placedTileCorp.Name);
+                        tileHitCorporation = placedTileCorp;
+                        Debug.Log("TileHit Corporation is now also " + tileHitCorporation.Name);
+                        GameManager.Instance.CorporationController.IncreaseSize(placedTileCorp, 1, placedTile);
+                        GameManager.Instance.CorporationController.IncreaseSize(placedTileCorp, 1, tileHit);
+                    } else {
+                        Debug.Log("No corporations are available.");
+                    }
                 }
             }
         }
