@@ -75,10 +75,13 @@ public class CorporationController : MonoBehaviour {
         //Debug.Log("Player: " + player.Name + " is " + " buying " + amount.ToString() + " " + corp.Name +" stocks when " + corp.Name + " has " + corp.Stocks.Count + " stocks available");
 
         if (corp.Stocks.Count >= amount) {
-            for (int i = 0; i < amount; ++i)
+            for (int i = 0; i < amount; ++i) {
                 player.Stocks.Add(corp.Stocks.Pop());
+            }
 
             ++GameManager.Instance.StocksPurchased;
+            GameManager.Instance.MoneyController.SpendMoney(player, corp.StockValue);
+            Debug.Log("Successfully bought stock, player's stock count: " + player.Stocks.Count.ToString());
             return;
         }
 
@@ -126,15 +129,15 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <param name="id">Corporation ID</param>
     /// <returns></returns>
-    public int Value(int id) {
-        foreach (StockValue sv in Corporations[id].StockValueTable) {
-            if (Corporations[id].TileSize >= sv.MinSize && Corporations[id].TileSize <= sv.MaxSize) {
-                Corporations[id].StockValue = sv.Price;
-            }
-        }
+    //public int Value(int id) {
+    //    foreach (StockValue sv in Corporations[id].StockValueTable) {
+    //        if (Corporations[id].TileSize >= sv.MinSize && Corporations[id].TileSize <= sv.MaxSize) {
+    //            Corporations[id].StockValue = sv.Price;
+    //        }
+    //    }
 
-        return Corporations[id].StockValue;
-    }
+    //    return Corporations[id].StockValue;
+    //}
 
     /// <summary>
     /// Number of stocks a company has available
@@ -159,7 +162,6 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation ID</param>
     public void MakeDefunct(int id) {
         Corporations[id].TileSize = 0;
-        Corporations[id].StockValue = 0;
     }
 
     /// <summary>
@@ -168,7 +170,6 @@ public class CorporationController : MonoBehaviour {
     /// <param name="id">Corporation</param>
     public void MakeDefunct(Corporation corporation) {
         corporation.TileSize = 0;
-        corporation.StockValue = 0;
     }
 
     /// <summary>

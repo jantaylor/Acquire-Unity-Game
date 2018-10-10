@@ -90,6 +90,7 @@ public class HudController : MonoBehaviour {
         foreach (Corporation corp in GameManager.Instance.CorporationController.Corporations) {
             if (corp.TileSize > 0) {
                 Debug.Log("Available: " + corp.Name + ", Tile Size: " + corp.TileSize + ", Available Stocks: " + corp.Stocks.Count);
+                stockButtons[corp.Id].GetComponentInChildren<Text>().text = corp.Name + "\n$" + corp.StockValue.ToString();
                 stockButtons[corp.Id].gameObject.SetActive(true);
             } else {
                 Debug.Log("Not Available: " + corp.Name + " Available Stocks: " + corp.Stocks.Count);
@@ -99,6 +100,8 @@ public class HudController : MonoBehaviour {
     }
 
     public void BuyStock(int id) {
+        Debug.Log("Trying to buy stock for " + GameManager.Instance.CorporationController.Corporation(id).Name);
         GameManager.Instance.CorporationController.BuyStock(GameManager.Instance.ActivePlayer, id, 1);
+        UpdatePlayerHud(GameManager.Instance.ActivePlayer);
     }
 }

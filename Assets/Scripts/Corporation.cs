@@ -15,7 +15,9 @@ public class Corporation {
     private int _tileSize;
     private List<GameObject> _tiles = new List<GameObject>();
     private int _stockValue;
+    // TODO: Add other stock value table elements here and update them with _stockValue
     private HashSet<StockValue> _stockValueTable = new HashSet<StockValue>();
+    //private Dictionary<int, StockValue> _stockValueTable = new Dictionary<int, StockValue>();
     private bool _isSafe;
 
     #endregion Class Attributes
@@ -51,13 +53,21 @@ public class Corporation {
     }
 
     public int StockValue {
-        get { return _stockValue; }
-        set {
-            if (value < 0)
-                _stockValue = 0;
-            else
-                _stockValue = value;
+        get {
+            //if (_stockValueTable.ContainsKey(_tileSize))
+            //    _stockValue = _stockValueTable[_tileSize].Price;
+            foreach (StockValue sv in _stockValueTable)
+                if (_tileSize >= sv.MinSize && _tileSize <= sv.MaxSize)
+                    _stockValue = sv.Price;
+
+            return _stockValue;
         }
+        //set {
+        //    if (value < 0)
+        //        _stockValue = 0;
+        //    else
+        //        _stockValue = value;
+        //}
     }
 
     public HashSet<StockValue> StockValueTable {
