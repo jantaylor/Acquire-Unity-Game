@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,10 +13,14 @@ public class Corporation {
     private string _name;
     private Stack<Stock> _stocks = new Stack<Stock>();
     private int _tileSize;
+    private List<GameObject> _tiles = new List<GameObject>();
     private int _stockValue;
+    // TODO: Add other stock value table elements here and update them with _stockValue
+    private HashSet<StockValue> _stockValueTable = new HashSet<StockValue>();
+    //private Dictionary<int, StockValue> _stockValueTable = new Dictionary<int, StockValue>();
     private bool _isSafe;
 
-    #endregion
+    #endregion Class Attributes
 
     public int Id {
         get { return _id; }
@@ -43,26 +47,54 @@ public class Corporation {
         }
     }
 
-    public int StockValue {
-        get { return _stockValue; }
-        set {
-            if (value < 0)
-                _stockValue = 0;
-            else
-                _stockValue = value;
-        }
+    public List<GameObject> Tiles {
+        get { return _tiles; }
+        set { _tiles = value; }
     }
 
+    public int StockValue {
+        get {
+            //if (_stockValueTable.ContainsKey(_tileSize))
+            //    _stockValue = _stockValueTable[_tileSize].Price;
+            foreach (StockValue sv in _stockValueTable)
+                if (_tileSize >= sv.MinSize && _tileSize <= sv.MaxSize)
+                    _stockValue = sv.Price;
+
+            return _stockValue;
+        }
+        //set {
+        //    if (value < 0)
+        //        _stockValue = 0;
+        //    else
+        //        _stockValue = value;
+        //}
+    }
+
+    public HashSet<StockValue> StockValueTable {
+        get { return _stockValueTable; }
+        set { _stockValueTable = value; }
+    }
+
+    /// <summary>
+    /// Checks and Sets if the Corporation is Safe
+    /// </summary>
     public bool IsSafe {
-        get { return _isSafe; }
-        set { _isSafe = value; }
+        get {
+            if (_tileSize >= Constants.NumberOfTilesForSafeCorporation)
+                _isSafe = true;
+            return _isSafe;
+        }
+        private set {
+            if (!_isSafe) {
+                _isSafe = value;
+            }
+        }
     }
 
     /// <summary>
     /// Default constructor
     /// </summary>
     public Corporation() {
-
     }
 
     public Corporation(int id, string name, int tileSize = 0, int stockValue = 0, bool isSafe = false) {
@@ -89,5 +121,5 @@ public class Corporation {
     //    }
     //}
 
-    #endregion
+    #endregion Overrides
 }
