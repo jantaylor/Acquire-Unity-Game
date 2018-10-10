@@ -43,7 +43,7 @@ public class TileController : MonoBehaviour {
             // Loop along y axis
             for (int y = 1; y < 11; ++y) {
                 if (y == 10) y = 0;
-                Tile newTile = new Tile(id, y.ToString(), GetLetterFromInt(x), null, GameManager.Instance.BoardController.GetTilePositionOnBoard(id));
+                Tile newTile = new Tile(id, y.ToString(), GetLetterFromInt(x), GameManager.Instance.BoardController.GetTilePositionOnBoard(id));
                 _tiles.Enqueue(newTile);
                 if (y == 0) y = 10;
                 ++id;
@@ -129,9 +129,21 @@ public class TileController : MonoBehaviour {
         // Move the tile to it's position
         newTile.transform.position = position;
 
+        // Set the tile's text
         SetTileText(newTile, tile.Letter, tile.Number);
 
+        // Set the Tile's name
+        newTile.name = "Tile " + tile.Letter + tile.Number + " (" + tile.Id + ")";
+
         return newTile;
+    }
+
+    public void SetTileCorporation(GameObject tileObject, Corporation corporation) {
+        Tile tile = tileObject.GetComponent<TileObject>().Tile;
+        tile.Corporation = corporation;
+        GameManager.Instance.CorporationController.IncreaseSize(tile.Corporation, 1,tileObject);
+        Debug.Log("Tile " + tile.Number + tile.Letter + " now belongs to " + tile.Corporation.Name);
+
     }
 
     /// <summary>

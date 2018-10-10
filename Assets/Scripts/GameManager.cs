@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     public int StocksPurchased = 0;
     public int NumOfPlayers = Constants.DefaultNumberOfPlayers;
     public int TurnNumber = 0;
+    public bool AllCorporationsOnBoard = false;
 
     public static GameManager Instance = null;
     public PlayerController PlayerController;
@@ -40,6 +41,10 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         NewGame();
+    }
+
+    private void Update() {
+        CheckForAllCorpsOnBoard();
     }
 
     // Setup a new game
@@ -101,10 +106,13 @@ public class GameManager : MonoBehaviour {
         NewGame();
     }
 
-    //private void Update() {
-    //    if (IsGameOver())
-    //        GameOver();
-    //}
+    private void CheckForAllCorpsOnBoard() {
+        foreach (Corporation corp in CorporationController.Corporations)
+            if (corp.TileSize > 0)
+                AllCorporationsOnBoard = true;
+            else
+                AllCorporationsOnBoard = false;
+    }
 
     /// <summary>
     /// TODO
@@ -173,6 +181,7 @@ public class GameManager : MonoBehaviour {
         GameObject newTile = TileController.CreateTileObject(tile, tile.Position);
         BoardController.PlaceTileOnBoard(newTile, true);
         HudController.RemovePlayerTile(player, tile);
+        ++GameManager.Instance.TurnNumber; // We still need to increase the turn order for the history array
     }
 
     public void Endturn() {
@@ -182,11 +191,34 @@ public class GameManager : MonoBehaviour {
             TilePlaced = false;
             StocksPurchased = 0;
             NextPlayer();
+            HudController.HideBuyStockHud();
             Debug.Log("It's your turn " + ActivePlayer.Name + ".");
             ++TurnNumber;
+
+            // Debugging
+
+            //foreach (Corporation corp in CorporationController.Corporations) {
+            //    if (corp.TileSize > 0) {
+            //        Debug.Log(corp.Name + " has tiles: ");
+            //        foreach (GameObject tile in corp.Tiles)
+            //            Debug.Log(tile.GetComponent<TileObject>().Tile.Number + tile.GetComponent<TileObject>().Tile.Letter + " ");
+            //    } else {
+            //        Debug.Log(corp.Name + " has no tiles.");
+            //    }
+            //}
+                
+                    
         } else {
             Debug.Log("Can't end your turn before placing a tile!");
         }
+    }
+
+    #endregion
+
+    #region Stock Related Public
+
+    public void BuyStock() {
+        HudController.ShowBuyStockHUD();
     }
 
     #endregion
