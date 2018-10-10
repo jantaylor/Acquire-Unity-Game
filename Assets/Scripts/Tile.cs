@@ -26,7 +26,7 @@ public class Tile {
         set { _letter = value; }
     }
 
-    public Corporation Corporation { get; set; } = new Corporation();
+    public Corporation Corporation { get; set; }
 
     public Vector3 Position {
         get { return _position; }
@@ -37,11 +37,10 @@ public class Tile {
 
     }
 
-    public Tile(int id, string number, string letter, Corporation corporation = null, Vector3 position = new Vector3()) {
+    public Tile(int id, string number, string letter, Vector3 position = new Vector3()) {
         _id = id;
         _number = number;
         _letter = letter;
-        Corporation = corporation;
         _position = position;
     }
 

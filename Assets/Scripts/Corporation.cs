@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,7 +18,7 @@ public class Corporation {
     private HashSet<StockValue> _stockValueTable = new HashSet<StockValue>();
     private bool _isSafe;
 
-    #endregion
+    #endregion Class Attributes
 
     public int Id {
         get { return _id; }
@@ -86,62 +85,14 @@ public class Corporation {
     /// Default constructor
     /// </summary>
     public Corporation() {
-
     }
 
     public Corporation(int id, string name, int tileSize = 0, int stockValue = 0, bool isSafe = false) {
-
         _id = id;
         _name = name;
         _tileSize = tileSize;
         _stockValue = stockValue;
         _isSafe = isSafe;
-    }
-
-    /// <summary>
-    /// Get and Set for Boolean Operations of Corporation Class
-    /// https://stackoverflow.com/a/22358498
-    /// </summary>
-    public bool Result { get; set; }
-
-    public static implicit operator bool(Corporation corporation) {
-        return !object.ReferenceEquals(corporation, null) && corporation.Result;
-    }
-
-    public static bool operator ==(Corporation a, Corporation b) {
-        if (object.ReferenceEquals(a, b)) {
-            return true;
-        } else if (object.ReferenceEquals(a, null)) {
-            return !b.Result;
-        } else if (object.ReferenceEquals(b, null)) {
-            return !a.Result;
-        } else {
-            return a.Result == b.Result;
-        }
-    }
-
-    public static bool operator !=(Corporation a, Corporation b) {
-        return !(a == b);
-    }
-
-    public override int GetHashCode() {
-        return this.Result ? 1 : 0;
-    }
-
-    public override bool Equals(object obj) {
-        if (object.ReferenceEquals(obj, null)) {
-            return !this.Result;
-        }
-
-        Type t = obj.GetType();
-
-        if (t == typeof(Corporation)) {
-            return this.Result == ((Corporation)obj).Result;
-        } else if (t == typeof(bool)) {
-            return this.Result == (bool)obj;
-        } else {
-            return false;
-        }
     }
 
     ~Corporation() {
@@ -160,5 +111,5 @@ public class Corporation {
     //    }
     //}
 
-    #endregion
+    #endregion Overrides
 }

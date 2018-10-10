@@ -194,6 +194,20 @@ public class GameManager : MonoBehaviour {
             HudController.HideBuyStockHud();
             Debug.Log("It's your turn " + ActivePlayer.Name + ".");
             ++TurnNumber;
+
+            // Debugging
+
+            //foreach (Corporation corp in CorporationController.Corporations) {
+            //    if (corp.TileSize > 0) {
+            //        Debug.Log(corp.Name + " has tiles: ");
+            //        foreach (GameObject tile in corp.Tiles)
+            //            Debug.Log(tile.GetComponent<TileObject>().Tile.Number + tile.GetComponent<TileObject>().Tile.Letter + " ");
+            //    } else {
+            //        Debug.Log(corp.Name + " has no tiles.");
+            //    }
+            //}
+                
+                    
         } else {
             Debug.Log("Can't end your turn before placing a tile!");
         }
