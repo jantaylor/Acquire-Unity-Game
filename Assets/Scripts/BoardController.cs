@@ -98,7 +98,7 @@ public class BoardController : MonoBehaviour {
             hit = Physics2D.Raycast(tile.transform.position, Vector2.left, collider.bounds.size.x, layerMask);
         } else {
             Debug.DrawRay(tile.transform.position, Vector2.right, Color.red, 1);
-            hit = Physics2D.Raycast(tile.transform.position, Vector2.right, 1f, layerMask, layerMask);
+            hit = Physics2D.Raycast(tile.transform.position, Vector2.right, collider.bounds.size.x, layerMask);
         }
 
         if (hit.collider != null) {
