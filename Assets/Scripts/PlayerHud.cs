@@ -35,9 +35,10 @@ public class PlayerHud : MonoBehaviour {
                 child.gameObject.SetActive(false);
                 
         } else {
-            // TODO: change 0 to 3
-            if (GameManager.Instance.StocksPurchased <= 3 && GameManager.Instance.TilePlaced)
+            if (GameManager.Instance.StocksPurchased < 3 && GameManager.Instance.TilePlaced)
                 BuyStockButton.interactable = true;
+            else
+                BuyStockButton.interactable = false; // No more buying
             EndTurnButton.interactable = true;
             foreach (Transform child in TileGrid)
                 child.gameObject.SetActive(true);
