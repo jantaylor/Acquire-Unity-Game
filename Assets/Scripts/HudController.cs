@@ -46,7 +46,6 @@ public class HudController : MonoBehaviour {
         // Hide the BuyStocksCanvas if they purchased 3
         if (GameManager.Instance.StocksPurchased >= 3)
             BuyStockCanvas.SetActive(false);
-        BuyStockCanvas.SetActive(false);
         _playerHuds.Find(p => p.Player == player).UpdatePlayerHud();
     }
 
