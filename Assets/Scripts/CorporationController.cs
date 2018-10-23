@@ -161,7 +161,7 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <param name="id">Corporation ID</param>
     public void MakeDefunct(int id) {
-        Corporations[id].TileSize = 0;
+        Corporations[id].Tiles = null;
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <param name="id">Corporation</param>
     public void MakeDefunct(Corporation corporation) {
-        corporation.TileSize = 0;
+        corporation.Tiles = null;
     }
 
     /// <summary>
@@ -186,19 +186,7 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <param name="id">Corporation ID</param>
     /// <param name="tiles">Number of new Tiles</param>
-    public void IncreaseSize(int id, int tiles) {
-        Corporation corp = Corporations[id];
-        corp.TileSize += tiles;
-
-    }
-
-    /// <summary>
-    /// Increases the company's size
-    /// </summary>
-    /// <param name="id">Corporation ID</param>
-    /// <param name="tiles">Number of new Tiles</param>
     public void IncreaseSize(Corporation corporation, int tiles, GameObject tile) {
-        corporation.TileSize += tiles;
         corporation.Tiles.Add(tile);
     }
 
@@ -211,7 +199,7 @@ public class CorporationController : MonoBehaviour {
         try {
             if (defunctCorp.IsSafe)
                 throw new System.Exception("Invalid Merge, defunctCorp is Safe from mergers.");
-            corporation.TileSize += defunctCorp.TileSize;
+
             foreach (GameObject tile in defunctCorp.Tiles) {
                 corporation.Tiles.Add(tile);
                 defunctCorp.Tiles.Remove(tile);
