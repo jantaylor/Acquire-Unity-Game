@@ -174,6 +174,22 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 2090548632}
   m_Script: {fileID: 11500000, guid: eb0d6bfea9b5c114aa2b2a0ae5fcda3d, type: 3}
+--- !u!1 &466305489 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1526217482649418, guid: e93cf155f16153848b12007d9418ad12,
+    type: 2}
+  m_PrefabInternal: {fileID: 732462003}
+--- !u!114 &466305491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 466305489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9fa164c0eaca684c98c42b608a97508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &497363859
 Prefab:
   m_ObjectHideFlags: 0
@@ -504,85 +520,13 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114057862174762806, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_Color.r
-      value: 0.9150943
-      objectReference: {fileID: 0}
-    - target: {fileID: 114057862174762806, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_Color.g
-      value: 0.9150943
-      objectReference: {fileID: 0}
-    - target: {fileID: 114057862174762806, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_Color.b
-      value: 0.9150943
-      objectReference: {fileID: 0}
-    - target: {fileID: 114087536747499120, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_Color.r
-      value: 0.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 114087536747499120, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_Color.g
-      value: 0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 114087536747499120, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_Color.b
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114087536747499120, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_Color.a
-      value: 0.9019608
-      objectReference: {fileID: 0}
-    - target: {fileID: 114087536747499120, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_FontData.m_FontStyle
+    - target: {fileID: 1949204933946708, guid: e93cf155f16153848b12007d9418ad12, type: 2}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114057862174762806, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_Text
-      value: '[Player ], it is now your turn.'
-      objectReference: {fileID: 0}
-    - target: {fileID: 114057862174762806, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_FontData.m_HorizontalOverflow
+    - target: {fileID: 1949671604974752, guid: e93cf155f16153848b12007d9418ad12, type: 2}
+      propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114057862174762806, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_FontData.m_BestFit
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114581509963542148, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_CellSize.x
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 224910781099715628, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 224267386592107630, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 114057862174762806, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_FontData.m_MaxSize
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 114057862174762806, guid: e93cf155f16153848b12007d9418ad12,
-        type: 2}
-      propertyPath: m_FontData.m_MinSize
-      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e93cf155f16153848b12007d9418ad12, type: 2}
