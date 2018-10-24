@@ -90,7 +90,7 @@ public class HudController : MonoBehaviour {
 
     public void OptionsToBuy() {
         foreach (Corporation corp in GameManager.Instance.CorporationController.Corporations) {
-            if (corp.TileSize > 0 && GameManager.Instance.StocksPurchased < 3) {
+            if (corp.TileSize >= 1 && corp.Stocks.Count >= 1) {
                 Debug.Log("Available: " + corp.Name + ", Tile Size: " + corp.TileSize + ", Available Stocks: " + corp.Stocks.Count);
                 stockButtons[corp.Id].GetComponentInChildren<Text>().text = corp.Name + "\n$" + corp.StockValue.ToString();
                 stockButtons[corp.Id].gameObject.SetActive(true);

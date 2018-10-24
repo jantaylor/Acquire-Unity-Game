@@ -43,7 +43,7 @@ public class CorporationController : MonoBehaviour {
     /// <returns></returns>
     private Corporation NewCorporation(int id, string name) {
         Corporation newCorp = new Corporation(id, name);
-        for (int i = 0; i < 24; ++i)
+        for (int i = 0; i < Constants.NumberOfStocksPerCorporation; ++i)
             newCorp.Stocks.Push(new Stock(id, name));
 
         GenerateStockValueTable(id, newCorp.StockValueTable);
