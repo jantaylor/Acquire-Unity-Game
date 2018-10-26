@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour {
         StartingTiles();
         StartingHands();
         NextPlayer();
+        HudController.ShowNotificationHud();
         Debug.Log(ActivePlayer.Name + " goes first!");
     }
 
@@ -187,11 +188,13 @@ public class GameManager : MonoBehaviour {
     public void Endturn() {
         if (TilePlaced) {
             Debug.Log("Ending " + ActivePlayer.Name + "'s turn.");
+            HudController.HidePlayerHud(GameManager.Instance.ActivePlayer);
             DrawTile(ActivePlayer);
             TilePlaced = false;
             StocksPurchased = 0;
             NextPlayer();
             HudController.HideBuyStockHud();
+            HudController.ShowNotificationHud();
             Debug.Log("It's your turn " + ActivePlayer.Name + ".");
             ++TurnNumber;
 

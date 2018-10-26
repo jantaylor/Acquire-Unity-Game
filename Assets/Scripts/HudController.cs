@@ -42,6 +42,9 @@ public class HudController : MonoBehaviour {
             _playerHuds.Add(newPlayerHud);
             newPlayerHud.playerHud = newPlayerHudObj;
             ++playerNum;
+
+            // Hide the new HUDs
+            newPlayerHudObj.SetActive(false);
         }
     }
 
@@ -92,6 +95,7 @@ public class HudController : MonoBehaviour {
     /// </summary> 
     public void ShowNotificationHud () {
         NotificationCanvas.SetActive(true);
+        NotificationCanvas.transform.Find("TurnPanel/TurnContinueBtn/Title").GetComponentInChildren<Text>().text = GameManager.Instance.ActivePlayer.Name + ", it is now your turn.";
     }
 
     /// <summary>

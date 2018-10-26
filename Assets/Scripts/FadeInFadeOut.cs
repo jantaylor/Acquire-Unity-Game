@@ -21,13 +21,13 @@ public class FadeInFadeOut : MonoBehaviour {
     void Update() {
         if (hide) {
             timeLeft -= Time.deltaTime;
-            text.color = new Color(1f, 1f, 1f, timeLeft);
+            text.color = new Color(.32f, .85f, .3f, timeLeft);
             if (timeLeft <= 0) {
                 hide = false;
             }
         } else {
             timeLeft += Time.deltaTime;
-            text.color = new Color(1f, 1f, 1f, timeLeft);
+            text.color = new Color(.32f, .85f, .3f, timeLeft);
             if (timeLeft >= 1) {
                 hide = true;
             }
