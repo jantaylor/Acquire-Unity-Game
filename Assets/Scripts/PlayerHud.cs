@@ -21,6 +21,7 @@ public class PlayerHud : MonoBehaviour {
     public Transform TileGrid;
 
     public GameObject tilePrefab;
+    public GameObject playerHud;
 
     private void Start() {
         BuyStockButton.onClick.AddListener(GameManager.Instance.BuyStock);

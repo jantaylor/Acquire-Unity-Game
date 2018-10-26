@@ -536,6 +536,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224145921782985688, guid: e93cf155f16153848b12007d9418ad12,
     type: 2}
   m_PrefabInternal: {fileID: 732462003}
+--- !u!1 &732462005 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1949671604974752, guid: e93cf155f16153848b12007d9418ad12,
+    type: 2}
+  m_PrefabInternal: {fileID: 732462003}
 --- !u!1 &1446791243
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,6 +897,11 @@ Prefab:
       propertyPath: BuyStockCanvas
       value: 
       objectReference: {fileID: 561682603}
+    - target: {fileID: 114628750757492574, guid: d39987b1881caac4994540ab05858f2c,
+        type: 2}
+      propertyPath: NotificationCanvas
+      value: 
+      objectReference: {fileID: 732462005}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d39987b1881caac4994540ab05858f2c, type: 2}
   m_IsPrefabAsset: 0

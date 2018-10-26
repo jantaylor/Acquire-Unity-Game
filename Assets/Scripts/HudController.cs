@@ -11,6 +11,8 @@ public class HudController : MonoBehaviour {
     private Button[] stockButtons = new Button[7];
     public GameObject PlayerHudPrefab;
     public GameObject HudCanvas;
+    public GameObject NotificationCanvas;
+    public GameObject GameLogCanvas;
     public GameObject BuyStockCanvas;
 
     void Awake() {
@@ -38,6 +40,7 @@ public class HudController : MonoBehaviour {
             PlayerHud newPlayerHud = newPlayerHudObj.GetComponent<PlayerHud>();
             newPlayerHud.AssignPlayerToHud(player);
             _playerHuds.Add(newPlayerHud);
+            newPlayerHud.playerHud = newPlayerHudObj;
             ++playerNum;
         }
     }
@@ -53,6 +56,56 @@ public class HudController : MonoBehaviour {
         BuyStockCanvas.SetActive(false);
         foreach (Player player in players)
             _playerHuds.Find(p => p.Player == player).UpdatePlayerHud();
+    }
+
+    /// <summary>
+    /// hide player hud
+    /// </summary>
+    public void HidePlayerHud(Player player) {
+        _playerHuds.Find(p => p.Player == player).playerHud.SetActive(false);
+    }
+
+    /// <summary>
+    /// show player hud
+    /// </summary>
+    public void ShowPlayerHud(Player player) {
+        _playerHuds.Find(p => p.Player == player).playerHud.SetActive(true);
+    }
+
+    /// <summary>
+    /// Show only the active player's hud, usually after they click on the notification canvas
+    /// </summary>
+    public void ShowOnlyActivePlayerHud() {
+        _playerHuds.ForEach(p => p.playerHud.SetActive(false));
+        _playerHuds.Find(p => p.Player == GameManager.Instance.ActivePlayer).playerHud.SetActive(true);
+    }
+
+    /// <summary>
+    /// hide notification hud
+    /// </summary>
+    public void HideNotificationHud() {
+        NotificationCanvas.SetActive(false);
+    }
+
+    /// <summary>
+    /// show notification hud
+    /// </summary> 
+    public void ShowNotificationHud () {
+        NotificationCanvas.SetActive(true);
+    }
+
+    /// <summary>
+    /// hide game log
+    /// </summary>
+    public void HideGameLog() {
+        GameLogCanvas.SetActive(false);
+    }
+
+    /// <summary>
+    /// show the game log
+    /// </summary>
+    public void ShowGameLog() {
+        GameLogCanvas.SetActive(true);
     }
 
     public void SetPlayerName(Player player, string newName) {
@@ -105,5 +158,14 @@ public class HudController : MonoBehaviour {
         Debug.Log("Trying to buy stock for " + GameManager.Instance.CorporationController.Corporation(id).Name);
         GameManager.Instance.CorporationController.BuyStock(GameManager.Instance.ActivePlayer, id, 1);
         UpdatePlayerHud(GameManager.Instance.ActivePlayer);
+    }
+
+    /// <summary>
+    /// Upon clicking the notification hud, hide the notification hud and show only the active player's hud
+    /// </summary>
+    public void NextPlayerContinueClick() {
+        HideNotificationHud();
+        ShowOnlyActivePlayerHud();
+        //ShowGameLog();
     }
 }
