@@ -81,6 +81,8 @@ public class CorporationController : MonoBehaviour {
 
             ++GameManager.Instance.StocksPurchased;
             GameManager.Instance.MoneyController.SpendMoney(player, corp.StockValue);
+            // TODO: Game Options
+            //if (GameManager.Options.ShowPlayerStock)
             Debug.Log("Successfully bought stock, player's stock count: " + player.Stocks.Count.ToString());
             return;
         }

@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour {
     private void PrintTurnOrder() {
         for (int i = 0; i < _turnOrder.Count; ++i) {
             Player player = _turnOrder.Dequeue();
-            Debug.Log("#" + (i + 1) + " - " + player.Name + " drew tile "
+            Game.Log(player.Name + " drew tile "
                 + player.Tiles[0].Number + player.Tiles[0].Letter
                 + " (" + player.Tiles[0].Id + ").");
             _turnOrder.Enqueue(player);
@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour {
 
     public void Endturn() {
         if (TilePlaced) {
-            Debug.Log("Ending " + ActivePlayer.Name + "'s turn.");
+            Game.Log("Ending " + ActivePlayer.Name + "'s turn.");
             HudController.HidePlayerHud(GameManager.Instance.ActivePlayer);
             HudController.HideGameLog();
             DrawTile(ActivePlayer);
@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour {
             NextPlayer();
             HudController.HideBuyStockHud();
             HudController.ShowNotificationHud();
-            Debug.Log("It's your turn " + ActivePlayer.Name + ".");
+            Game.Log("It's your turn " + ActivePlayer.Name + ".");
             ++TurnNumber;
 
             // Debugging
@@ -216,6 +216,7 @@ public class GameManager : MonoBehaviour {
                 
                     
         } else {
+            // TODO: Maybe make this a notification that shows up and disappears
             Debug.Log("Can't end your turn before placing a tile!");
         }
     }

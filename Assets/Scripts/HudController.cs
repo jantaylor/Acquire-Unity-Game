@@ -67,6 +67,8 @@ public class HudController : MonoBehaviour {
     /// hide player hud
     /// </summary>
     public void HidePlayerHud(Player player) {
+        // TODO: Implement
+        //if (GameManager.Instance.Options.AlwaysShowGameLog) return;
         _playerHuds.Find(p => p.Player == player).playerHud.SetActive(false);
     }
 
@@ -83,7 +85,6 @@ public class HudController : MonoBehaviour {
     public void ShowOnlyActivePlayerHud() {
         _playerHuds.ForEach(p => p.playerHud.SetActive(false));
         _playerHuds.Find(p => p.Player == GameManager.Instance.ActivePlayer).playerHud.SetActive(true);
-        ShowGameLog();
     }
 
     /// <summary>
@@ -173,6 +174,6 @@ public class HudController : MonoBehaviour {
     public void NextPlayerContinueClick() {
         HideNotificationHud();
         ShowOnlyActivePlayerHud();
-        //ShowGameLog();
+        ShowGameLog();
     }
 }

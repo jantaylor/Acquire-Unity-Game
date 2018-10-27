@@ -23,10 +23,10 @@ public class GameLog : MonoBehaviour {
     {
         Logs.Add(eventString);
 
-        logText = "";
+        logText = "\n";
         int idx = 1;
         Logs.ForEach(gameEvent => {
-            logText += idx.ToString() + " ";
+            logText += idx.ToString() + ". ";
             logText += gameEvent;
             logText += "\n";
             ++idx;

@@ -92,6 +92,7 @@ MonoBehaviour:
   TileController: {fileID: 0}
   BoardController: {fileID: 0}
   HudController: {fileID: 0}
+  Game: {fileID: 0}
 --- !u!114 &114607635783833614
 MonoBehaviour:
   m_ObjectHideFlags: 1
