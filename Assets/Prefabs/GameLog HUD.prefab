@@ -129,7 +129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1579874810818820
 GameObject:
   m_ObjectHideFlags: 1
@@ -486,19 +486,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Ever drink bailey's from a shoe?\r\n\r\nWant to come to a club where people
-    wizz on each other?\r\n\r\nDon't lie to me boy?\r\n\r\nI know what your thinking.\r\n\r\nI
-    got something to show you.\r\n\r\nWhatcha doin in my waters?\r\n\r\nHow come this
-    hook is in me?\r\n\r\nThat's a touch tale rod mother licka\r\n\r\nEasy now fuzzy
-    little man peach\r\n\r\nEver drink bailey's from a shoe?\r\n\r\nWant to come to
-    a club where people wizz on each other?\r\n\r\nDon't lie to me boy?\r\n\r\nI know
-    what your thinking.\r\n\r\nI got something to show you.\r\n\r\nWhatcha doin in
-    my waters?\r\n\r\nHow come this hook is in me?\r\n\r\nThat's a touch tale rod
-    mother licka\r\n\r\nEasy now fuzzy little man peach\r\n\r\nEver drink bailey's
-    from a shoe?\r\n\r\nWant to come to a club where people wizz on each other?\r\n\r\nDon't
-    lie to me boy?\r\n\r\nI know what your thinking.\r\n\r\nI got something to show
-    you.\r\n\r\nWhatcha doin in my waters?\r\n\r\nHow come this hook is in me?\r\n\r\nThat's
-    a touch tale rod mother licka\r\n\r\nEasy now fuzzy little man peach\r\n\r\n"
+  m_Text: 
 --- !u!114 &114701404079201520
 MonoBehaviour:
   m_ObjectHideFlags: 1

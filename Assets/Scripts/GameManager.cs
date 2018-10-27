@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
     public BoardController BoardController;
     public HudController HudController;
 
+    public GameLog GameLog;
+
     private void Awake() {
         // Singleton setup for GameManager
         if (Instance == null) {
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour {
         TileController = GetComponent<TileController>();
         BoardController = GetComponent<BoardController>();
         HudController = GetComponent<HudController>();
+        GameLog = HudController.GameLog;
     }
 
     private void Start() {
@@ -189,6 +192,7 @@ public class GameManager : MonoBehaviour {
         if (TilePlaced) {
             Debug.Log("Ending " + ActivePlayer.Name + "'s turn.");
             HudController.HidePlayerHud(GameManager.Instance.ActivePlayer);
+            HudController.HideGameLog();
             DrawTile(ActivePlayer);
             TilePlaced = false;
             StocksPurchased = 0;

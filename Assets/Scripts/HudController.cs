@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class HudController : MonoBehaviour {
 
     private List<PlayerHud> _playerHuds = new List<PlayerHud>();
-    //private Vector3 _hudPosition = new Vector3(10f, -10f);
-    //private Vector2 _pivotAnchorPosition = new Vector2(0f, 1f);
+    private Vector3 _hudPosition = new Vector3(10f, -10f);
+    private Vector2 _pivotAnchorPosition = new Vector2(0f, 1f);
     private Button[] stockButtons = new Button[7];
     public GameObject PlayerHudPrefab;
     public GameObject HudCanvas;
@@ -15,7 +15,10 @@ public class HudController : MonoBehaviour {
     public GameObject GameLogHud;
     public GameObject BuyStockHud;
 
+    public GameLog GameLog;
+
     void Awake() {
+        GameLog = GameLogHud.GetComponentInChildren<GameLog>();
         stockButtons = BuyStockHud.GetComponentsInChildren<Button>();
     }
 
@@ -26,10 +29,10 @@ public class HudController : MonoBehaviour {
 
             RectTransform newPlayerRect = newPlayerHudObj.GetComponent<RectTransform>();
             newPlayerHudObj.transform.SetParent(HudCanvas.transform);
-            //newPlayerRect.pivot = _pivotAnchorPosition;
-            //newPlayerRect.anchorMin = _pivotAnchorPosition;
-            //newPlayerRect.anchorMax = _pivotAnchorPosition;
-            //newPlayerRect.anchoredPosition = _hudPosition;
+            newPlayerRect.pivot = _pivotAnchorPosition;
+            newPlayerRect.anchorMin = _pivotAnchorPosition;
+            newPlayerRect.anchorMax = _pivotAnchorPosition;
+            newPlayerRect.anchoredPosition = _hudPosition;
 
             PlayerHud newPlayerHud = newPlayerHudObj.GetComponent<PlayerHud>();
             newPlayerHud.AssignPlayerToHud(player);
@@ -83,6 +86,7 @@ public class HudController : MonoBehaviour {
     public void ShowOnlyActivePlayerHud() {
         _playerHuds.ForEach(p => p.playerHud.SetActive(false));
         _playerHuds.Find(p => p.Player == GameManager.Instance.ActivePlayer).playerHud.SetActive(true);
+        ShowGameLog();
     }
 
     /// <summary>
@@ -97,7 +101,7 @@ public class HudController : MonoBehaviour {
     /// </summary> 
     public void ShowNotificationHud () {
         NotificationHud.SetActive(true);
-        NotificationHud.transform.Find("TurnPanel/TurnContinueBtn/Title").GetComponentInChildren<Text>().text = GameManager.Instance.ActivePlayer.Name + ", it is now your turn.";
+        NotificationHud.transform.Find("TurnContinueBtn/Title").GetComponentInChildren<Text>().text = GameManager.Instance.ActivePlayer.Name + ", it is now your turn.";
     }
 
     /// <summary>
