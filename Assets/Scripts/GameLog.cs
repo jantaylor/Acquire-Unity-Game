@@ -7,7 +7,7 @@ public class GameLog : MonoBehaviour {
     /// <summary>
     /// List to keep track of all our logs
     /// </summary>
-    public List<string> Log = new List<string>();
+    public List<string> Logs = new List<string>();
 
     /// <summary>
     /// The Text Object
@@ -19,17 +19,18 @@ public class GameLog : MonoBehaviour {
     /// Log the event to the List and then update the game log text
     /// </summary>
     /// <param name="eventString">Event text to add to game log</param>
-    public void AddEvent(string eventString)
+    public void Log(string eventString)
     {
-        Log.Add(eventString);
+        Logs.Add(eventString);
 
         logText = "";
- 
-        foreach (string gameEvent in Log)
-        {
-            logText += logText;
+        int idx = 1;
+        Logs.ForEach(gameEvent => {
+            logText += idx.ToString() + " ";
+            logText += gameEvent;
             logText += "\n";
-        }
+            ++idx;
+        });
 
         LogTextObject.text = logText;
     }

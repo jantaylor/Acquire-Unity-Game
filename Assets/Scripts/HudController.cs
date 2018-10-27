@@ -15,10 +15,7 @@ public class HudController : MonoBehaviour {
     public GameObject GameLogHud;
     public GameObject BuyStockHud;
 
-    public GameLog GameLog;
-
     void Awake() {
-        GameLog = GameLogHud.GetComponentInChildren<GameLog>();
         stockButtons = BuyStockHud.GetComponentsInChildren<Button>();
     }
 

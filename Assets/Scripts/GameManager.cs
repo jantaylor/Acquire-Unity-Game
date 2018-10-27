@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour {
     public BoardController BoardController;
     public HudController HudController;
 
-    public GameLog GameLog;
+    public GameLog Game;
 
     private void Awake() {
         // Singleton setup for GameManager
@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour {
         TileController = GetComponent<TileController>();
         BoardController = GetComponent<BoardController>();
         HudController = GetComponent<HudController>();
-        GameLog = HudController.GameLog;
+        Game = HudController.GameLogHud.GetComponent<GameLog>();
     }
 
     private void Start() {
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour {
         StartingHands();
         NextPlayer();
         HudController.ShowNotificationHud();
-        Debug.Log(ActivePlayer.Name + " goes first!");
+        Game.Log(ActivePlayer.Name + " goes first!");
     }
 
     private void StartingTiles() {
