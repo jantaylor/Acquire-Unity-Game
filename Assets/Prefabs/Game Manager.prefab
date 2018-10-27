@@ -92,6 +92,7 @@ MonoBehaviour:
   TileController: {fileID: 0}
   BoardController: {fileID: 0}
   HudController: {fileID: 0}
+  Game: {fileID: 0}
 --- !u!114 &114607635783833614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -118,7 +119,9 @@ MonoBehaviour:
   PlayerHudPrefab: {fileID: 1811849604538502, guid: c5f1b1914eeccf0478f1ba6c17f0d9bf,
     type: 2}
   HudCanvas: {fileID: 0}
-  BuyStockCanvas: {fileID: 0}
+  NotificationHud: {fileID: 0}
+  GameLogHud: {fileID: 0}
+  BuyStockHud: {fileID: 0}
 --- !u!114 &114869037749771754
 MonoBehaviour:
   m_ObjectHideFlags: 1

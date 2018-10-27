@@ -38,13 +38,7 @@ public class Corporation {
     }
 
     public int TileSize {
-        get { return _tileSize; }
-        set {
-            if (value < 0)
-                _tileSize = 0;
-            else
-                _tileSize = value;
-        }
+        get { return Tiles.Count; }
     }
 
     public List<GameObject> Tiles {
@@ -57,7 +51,7 @@ public class Corporation {
             //if (_stockValueTable.ContainsKey(_tileSize))
             //    _stockValue = _stockValueTable[_tileSize].Price;
             foreach (StockValue sv in _stockValueTable)
-                if (_tileSize >= sv.MinSize && _tileSize <= sv.MaxSize)
+                if (TileSize >= sv.MinSize && TileSize <= sv.MaxSize)
                     _stockValue = sv.Price;
 
             return _stockValue;
@@ -80,7 +74,7 @@ public class Corporation {
     /// </summary>
     public bool IsSafe {
         get {
-            if (_tileSize >= Constants.NumberOfTilesForSafeCorporation)
+            if (TileSize >= Constants.NumberOfTilesForSafeCorporation)
                 _isSafe = true;
             return _isSafe;
         }
@@ -97,10 +91,9 @@ public class Corporation {
     public Corporation() {
     }
 
-    public Corporation(int id, string name, int tileSize = 0, int stockValue = 0, bool isSafe = false) {
+    public Corporation(int id, string name, int stockValue = 0, bool isSafe = false) {
         _id = id;
         _name = name;
-        _tileSize = tileSize;
         _stockValue = stockValue;
         _isSafe = isSafe;
     }

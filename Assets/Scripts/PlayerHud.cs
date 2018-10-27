@@ -21,6 +21,7 @@ public class PlayerHud : MonoBehaviour {
     public Transform TileGrid;
 
     public GameObject tilePrefab;
+    public GameObject playerHud;
 
     private void Start() {
         BuyStockButton.onClick.AddListener(GameManager.Instance.BuyStock);
@@ -35,9 +36,10 @@ public class PlayerHud : MonoBehaviour {
                 child.gameObject.SetActive(false);
                 
         } else {
-            // TODO: change 0 to 3
-            if (GameManager.Instance.StocksPurchased <= 3 && GameManager.Instance.TilePlaced)
+            if (GameManager.Instance.StocksPurchased < 3 && GameManager.Instance.TilePlaced)
                 BuyStockButton.interactable = true;
+            else
+                BuyStockButton.interactable = false; // No more buying
             EndTurnButton.interactable = true;
             foreach (Transform child in TileGrid)
                 child.gameObject.SetActive(true);
@@ -66,7 +68,7 @@ public class PlayerHud : MonoBehaviour {
 
     public void UpdatePlayerStocks(List<Stock> stocks) {
         NestorStockText.text = "NESTOR: " + stocks.FindAll(stock => stock.CorporationId.Equals(0)).Count.ToString();
-        NestorStockText.text = "SPARK: " + stocks.FindAll(stock => stock.CorporationId.Equals(1)).Count.ToString();
+        SparkStockText.text = "SPARK: " + stocks.FindAll(stock => stock.CorporationId.Equals(1)).Count.ToString();
         EtchStockText.text = "ETCH: " + stocks.FindAll(stock => stock.CorporationId.Equals(2)).Count.ToString();
         RoveStockText.text = "ROVE: " + stocks.FindAll(stock => stock.CorporationId.Equals(3)).Count.ToString();
         FleetStockText.text = "FLEET: " + stocks.FindAll(stock => stock.CorporationId.Equals(4)).Count.ToString();

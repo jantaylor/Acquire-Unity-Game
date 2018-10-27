@@ -13,6 +13,7 @@
     #region Corporation
 
     public const int NumberOfTilesForSafeCorporation = 36;
+    public const int NumberOfStocksPerCorporation = 3; //24
 
     #endregion
 

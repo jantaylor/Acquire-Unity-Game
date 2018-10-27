@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
     public BoardController BoardController;
     public HudController HudController;
 
+    public GameLog Game;
+
     private void Awake() {
         // Singleton setup for GameManager
         if (Instance == null) {
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour {
         TileController = GetComponent<TileController>();
         BoardController = GetComponent<BoardController>();
         HudController = GetComponent<HudController>();
+        Game = HudController.GameLogHud.GetComponent<GameLog>();
     }
 
     private void Start() {
@@ -53,7 +56,8 @@ public class GameManager : MonoBehaviour {
         StartingTiles();
         StartingHands();
         NextPlayer();
-        Debug.Log(ActivePlayer.Name + " goes first!");
+        HudController.ShowNotificationHud();
+        Game.Log(ActivePlayer.Name + " goes first!");
     }
 
     private void StartingTiles() {
@@ -82,7 +86,7 @@ public class GameManager : MonoBehaviour {
     private void PrintTurnOrder() {
         for (int i = 0; i < _turnOrder.Count; ++i) {
             Player player = _turnOrder.Dequeue();
-            Debug.Log("#" + (i + 1) + " - " + player.Name + " drew tile "
+            Game.Log(player.Name + " drew tile "
                 + player.Tiles[0].Number + player.Tiles[0].Letter
                 + " (" + player.Tiles[0].Id + ").");
             _turnOrder.Enqueue(player);
@@ -186,13 +190,16 @@ public class GameManager : MonoBehaviour {
 
     public void Endturn() {
         if (TilePlaced) {
-            Debug.Log("Ending " + ActivePlayer.Name + "'s turn.");
+            Game.Log("Ending " + ActivePlayer.Name + "'s turn.");
+            HudController.HidePlayerHud(GameManager.Instance.ActivePlayer);
+            HudController.HideGameLog();
             DrawTile(ActivePlayer);
             TilePlaced = false;
             StocksPurchased = 0;
             NextPlayer();
             HudController.HideBuyStockHud();
-            Debug.Log("It's your turn " + ActivePlayer.Name + ".");
+            HudController.ShowNotificationHud();
+            Game.Log("It's your turn " + ActivePlayer.Name + ".");
             ++TurnNumber;
 
             // Debugging
@@ -209,6 +216,7 @@ public class GameManager : MonoBehaviour {
                 
                     
         } else {
+            // TODO: Maybe make this a notification that shows up and disappears
             Debug.Log("Can't end your turn before placing a tile!");
         }
     }
