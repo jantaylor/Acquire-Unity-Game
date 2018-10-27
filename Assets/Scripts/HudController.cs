@@ -32,10 +32,10 @@ public class HudController : MonoBehaviour {
 
             RectTransform newPlayerRect = newPlayerHudObj.GetComponent<RectTransform>();
             newPlayerHudObj.transform.SetParent(HudCanvas.transform);
-            newPlayerRect.pivot = _pivotAnchorPositions[playerNum];
-            newPlayerRect.anchorMin = _pivotAnchorPositions[playerNum];
-            newPlayerRect.anchorMax = _pivotAnchorPositions[playerNum];
-            newPlayerRect.anchoredPosition = _hudPositions[playerNum];
+            newPlayerRect.pivot = _pivotAnchorPositions[0];
+            newPlayerRect.anchorMin = _pivotAnchorPositions[0];
+            newPlayerRect.anchorMax = _pivotAnchorPositions[0];
+            newPlayerRect.anchoredPosition = _hudPositions[0];
 
             PlayerHud newPlayerHud = newPlayerHudObj.GetComponent<PlayerHud>();
             newPlayerHud.AssignPlayerToHud(player);
