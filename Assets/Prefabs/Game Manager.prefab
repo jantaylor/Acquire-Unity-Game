@@ -119,7 +119,6 @@ MonoBehaviour:
     type: 2}
   HudCanvas: {fileID: 0}
   NotificationCanvas: {fileID: 0}
-  GameLogCanvas: {fileID: 0}
   BuyStockCanvas: {fileID: 0}
 --- !u!114 &114869037749771754
 MonoBehaviour:

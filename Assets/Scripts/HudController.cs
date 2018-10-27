@@ -48,14 +48,6 @@ public class HudController : MonoBehaviour {
         }
     }
 
-    public void CreateGameLogHud() {
-        RectTransform gameLogRect = GameLogCanvas.GetComponent<RectTransform>();
-        gameLogRect.pivot = _pivotAnchorPositions[1];
-        gameLogRect.anchorMin = _pivotAnchorPositions[1];
-        gameLogRect.anchorMax = _pivotAnchorPositions[1];
-        gameLogRect.anchoredPosition = _hudPositions[1];
-    }
-
     public void UpdatePlayerHud(Player player) {
         // Hide the BuyStocksCanvas if they purchased 3
         if (GameManager.Instance.StocksPurchased >= 3)
