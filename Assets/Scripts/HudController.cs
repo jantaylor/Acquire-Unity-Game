@@ -6,23 +6,17 @@ using UnityEngine.UI;
 public class HudController : MonoBehaviour {
 
     private List<PlayerHud> _playerHuds = new List<PlayerHud>();
-    private Vector3[] _hudPositions = new Vector3[2];
-    private Vector2[] _pivotAnchorPositions = new Vector2[2];
+    //private Vector3 _hudPosition = new Vector3(10f, -10f);
+    //private Vector2 _pivotAnchorPosition = new Vector2(0f, 1f);
     private Button[] stockButtons = new Button[7];
     public GameObject PlayerHudPrefab;
     public GameObject HudCanvas;
-    public GameObject NotificationCanvas;
-    public GameObject GameLogCanvas;
-    public GameObject BuyStockCanvas;
+    public GameObject NotificationHud;
+    public GameObject GameLogHud;
+    public GameObject BuyStockHud;
 
     void Awake() {
-        _hudPositions[0] = new Vector3(10f, -10f);
-        _hudPositions[1] = new Vector3(-10f, -10f);
-        _pivotAnchorPositions[0] = new Vector2(0f, 1f);
-        _pivotAnchorPositions[1] = new Vector2(1f, 1f);
-        // TODO: Add additional hud positions
-
-        stockButtons = BuyStockCanvas.GetComponentsInChildren<Button>();
+        stockButtons = BuyStockHud.GetComponentsInChildren<Button>();
     }
 
     public void CreatePlayerHuds(List<Player> players) {
@@ -32,10 +26,10 @@ public class HudController : MonoBehaviour {
 
             RectTransform newPlayerRect = newPlayerHudObj.GetComponent<RectTransform>();
             newPlayerHudObj.transform.SetParent(HudCanvas.transform);
-            newPlayerRect.pivot = _pivotAnchorPositions[0];
-            newPlayerRect.anchorMin = _pivotAnchorPositions[0];
-            newPlayerRect.anchorMax = _pivotAnchorPositions[0];
-            newPlayerRect.anchoredPosition = _hudPositions[0];
+            //newPlayerRect.pivot = _pivotAnchorPosition;
+            //newPlayerRect.anchorMin = _pivotAnchorPosition;
+            //newPlayerRect.anchorMax = _pivotAnchorPosition;
+            //newPlayerRect.anchoredPosition = _hudPosition;
 
             PlayerHud newPlayerHud = newPlayerHudObj.GetComponent<PlayerHud>();
             newPlayerHud.AssignPlayerToHud(player);
@@ -48,15 +42,23 @@ public class HudController : MonoBehaviour {
         }
     }
 
+    //public void CreateGameLogHud() {
+    //    RectTransform gameLogRect = GameLogCanvas.GetComponent<RectTransform>();
+    //    gameLogRect.pivot = _pivotAnchorPositions[1];
+    //    gameLogRect.anchorMin = _pivotAnchorPositions[1];
+    //    gameLogRect.anchorMax = _pivotAnchorPositions[1];
+    //    gameLogRect.anchoredPosition = _hudPositions[1];
+    //}
+
     public void UpdatePlayerHud(Player player) {
         // Hide the BuyStocksCanvas if they purchased 3
         if (GameManager.Instance.StocksPurchased >= 3)
-            BuyStockCanvas.SetActive(false);
+            BuyStockHud.SetActive(false);
         _playerHuds.Find(p => p.Player == player).UpdatePlayerHud();
     }
 
     public void UpdatePlayersHud(List<Player> players) {
-        BuyStockCanvas.SetActive(false);
+        BuyStockHud.SetActive(false);
         foreach (Player player in players)
             _playerHuds.Find(p => p.Player == player).UpdatePlayerHud();
     }
@@ -87,29 +89,29 @@ public class HudController : MonoBehaviour {
     /// hide notification hud
     /// </summary>
     public void HideNotificationHud() {
-        NotificationCanvas.SetActive(false);
+        NotificationHud.SetActive(false);
     }
 
     /// <summary>
     /// show notification hud
     /// </summary> 
     public void ShowNotificationHud () {
-        NotificationCanvas.SetActive(true);
-        NotificationCanvas.transform.Find("TurnPanel/TurnContinueBtn/Title").GetComponentInChildren<Text>().text = GameManager.Instance.ActivePlayer.Name + ", it is now your turn.";
+        NotificationHud.SetActive(true);
+        NotificationHud.transform.Find("TurnPanel/TurnContinueBtn/Title").GetComponentInChildren<Text>().text = GameManager.Instance.ActivePlayer.Name + ", it is now your turn.";
     }
 
     /// <summary>
     /// hide game log
     /// </summary>
     public void HideGameLog() {
-        GameLogCanvas.SetActive(false);
+        GameLogHud.SetActive(false);
     }
 
     /// <summary>
     /// show the game log
     /// </summary>
     public void ShowGameLog() {
-        GameLogCanvas.SetActive(true);
+        GameLogHud.SetActive(true);
     }
 
     public void SetPlayerName(Player player, string newName) {
@@ -138,11 +140,11 @@ public class HudController : MonoBehaviour {
 
     public void ShowBuyStockHUD() {
         OptionsToBuy();
-        BuyStockCanvas.SetActive(true);
+        BuyStockHud.SetActive(true);
     }
 
     public void HideBuyStockHud() {
-        BuyStockCanvas.SetActive(false);
+        BuyStockHud.SetActive(false);
     }
 
     public void OptionsToBuy() {

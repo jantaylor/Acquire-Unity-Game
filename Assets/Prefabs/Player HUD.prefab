@@ -380,6 +380,7 @@ MonoBehaviour:
   EndTurnButton: {fileID: 114083867839061812}
   TileGrid: {fileID: 224342888923336566}
   tilePrefab: {fileID: 1334540948483170, guid: e0744eacf7699f047be8822531026d05, type: 2}
+  playerHud: {fileID: 0}
 --- !u!114 &114083867839061812
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1327,7 +1328,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -594}
+  m_AnchoredPosition: {x: 10, y: -10}
   m_SizeDelta: {x: 210, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224540592833693558

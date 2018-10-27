@@ -33,4 +33,8 @@ public static class CommonFunctions {
     public static T RandomElement<T>(this T[] array) {
         return array[rng.Next(array.Length)];
     }
+
+    public void GameLog(string message) {
+
+    }
 }
