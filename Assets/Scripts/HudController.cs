@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HudController : MonoBehaviour {
@@ -14,6 +15,7 @@ public class HudController : MonoBehaviour {
     public GameObject NotificationHud;
     public GameObject GameLogHud;
     public GameObject BuyStockHud;
+    public GameObject GameOptionsHud;
 
     void Awake() {
         stockButtons = BuyStockHud.GetComponentsInChildren<Button>();
@@ -149,6 +151,14 @@ public class HudController : MonoBehaviour {
         BuyStockHud.SetActive(false);
     }
 
+    public void ShowGameOptions() {
+        GameOptionsHud.SetActive(true);
+    }
+
+    public void HideInGameOptions() {
+        GameOptionsHud.SetActive(false);
+    }
+
     public void OptionsToBuy() {
         foreach (Corporation corp in GameManager.Instance.CorporationController.Corporations) {
             if (corp.TileSize >= 1 && corp.Stocks.Count >= 1) {
@@ -175,5 +185,40 @@ public class HudController : MonoBehaviour {
         HideNotificationHud();
         ShowOnlyActivePlayerHud();
         ShowGameLog();
+    }
+
+    /// <summary>
+    /// New Local Game Menu
+    /// </summary>
+    public void NewLocalGame() {
+        SceneManager.LoadScene("Local");
+    }
+
+    /// <summary>
+    /// New Online Game Menu
+    /// </summary>
+    public void NewOnlineGame() {
+        SceneManager.LoadScene("Online");
+    }
+
+    /// <summary>
+    /// Game Options
+    /// </summary>
+    public void GameOptions() {
+        SceneManager.LoadScene("Options");
+    }
+
+    /// <summary>
+    /// Load the main menu leaving the game
+    /// </summary>
+    public void BackToMainMenu() {
+        SceneManager.LoadScene("Main Menu");
+    }
+
+    /// <summary>
+    /// Quit Game
+    /// </summary>
+    public void QuitGame() {
+        Application.Quit();
     }
 }
