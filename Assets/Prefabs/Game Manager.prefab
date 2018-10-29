@@ -92,6 +92,7 @@ MonoBehaviour:
   TileController: {fileID: 0}
   BoardController: {fileID: 0}
   HudController: {fileID: 0}
+  MainMenuController: {fileID: 0}
   Game: {fileID: 0}
 --- !u!114 &114607635783833614
 MonoBehaviour:
@@ -122,6 +123,7 @@ MonoBehaviour:
   NotificationHud: {fileID: 0}
   GameLogHud: {fileID: 0}
   BuyStockHud: {fileID: 0}
+  GameOptionsHud: {fileID: 0}
 --- !u!114 &114869037749771754
 MonoBehaviour:
   m_ObjectHideFlags: 1
