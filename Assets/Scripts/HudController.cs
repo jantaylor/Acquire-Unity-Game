@@ -188,34 +188,6 @@ public class HudController : MonoBehaviour {
     }
 
     /// <summary>
-    /// New Local Game Menu
-    /// </summary>
-    public void NewLocalGame() {
-        SceneManager.LoadScene("Local");
-    }
-
-    /// <summary>
-    /// New Online Game Menu
-    /// </summary>
-    public void NewOnlineGame() {
-        SceneManager.LoadScene("Online");
-    }
-
-    /// <summary>
-    /// Game Options
-    /// </summary>
-    public void GameOptions() {
-        SceneManager.LoadScene("Options");
-    }
-
-    /// <summary>
-    /// Load the main menu leaving the game
-    /// </summary>
-    public void BackToMainMenu() {
-        SceneManager.LoadScene("Main Menu");
-    }
-
-    /// <summary>
     /// Quit Game
     /// </summary>
     public void QuitGame() {

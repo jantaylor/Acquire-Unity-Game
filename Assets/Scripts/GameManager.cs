@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
     public TileController TileController;
     public BoardController BoardController;
     public HudController HudController;
+    public MainMenuController MainMenuController;
 
     public GameLog Game;
 
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour {
         TileController = GetComponent<TileController>();
         BoardController = GetComponent<BoardController>();
         HudController = GetComponent<HudController>();
+        MainMenuController = GetComponent<MainMenuController>();
         Game = HudController.GameLogHud.GetComponent<GameLog>();
     }
 
