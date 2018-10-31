@@ -142,8 +142,7 @@ public class TileController : MonoBehaviour {
         Tile tile = tileObject.GetComponent<TileObject>().Tile;
         tile.Corporation = corporation;
         GameManager.Instance.CorporationController.IncreaseSize(tile.Corporation, 1,tileObject);
-        GameManager.Instance.Game.Log("Tile " + tile.Number + tile.Letter + " now belongs to " + tile.Corporation.Name);
-
+        Game.State.Log("Tile " + tile.Number + tile.Letter + " now belongs to " + tile.Corporation.Name);
     }
 
     /// <summary>

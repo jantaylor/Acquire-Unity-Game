@@ -106,13 +106,13 @@ public class MainMenuController : MonoBehaviour {
     }
 
     public void StartSinglePlayerGame() {
-        // TODO: Setup
         _numberOfPlayers = 1;
+        Game.State.Set(_numberOfPlayers, _numberOfAi, _aiDifficulty);
         SceneManager.LoadScene("Game");
     }
 
     public void StartHotSeatGame() {
-        // TODO: Setup
+        Game.State.Set(_numberOfPlayers, _numberOfAi, _aiDifficulty);
         SceneManager.LoadScene("Game");
     }
 

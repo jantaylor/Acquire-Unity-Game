@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
         return _players.Find(player => player.Id.Equals(id));
     }
 
-    public void CreatePlayers(int numberOfPlayers = 2) {
+    public void CreatePlayers(int numberOfPlayers) {
         for (int i = 0; i < numberOfPlayers; ++i) {
             _players.Add(new Player(i, "Player " + (i + 1).ToString(), GetColorById(i)));
         }

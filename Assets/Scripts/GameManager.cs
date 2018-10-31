@@ -10,7 +10,9 @@ public class GameManager : MonoBehaviour {
     public string ActivePlayerName;
     public bool TilePlaced = false;
     public int StocksPurchased = 0;
-    public int NumOfPlayers = Constants.DefaultNumberOfPlayers;
+    public int NumberOfPlayers = Constants.DefaultNumberOfPlayers;
+    public int NumberOfAI = Constants.DefaultNumberOfAi;
+    public int AiDifficulty = Constants.DefaultAiDifficulty;
     public int TurnNumber = 0;
     public bool AllCorporationsOnBoard = false;
 
@@ -22,8 +24,6 @@ public class GameManager : MonoBehaviour {
     public BoardController BoardController;
     public HudController HudController;
     public MainMenuController MainMenuController;
-
-    public GameLog Game;
 
     private void Awake() {
         // Singleton setup for GameManager
@@ -41,15 +41,25 @@ public class GameManager : MonoBehaviour {
         BoardController = GetComponent<BoardController>();
         HudController = GetComponent<HudController>();
         MainMenuController = GetComponent<MainMenuController>();
-        Game = HudController.GameLogHud.GetComponent<GameLog>();
     }
 
     private void Start() {
+        LoadState();
         NewGame();
     }
 
     private void Update() {
         CheckForAllCorpsOnBoard();
+    }
+
+    /// <summary>
+    /// Load the game setup from state
+    /// </summary>
+    private void LoadState() {
+        Game.State.GameLog = GameObject.Find("UI/Canvas/GameLog HUD").GetComponent<GameLog>();
+        NumberOfPlayers = Game.State.NumberOfPlayers;
+        NumberOfAI = Game.State.NumberOfAi;
+        AiDifficulty = Game.State.AiDifficulty;
     }
 
     // Setup a new game
@@ -59,7 +69,7 @@ public class GameManager : MonoBehaviour {
         StartingHands();
         NextPlayer();
         HudController.ShowNotificationHud();
-        Game.Log(ActivePlayer.Name + " goes first!");
+        Game.State.Log(ActivePlayer.Name + " goes first!");
     }
 
     private void StartingTiles() {
@@ -88,7 +98,7 @@ public class GameManager : MonoBehaviour {
     private void PrintTurnOrder() {
         for (int i = 0; i < _turnOrder.Count; ++i) {
             Player player = _turnOrder.Dequeue();
-            Game.Log(player.Name + " drew tile "
+            Game.State.Log(player.Name + " drew tile "
                 + player.Tiles[0].Number + player.Tiles[0].Letter
                 + " (" + player.Tiles[0].Id + ").");
             _turnOrder.Enqueue(player);
@@ -139,7 +149,7 @@ public class GameManager : MonoBehaviour {
     /// TODO
     /// </summary>
     private void AddPlayers() {
-        PlayerController.CreatePlayers(NumOfPlayers);
+        PlayerController.CreatePlayers(NumberOfPlayers);
         MoneyController.CreateWallets(PlayerController.Players());
         HudController.CreatePlayerHuds(PlayerController.Players());
     }
@@ -192,7 +202,7 @@ public class GameManager : MonoBehaviour {
 
     public void Endturn() {
         if (TilePlaced) {
-            Game.Log("Ending " + ActivePlayer.Name + "'s turn.");
+            Game.State.Log("Ending " + ActivePlayer.Name + "'s turn.");
             HudController.HidePlayerHud(GameManager.Instance.ActivePlayer);
             HudController.HideGameLog();
             DrawTile(ActivePlayer);
@@ -201,7 +211,7 @@ public class GameManager : MonoBehaviour {
             NextPlayer();
             HudController.HideBuyStockHud();
             HudController.ShowNotificationHud();
-            Game.Log("It's your turn " + ActivePlayer.Name + ".");
+            Game.State.Log("It's your turn " + ActivePlayer.Name + ".");
             ++TurnNumber;
 
             // Debugging
