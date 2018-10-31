@@ -129,7 +129,7 @@ public class BoardController : MonoBehaviour {
         // Loop through list of RayCast2D hit tiles and check for tiles with corporations and without
         if (tilesHit.Count > 0) {
             // TODO: Figure out 3-4 way Merger
-            GameManager.Instance.Game.Log("Checking for corporation starts and mergers");
+            Game.State.Log("Checking for corporation starts and mergers");
             foreach (GameObject tileHit in tilesHit) {
                 tileHitCorporation = tileHit.GetComponent<TileObject>().Tile.Corporation;
                 if (tileHitCorporation != null)
@@ -159,7 +159,7 @@ public class BoardController : MonoBehaviour {
 
                     } else {
                         // placedtileCorp survives merger
-                        GameManager.Instance.Game.Log(placedTileCorp.Name + " survives merger");
+                        Game.State.Log(placedTileCorp.Name + " survives merger");
 
                         if (!tileHitCorporation.IsSafe)
                             GameManager.Instance.CorporationController.MergeCorporations(placedTileCorp, tileHitCorporation);
@@ -167,27 +167,27 @@ public class BoardController : MonoBehaviour {
 
                 } else if ((tileHitCorporation != null && placedTileCorp == null) || (tileHitCorporation == null && placedTileCorp != null)) {
                     // If hit tile is part of a corporation and the placed tile is not, then add it to existing corporation
-                    GameManager.Instance.Game.Log(tileHit.name + " is part of Corporation: " + tileHitCorporation.Name
+                    Game.State.Log(tileHit.name + " is part of Corporation: " + tileHitCorporation.Name
                         + ". Adding " + placedTile.name + " to " + tileHitCorporation.Name);
                     // Set placed tile corp to hit corp
                     placedTileCorp = tileHitCorporation;
-                    GameManager.Instance.Game.Log(tileHitCorporation.Name + " old size: " + tileHitCorporation.TileSize.ToString());
+                    Game.State.Log(tileHitCorporation.Name + " old size: " + tileHitCorporation.TileSize.ToString());
                     GameManager.Instance.CorporationController.IncreaseSize(tileHitCorporation, 1, placedTile);
-                    GameManager.Instance.Game.Log(tileHitCorporation.Name + " new size: " + tileHitCorporation.TileSize.ToString());
+                    Game.State.Log(tileHitCorporation.Name + " new size: " + tileHitCorporation.TileSize.ToString());
 
                 } else {
                     // If both tiles are not part of corporation, then found a corporation!
-                    GameManager.Instance.Game.Log("Both tiles are not part of a corp, so founding new corp!");
+                    Game.State.Log("Both tiles are not part of a corp, so founding new corp!");
                     // TODO: Players Choice, for now random
                     List<Corporation> availableCorporations = GameManager.Instance.CorporationController.AvailableToFound();
 
                     if (availableCorporations.Count > 0) {
                         Corporation selectedCorporation = GameManager.Instance.CorporationController.RandomCorporation();
-                        GameManager.Instance.Game.Log("Randomly chose: " + selectedCorporation.Name);
+                        Game.State.Log("Randomly chose: " + selectedCorporation.Name);
                         GameManager.Instance.TileController.SetTileCorporation(placedTile, selectedCorporation);
                         GameManager.Instance.TileController.SetTileCorporation(tileHit, selectedCorporation);
                     } else {
-                        GameManager.Instance.Game.Log("No corporations are available. Try Merging some corporations first.");
+                        Game.State.Log("No corporations are available. Try Merging some corporations first.");
 
                     }
                 }
