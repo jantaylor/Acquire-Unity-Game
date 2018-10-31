@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour {
 
-    private bool _singlePlayer = false;
-    private int _numberOfAi = Constants.DefaultNumberOfAi;
-    private int _numberOfPlayers = Constants.DefaultNumberOfPlayers;
-    private int _aiDifficulty = Constants.DefaultAiDifficulty; //1 - easy, 2 - medium, 3 - hard
+    public bool _singlePlayer = false;
+    public int _numberOfAi = Constants.DefaultNumberOfAi;
+    public int _numberOfPlayers = Constants.DefaultNumberOfPlayers;
+    public int _aiDifficulty = Constants.DefaultAiDifficulty; //1 - easy, 2 - medium, 3 - hard
 
     public GameObject MainMenu;
     public GameObject OptionsMenu;
@@ -48,7 +48,8 @@ public class MainMenuController : MonoBehaviour {
     public void ShowMainMenu() {
         HideAllMenus();
         MainMenu.SetActive(true);
-        _singlePlayer = false;
+        _singlePlayer = Constants.DefaultSinglePlayer;
+        _numberOfAi = Constants.DefaultNumberOfAi;
     }
 
 
@@ -95,6 +96,7 @@ public class MainMenuController : MonoBehaviour {
         HideAllMenus();
         HotSeatMenu.SetActive(true);
         _singlePlayer = false;
+        _numberOfAi = 0;
     }
 
     public void ShowSinglePlayerGame() {
@@ -115,10 +117,10 @@ public class MainMenuController : MonoBehaviour {
     }
 
     public void ChangeNumberOfAi() {
-        if (_numberOfAi < Constants.MaxNumberOfAi) {
+        if (_numberOfAi < Constants.MaxNumberOfAi && (!_singlePlayer && _numberOfAi < Constants.MaxNumberOfAi - 1)) {
             ++_numberOfAi;
-            if (_numberOfPlayers + _numberOfAi < Constants.MaxNumberOfPlayers) {
-                --_numberOfPlayers;
+            if (_numberOfPlayers + _numberOfAi > Constants.MaxNumberOfPlayers) {
+                if (_numberOfPlayers > 2) --_numberOfPlayers;
             }
         } else {
             if (_singlePlayer)
@@ -157,8 +159,8 @@ public class MainMenuController : MonoBehaviour {
     public void ChangeNumberOfPlayers() {
         if (_numberOfPlayers < Constants.MaxNumberOfPlayers) {
             ++_numberOfPlayers;
-            if (_numberOfPlayers + _numberOfAi < Constants.MaxNumberOfPlayers) {
-                --_numberOfAi;
+            if (_numberOfPlayers + _numberOfAi >= Constants.MaxNumberOfPlayers) {
+                if (_numberOfAi > 0) --_numberOfAi;
             }
         } else {
             _numberOfPlayers = 2;
