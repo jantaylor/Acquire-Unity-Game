@@ -43,7 +43,7 @@ public class CorporationController : MonoBehaviour {
     /// <returns></returns>
     private Corporation NewCorporation(int id, string name) {
         Corporation newCorp = new Corporation(id, name);
-        for (int i = 0; i < 24; ++i)
+        for (int i = 0; i < Constants.NumberOfStocksPerCorporation; ++i)
             newCorp.Stocks.Push(new Stock(id, name));
 
         GenerateStockValueTable(id, newCorp.StockValueTable);
@@ -81,6 +81,8 @@ public class CorporationController : MonoBehaviour {
 
             ++GameManager.Instance.StocksPurchased;
             GameManager.Instance.MoneyController.SpendMoney(player, corp.StockValue);
+            // TODO: Game Options
+            //if (GameManager.Options.ShowPlayerStock)
             Debug.Log("Successfully bought stock, player's stock count: " + player.Stocks.Count.ToString());
             return;
         }
@@ -161,7 +163,7 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <param name="id">Corporation ID</param>
     public void MakeDefunct(int id) {
-        Corporations[id].TileSize = 0;
+        Corporations[id].Tiles = null;
     }
 
     /// <summary>
@@ -169,7 +171,7 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <param name="id">Corporation</param>
     public void MakeDefunct(Corporation corporation) {
-        corporation.TileSize = 0;
+        corporation.Tiles = null;
     }
 
     /// <summary>
@@ -186,19 +188,7 @@ public class CorporationController : MonoBehaviour {
     /// </summary>
     /// <param name="id">Corporation ID</param>
     /// <param name="tiles">Number of new Tiles</param>
-    public void IncreaseSize(int id, int tiles) {
-        Corporation corp = Corporations[id];
-        corp.TileSize += tiles;
-
-    }
-
-    /// <summary>
-    /// Increases the company's size
-    /// </summary>
-    /// <param name="id">Corporation ID</param>
-    /// <param name="tiles">Number of new Tiles</param>
     public void IncreaseSize(Corporation corporation, int tiles, GameObject tile) {
-        corporation.TileSize += tiles;
         corporation.Tiles.Add(tile);
     }
 
@@ -211,7 +201,7 @@ public class CorporationController : MonoBehaviour {
         try {
             if (defunctCorp.IsSafe)
                 throw new System.Exception("Invalid Merge, defunctCorp is Safe from mergers.");
-            corporation.TileSize += defunctCorp.TileSize;
+
             foreach (GameObject tile in defunctCorp.Tiles) {
                 corporation.Tiles.Add(tile);
                 defunctCorp.Tiles.Remove(tile);
