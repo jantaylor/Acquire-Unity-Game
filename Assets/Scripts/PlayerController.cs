@@ -30,12 +30,10 @@ public class PlayerController : MonoBehaviour {
         return _players.Find(player => player.Id.Equals(id));
     }
 
-    public void CreatePlayers(int numberOfPlayers = 3) {
-        for (int i = 0; i < numberOfPlayers; ++i)
-            _players.Add(new Player(i, "Player " + (i+1).ToString(), GetColorById(i)));
-
-        _players[0].Name = "Cleo"; // Remove - this is for testing
-        _players[1].Name = "Jan"; // Remove - this is for testing
+    public void CreatePlayers(int numberOfPlayers = 2) {
+        for (int i = 0; i < numberOfPlayers; ++i) {
+            _players.Add(new Player(i, "Player " + (i + 1).ToString(), GetColorById(i)));
+        }
     }
 
     /// <summary>

@@ -4,6 +4,11 @@ using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour {
 
+    private bool _singlePlayer = false;
+    private int _numberOfAi = Constants.DefaultNumberOfAi;
+    private int _numberOfPlayers = Constants.DefaultNumberOfPlayers;
+    private int _aiDifficulty = Constants.DefaultAiDifficulty; //1 - easy, 2 - medium, 3 - hard
+
     public GameObject MainMenu;
     public GameObject OptionsMenu;
     public GameObject LocalPlayMenu;
@@ -43,6 +48,7 @@ public class MainMenuController : MonoBehaviour {
     public void ShowMainMenu() {
         HideAllMenus();
         MainMenu.SetActive(true);
+        _singlePlayer = false;
     }
 
 
@@ -88,20 +94,76 @@ public class MainMenuController : MonoBehaviour {
     public void ShowHotSeatGame() {
         HideAllMenus();
         HotSeatMenu.SetActive(true);
+        _singlePlayer = false;
     }
 
     public void ShowSinglePlayerGame() {
         HideAllMenus();
         SinglePlayerMenu.SetActive(true);
+        _singlePlayer = true;
     }
 
     public void StartSinglePlayerGame() {
         // TODO: Setup
+        _numberOfPlayers = 1;
         SceneManager.LoadScene("Game");
     }
 
     public void StartHotSeatGame() {
         // TODO: Setup
         SceneManager.LoadScene("Game");
+    }
+
+    public void ChangeNumberOfAi() {
+        if (_numberOfAi < Constants.MaxNumberOfAi) {
+            ++_numberOfAi;
+            if (_numberOfPlayers + _numberOfAi < Constants.MaxNumberOfPlayers) {
+                --_numberOfPlayers;
+            }
+        } else {
+            if (_singlePlayer)
+                _numberOfAi = 1;
+            else
+                _numberOfAi = 0;
+        }
+        GameObject.Find("NumberOfAiButton").GetComponentInChildren<Text>().text = "AI Players: " + _numberOfAi.ToString();
+        GameObject.Find("NumberOfPlayersButton").GetComponentInChildren<Text>().text = "Players: " + _numberOfPlayers.ToString();
+    }
+
+    public void ChangeAiDifficulty() {
+        if (_aiDifficulty < 3) {
+            ++_aiDifficulty;
+        } else {
+            _aiDifficulty = 1;
+        }
+        string aiDifficultyText = "Easy";
+        switch(_aiDifficulty) {
+            case 1:
+                aiDifficultyText = "Easy";
+                break;
+            case 2:
+                aiDifficultyText = "Medium";
+                break;
+            case 3:
+                aiDifficultyText = "Hard";
+                break;
+            default:
+                aiDifficultyText = "EXTREME";
+                break;
+        }
+        GameObject.Find("AiDifficultyButton").GetComponentInChildren<Text>().text = "AI Difficulty: " + aiDifficultyText;
+    }
+
+    public void ChangeNumberOfPlayers() {
+        if (_numberOfPlayers < Constants.MaxNumberOfPlayers) {
+            ++_numberOfPlayers;
+            if (_numberOfPlayers + _numberOfAi < Constants.MaxNumberOfPlayers) {
+                --_numberOfAi;
+            }
+        } else {
+            _numberOfPlayers = 2;
+        }
+        GameObject.Find("NumberOfPlayersButton").GetComponentInChildren<Text>().text = "Players: " + _numberOfPlayers.ToString();
+        GameObject.Find("NumberOfAiButton").GetComponentInChildren<Text>().text = "AI Players: " + _numberOfAi.ToString();
     }
 }

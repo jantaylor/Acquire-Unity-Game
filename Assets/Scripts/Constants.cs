@@ -3,17 +3,21 @@
     #region Player
 
     public const int DefaultNumberOfPlayers = 2;
+    public const int MaxNumberOfPlayers = 6;
 
     #endregion
 
-    #region State
+    #region Options
+
+    public const bool DefaultSinglePlayer = true;
 
     #endregion
 
     #region Corporation
 
-    public const int NumberOfTilesForSafeCorporation = 36;
-    public const int NumberOfStocksPerCorporation = 3; //24
+    public const int NumberOfTilesForSafeCorporation = 11;
+    public const int NumberOfStocksPerCorporation = 24;
+    public const int NumberOftilesForGameOver = 41;
 
     #endregion
 
@@ -25,29 +29,29 @@
 
     #region Rules
 
+    public const bool ShowGameLog = true;
+    public const int ShowPurchasedStocks = 1; // 1 - Yes, 2 - Only amount (no corp names), 3 - No
+
     #endregion
 
     #region AI
+
+    public const int DefaultAiDifficulty = 1;
+    public const int DefaultNumberOfAi = 1;
+    public const int MaxNumberOfAi = 5;
 
     #endregion
 
     #region Networking
 
+    public const int DefaultPort = 23001;
+
     #endregion
 
     #region HUD
 
-    public const int PlayerOneHUDPosX = 65;
-    public const int PlayerOneHUDPosY = -50;
-
-    public const int PlayerTwoHUDPosX = -65;
-    public const int PlayerTwoHUDPosY = -50;
-
-    public const int PlayerThreeHUDPosX = 65;
-    public const int PlayerThreeHUDPosY = 125;
-
-    public const int PlayerFourHUDPosX = -65;
-    public const int PlayerFourHUDPosY = 125;
+    public const int PlayerHUDPosX = 65;
+    public const int PlayerHUDPosY = -50;
 
     #endregion
 }
