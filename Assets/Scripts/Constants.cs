@@ -46,6 +46,8 @@
 
     public const int DefaultPort = 25001;
     public const string MasterServerIpAddress = "127.0.0.1";
+    public const string DefaultRoom = "My Room";
+    public const string DefaultPlayerName = "Player";
 
     #endregion
 

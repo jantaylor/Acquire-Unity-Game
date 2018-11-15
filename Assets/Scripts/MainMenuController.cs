@@ -10,6 +10,10 @@ public class MainMenuController : MonoBehaviour {
     public int _numberOfPlayers = Constants.DefaultNumberOfPlayers;
     public int _aiDifficulty = Constants.DefaultAiDifficulty; //1 - easy, 2 - medium, 3 - hard
 
+    public string Port = Constants.DefaultPort.ToString();
+    public string Name = Constants.DefaultPlayerName;
+    public string Room = Constants.DefaultRoom;
+
     public GameObject MainMenu;
     public GameObject OptionsMenu;
     public GameObject LocalPlayMenu;
@@ -124,6 +128,18 @@ public class MainMenuController : MonoBehaviour {
     /// </summary>
     public void JoinOnlineGame() {
         // TODO
+    }
+
+    public void UpdatePort(string newPort) {
+        Port = newPort;
+    }
+
+    public void UpdateName(string newName) {
+        Name = newName;
+    }
+
+    public void UpdateRoom(string newRoom) {
+        Room = newRoom;
     }
 
     public void ShowHowToPlayMenu() {
