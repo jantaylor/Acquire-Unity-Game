@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using UnityEngine.Networking.Match;
 using System.Collections.Generic;
+using System;
 
 //  Adapted from:
 //  https://docs.unity3d.com/Manual/UnityMultiplayerIntegratingHighLevel.html 
@@ -13,6 +14,7 @@ public class Networking : MonoBehaviour {
     public uint matchSize = 2;
     public bool matchAdvertise = true;
     public string matchPassword = "";
+    public int matchPort = 25001;
 
     private List<MatchInfoSnapshot> matchList = new List<MatchInfoSnapshot>();
     private NetworkMatch networkMatch;
@@ -79,6 +81,14 @@ public class Networking : MonoBehaviour {
         } else {
             Debug.LogError("Join match failed " + extendedInfo);
         }
+    }
+
+    public void UpdateRoomName(string newRoom) {
+        matchName = newRoom;
+    }
+
+    public void UpdatePort(string port) {
+        matchPort = Int32.Parse(port);
     }
 
     public void OnConnected(NetworkMessage msg) {

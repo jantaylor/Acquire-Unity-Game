@@ -6772,6 +6772,7 @@ GameObject:
   - component: {fileID: 1481216703}
   - component: {fileID: 1481216705}
   - component: {fileID: 1481216704}
+  - component: {fileID: 1481216706}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -6828,7 +6829,8 @@ MonoBehaviour:
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 0}
+  m_PlayerPrefab: {fileID: 1331879663888512, guid: 775175bd3a1c7a243819f16c23d74d49,
+    type: 2}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
   m_OfflineScene: Offline Game
@@ -6889,6 +6891,21 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
+--- !u!114 &1481216706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1481216702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 227461547, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 1481216705}
+  showGUI: 1
+  offsetX: 2000
+  offsetY: 1000
 --- !u!1 &1489426577
 GameObject:
   m_ObjectHideFlags: 0

@@ -173,12 +173,12 @@ public class MainMenuController : MonoBehaviour {
     public void StartSinglePlayerGame() {
         _numberOfPlayers = 1;
         Game.State.Set(_numberOfPlayers, _numberOfAi, _aiDifficulty);
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Offline Game");
     }
 
     public void StartHotSeatGame() {
         Game.State.Set(_numberOfPlayers, _numberOfAi, _aiDifficulty);
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Offline Game");
     }
 
     public void ChangeNumberOfAi() {
