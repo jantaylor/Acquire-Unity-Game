@@ -7,6 +7,7 @@ namespace Prototype.NetworkLobby
     public class LobbyTopPanel : MonoBehaviour
     {
         public bool isInGame = false;
+        public bool isInLobby = true;
 
         protected bool isDisplayed = true;
         protected Image panelImage;
@@ -20,6 +21,9 @@ namespace Prototype.NetworkLobby
         void Update()
         {
             if (!isInGame)
+                return;
+
+            if (!isInLobby)
                 return;
 
             if (Input.GetKeyDown(KeyCode.Escape))

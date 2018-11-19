@@ -15,6 +15,10 @@ public class GameLog : MonoBehaviour {
     public Text LogTextObject;
     private string logText = "";
 
+    private void Start() {
+        DontDestroyOnLoad(gameObject);
+    }
+
     /// <summary>
     /// Log the event to the List and then update the game log text
     /// </summary>

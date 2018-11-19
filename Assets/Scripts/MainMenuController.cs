@@ -24,8 +24,6 @@ public class MainMenuController : MonoBehaviour {
     public GameObject SinglePlayerMenu;
     public GameObject HotSeatMenu;
 
-    public NetworkManager NetworkManager;
-
     private void Awake() {
         if (!MainMenu) MainMenu = GameObject.Find("MainMenu");
         if (!OptionsMenu) OptionsMenu = GameObject.Find("OptionsMenu");
@@ -38,8 +36,6 @@ public class MainMenuController : MonoBehaviour {
         if (!LocalPlayMenu) LocalPlayMenu = GameObject.Find("LocalPlayMenu");
         if (!SinglePlayerMenu) SinglePlayerMenu = GameObject.Find("SinglePlayerMenu");
         if (!HotSeatMenu) HotSeatMenu = GameObject.Find("HotSeatMenu");
-
-        if (!NetworkManager) NetworkManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
     }
 
     private void Start() {
@@ -89,45 +85,7 @@ public class MainMenuController : MonoBehaviour {
     /// New Online Game Menu
     /// </summary>
     public void ShowOnlineMenu() {
-        HideAllMenus();
-        OnlinePlayMenu.SetActive(true);
-        //if (Network.isClient && Network.isServer) {
-        //    GameObject.Find("JoinGameButton").GetComponent<Button>().interactable = false;
-        //    GameObject.Find("HostGameButton").GetComponent<Button>().interactable = false;
-        //} else {
-        //    GameObject.Find("JoinGameButton").GetComponent<Button>().interactable = true;
-        //    GameObject.Find("HostGameButton").GetComponent<Button>().interactable = true;
-        //}
-    }
-
-    /// <summary>
-    /// Join Online Game Menu
-    /// </summary>
-    public void ShowJoinMenu() {
-        HideAllMenus();
-        JoinGameMenu.SetActive(true);
-    }
-
-    /// <summary>
-    /// Host Online Game Menu
-    /// </summary>
-    public void ShowHostMenu() {
-        HideAllMenus();
-        HostGameMenu.SetActive(true);
-    }
-
-    /// <summary>
-    /// Create and join the online game using the matchInfo, config, and port
-    /// </summary>
-    public void HostOnlineGame() {
-        // TODO
-    }
-
-    /// <summary>
-    /// Join the online game using the matchInfo, config, and port
-    /// </summary>
-    public void JoinOnlineGame() {
-        // TODO
+        SceneManager.LoadScene(1);
     }
 
     public void UpdatePort(string newPort) {

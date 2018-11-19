@@ -34,6 +34,7 @@ namespace Prototype.NetworkLobby
         protected RectTransform currentPanel;
 
         public Button backButton;
+        public Button MenuButton;
 
         public Text statusInfo;
         public Text hostInfo;
@@ -60,6 +61,7 @@ namespace Prototype.NetworkLobby
             currentPanel = mainMenuPanel;
 
             backButton.gameObject.SetActive(false);
+            MenuButton.gameObject.SetActive(true);
             GetComponent<Canvas>().enabled = true;
 
             DontDestroyOnLoad(gameObject);
@@ -69,7 +71,7 @@ namespace Prototype.NetworkLobby
 
         public override void OnLobbyClientSceneChanged(NetworkConnection conn)
         {
-            if (SceneManager.GetSceneAt(0).name == lobbyScene)
+            if (SceneManager.GetSceneAt(1).name == lobbyScene)
             {
                 if (topPanel.isInGame)
                 {
@@ -134,10 +136,12 @@ namespace Prototype.NetworkLobby
             if (currentPanel != mainMenuPanel)
             {
                 backButton.gameObject.SetActive(true);
+                MenuButton.gameObject.SetActive(false);
             }
             else
             {
                 backButton.gameObject.SetActive(false);
+                MenuButton.gameObject.SetActive(true);
                 SetServerInfo("Offline", "None");
                 _isMatchmaking = false;
             }
@@ -162,6 +166,11 @@ namespace Prototype.NetworkLobby
         {
             backDelegate();
 			topPanel.isInGame = false;
+        }
+
+        public void ReturnToMenuButton() {
+            SceneManager.LoadScene("Main Menu");
+            Destroy(gameObject);
         }
 
         // ----------------- Server management
