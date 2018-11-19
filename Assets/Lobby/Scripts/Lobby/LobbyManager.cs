@@ -12,6 +12,7 @@ namespace Prototype.NetworkLobby
     public class LobbyManager : NetworkLobbyManager 
     {
         static short MsgKicked = MsgType.Highest + 1;
+        static short MsgClosed = MsgType.Highest + 1;
 
         static public LobbyManager s_Singleton;
 
@@ -71,7 +72,7 @@ namespace Prototype.NetworkLobby
 
         public override void OnLobbyClientSceneChanged(NetworkConnection conn)
         {
-            if (SceneManager.GetSceneAt(1).name == lobbyScene)
+            if (SceneManager.GetSceneAt(0).name == lobbyScene)
             {
                 if (topPanel.isInGame)
                 {
@@ -230,12 +231,20 @@ namespace Prototype.NetworkLobby
             conn.Send(MsgKicked, new KickMsg());
         }
 
-
+        class ClosedMsg : MessageBase { }
+        public void ClosedRoom(NetworkConnection conn) {
+            conn.Send(MsgClosed, new ClosedMsg());
+        }
 
 
         public void KickedMessageHandler(NetworkMessage netMsg)
         {
             infoPanel.Display("Kicked by Server", "Close", null);
+            netMsg.conn.Disconnect();
+        }
+
+        public void ServerClosedRoomHandler(NetworkMessage netMsg) {
+            infoPanel.Display("Server Closed the Room", "Close", null);
             netMsg.conn.Disconnect();
         }
 
@@ -405,6 +414,7 @@ namespace Prototype.NetworkLobby
             infoPanel.gameObject.SetActive(false);
 
             conn.RegisterHandler(MsgKicked, KickedMessageHandler);
+            conn.RegisterHandler(MsgClosed, ServerClosedRoomHandler);
 
             if (!NetworkServer.active)
             {//only to do on pure client (not self hosting client)

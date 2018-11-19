@@ -36,7 +36,7 @@ namespace Prototype.NetworkLobby
         static Color JoinColor = new Color(255.0f/255.0f, 0.0f, 101.0f/255.0f,1.0f);
         static Color NotReadyColor = new Color(34.0f / 255.0f, 44 / 255.0f, 55.0f / 255.0f, 1.0f);
         static Color ReadyColor = new Color(0.0f, 204.0f / 255.0f, 204.0f / 255.0f, 1.0f);
-        static Color TransparentColor = new Color(0, 0, 0, 0);
+        static Color TransparentColor = new Color(34.0f / 255.0f, 44.0f / 255.0f, 54.0f / 255.0f, 1.0f);
 
         //static Color OddRowColor = new Color(250.0f / 255.0f, 250.0f / 255.0f, 250.0f / 255.0f, 1.0f);
         //static Color EvenRowColor = new Color(180.0f / 255.0f, 180.0f / 255.0f, 180.0f / 255.0f, 1.0f);
@@ -89,11 +89,15 @@ namespace Prototype.NetworkLobby
         void SetupOtherPlayer()
         {
             nameInput.interactable = false;
-            removePlayerButton.interactable = NetworkServer.active;
+            removePlayerButton.gameObject.SetActive(true);
+
+            // Don't show kick button for not server users
+            //removePlayerButton.interactable = NetworkServer.active;
+            removePlayerButton.gameObject.SetActive(false);
 
             ChangeReadyButtonColor(NotReadyColor);
 
-            readyButton.transform.GetChild(0).GetComponent<Text>().text = "...";
+            readyButton.transform.GetChild(0).GetComponent<Text>().text = "NOT READY";
             readyButton.interactable = false;
 
             OnClientReady(false);
@@ -104,6 +108,7 @@ namespace Prototype.NetworkLobby
             nameInput.interactable = true;
             remoteIcone.gameObject.SetActive(false);
             localIcone.gameObject.SetActive(true);
+            removePlayerButton.gameObject.SetActive(false);
 
             CheckRemoveButton();
 
@@ -112,7 +117,7 @@ namespace Prototype.NetworkLobby
 
             ChangeReadyButtonColor(JoinColor);
 
-            readyButton.transform.GetChild(0).GetComponent<Text>().text = "JOIN";
+            readyButton.transform.GetChild(0).GetComponent<Text>().text = "NOT READY";
             readyButton.interactable = true;
 
             //have to use child count of player prefab already setup as "this.slot" is not set yet
@@ -147,7 +152,8 @@ namespace Prototype.NetworkLobby
             foreach (UnityEngine.Networking.PlayerController p in ClientScene.localPlayers)
                 localPlayerCount += (p == null || p.playerControllerId == -1) ? 0 : 1;
 
-            removePlayerButton.interactable = localPlayerCount > 1;
+            //removePlayerButton.interactable = localPlayerCount > 1;
+            removePlayerButton.gameObject.SetActive(false);
         }
 
         public override void OnClientReady(bool readyState)
@@ -168,7 +174,7 @@ namespace Prototype.NetworkLobby
                 ChangeReadyButtonColor(isLocalPlayer ? JoinColor : NotReadyColor);
 
                 Text textComponent = readyButton.transform.GetChild(0).GetComponent<Text>();
-                textComponent.text = isLocalPlayer ? "JOIN" : "...";
+                //textComponent.text = isLocalPlayer ? "NOT READY" : "Not Ready";
                 textComponent.color = Color.white;
                 readyButton.interactable = isLocalPlayer;
                 colorButton.interactable = isLocalPlayer;
@@ -218,7 +224,8 @@ namespace Prototype.NetworkLobby
         {
             if (isLocalPlayer)
             {
-                RemovePlayer();
+                //RemovePlayer();
+                return; //Only server is local player
             }
             else if (isServer)
                 LobbyManager.s_Singleton.KickPlayer(connectionToClient);
