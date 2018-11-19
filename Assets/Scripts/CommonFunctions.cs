@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
 
 /// <summary>
 /// Static class of common functions to be used throughout the game
@@ -32,5 +31,20 @@ public static class CommonFunctions {
 
     public static T RandomElement<T>(this T[] array) {
         return array[rng.Next(array.Length)];
+    }
+
+    /* Courtesy of: Pr0n @ Stack Overflow */
+    /* https://answers.unity.com/questions/1004969/local-ip-adress-in-unet.html */
+    public static string LocalIPAddress() {
+        IPHostEntry host;
+        string localIP = "";
+        host = Dns.GetHostEntry(Dns.GetHostName());
+        foreach (IPAddress ip in host.AddressList) {
+            if (ip.AddressFamily == AddressFamily.InterNetwork) {
+                localIP = ip.ToString();
+                break;
+            }
+        }
+        return localIP;
     }
 }

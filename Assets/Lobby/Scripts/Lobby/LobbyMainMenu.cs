@@ -15,6 +15,9 @@ namespace Prototype.NetworkLobby {
         public void OnEnable() {
             lobbyManager.topPanel.ToggleVisibility(true);
 
+            // Get Local IP isntead of 127.0.0.1
+            ipInput.text = CommonFunctions.LocalIPAddress();
+
             ipInput.onEndEdit.RemoveAllListeners();
             ipInput.onEndEdit.AddListener(onEndEditIP);
 
@@ -24,6 +27,7 @@ namespace Prototype.NetworkLobby {
 
         public void OnClickHost() {
             lobbyManager.StartHost();
+            lobbyManager.SetServerInfo("Hosting", lobbyManager.networkAddress);
         }
 
         public void OnClickJoin() {
@@ -50,7 +54,7 @@ namespace Prototype.NetworkLobby {
         public void OnClickCreateMatchmakingGame() {
             lobbyManager.StartMatchMaker();
             lobbyManager.matchMaker.CreateMatch(
-                matchNameInput.text,
+                matchNameInput.text.Length >= 1 ? matchNameInput.text : Constants.DefaultRoom,
                 (uint)lobbyManager.maxPlayers,
                 true,
                 "", "", "", 0, 0,
@@ -60,7 +64,7 @@ namespace Prototype.NetworkLobby {
             lobbyManager._isMatchmaking = true;
             lobbyManager.DisplayIsConnecting();
 
-            lobbyManager.SetServerInfo("Matchmaker Host", lobbyManager.matchHost);
+            lobbyManager.SetServerInfo("Matchmaker Host", lobbyManager.matchHost, lobbyManager.roomInfo.text);
         }
 
         public void OnClickOpenServerList() {

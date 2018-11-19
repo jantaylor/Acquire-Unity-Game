@@ -37,6 +37,9 @@ namespace Prototype.NetworkLobby {
 
         public Text statusInfo;
         public Text hostInfo;
+        public Text roomInfo;
+
+        public GameObject roomHeader;
 
         //Client numPlayers from NetworkManager is always 0, so we count (throught connect/destroy in LobbyPlayer) the number
         //of players, so that even client know how many player there is.
@@ -65,6 +68,7 @@ namespace Prototype.NetworkLobby {
             DontDestroyOnLoad(gameObject);
 
             SetServerInfo("Offline", "None");
+            networkAddress = CommonFunctions.LocalIPAddress();
         }
 
         public override void OnLobbyClientSceneChanged(NetworkConnection conn) {
@@ -131,6 +135,19 @@ namespace Prototype.NetworkLobby {
         public void SetServerInfo(string status, string host) {
             statusInfo.text = status;
             hostInfo.text = host;
+            ShowRoomStatus(false);
+        }
+
+        public void SetServerInfo(string status, string host, string room) {
+            statusInfo.text = status;
+            hostInfo.text = host;
+            roomInfo.text = room;
+            ShowRoomStatus(true);
+        }
+
+        public void ShowRoomStatus(bool status) {
+            roomHeader.SetActive(status);
+            roomInfo.gameObject.SetActive(status);
         }
 
 
@@ -215,7 +232,7 @@ namespace Prototype.NetworkLobby {
 
             ChangeTo(lobbyPanel);
             backDelegate = StopHostClbk;
-            SetServerInfo("Hosting", networkAddress);
+            //SetServerInfo("Hosting", networkAddress);
         }
 
         public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo) {
