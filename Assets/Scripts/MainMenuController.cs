@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -9,10 +10,16 @@ public class MainMenuController : MonoBehaviour {
     public int _numberOfPlayers = Constants.DefaultNumberOfPlayers;
     public int _aiDifficulty = Constants.DefaultAiDifficulty; //1 - easy, 2 - medium, 3 - hard
 
+    public string Port = Constants.DefaultPort.ToString();
+    public string Name = Constants.DefaultPlayerName;
+    public string Room = Constants.DefaultRoom;
+
     public GameObject MainMenu;
     public GameObject OptionsMenu;
     public GameObject LocalPlayMenu;
     public GameObject OnlinePlayMenu;
+    public GameObject JoinGameMenu;
+    public GameObject HostGameMenu;
     public GameObject HowToPlayMenu;
     public GameObject SinglePlayerMenu;
     public GameObject HotSeatMenu;
@@ -20,10 +27,13 @@ public class MainMenuController : MonoBehaviour {
     private void Awake() {
         if (!MainMenu) MainMenu = GameObject.Find("MainMenu");
         if (!OptionsMenu) OptionsMenu = GameObject.Find("OptionsMenu");
-        if (!LocalPlayMenu) LocalPlayMenu = GameObject.Find("LocalPlayMenu");
-        if (!OnlinePlayMenu) OnlinePlayMenu = GameObject.Find("OnlinePlayMenu");
         if (!HowToPlayMenu) HowToPlayMenu = GameObject.Find("HowToPlayMenu");
 
+        if (!OnlinePlayMenu) OnlinePlayMenu = GameObject.Find("OnlinePlayMenu");
+        if (!JoinGameMenu) JoinGameMenu = GameObject.Find("JoinGameMenu");
+        if (!HostGameMenu) HostGameMenu = GameObject.Find("HostGameMenu");
+
+        if (!LocalPlayMenu) LocalPlayMenu = GameObject.Find("LocalPlayMenu");
         if (!SinglePlayerMenu) SinglePlayerMenu = GameObject.Find("SinglePlayerMenu");
         if (!HotSeatMenu) HotSeatMenu = GameObject.Find("HotSeatMenu");
     }
@@ -37,6 +47,8 @@ public class MainMenuController : MonoBehaviour {
         OptionsMenu.SetActive(false);
         LocalPlayMenu.SetActive(false);
         OnlinePlayMenu.SetActive(false);
+        JoinGameMenu.SetActive(false);
+        HostGameMenu.SetActive(false);
         HowToPlayMenu.SetActive(false);
         SinglePlayerMenu.SetActive(false);
         HotSeatMenu.SetActive(false);
@@ -73,8 +85,19 @@ public class MainMenuController : MonoBehaviour {
     /// New Online Game Menu
     /// </summary>
     public void ShowOnlineMenu() {
-        HideAllMenus();
-        OnlinePlayMenu.SetActive(true);
+        SceneManager.LoadScene(1);
+    }
+
+    public void UpdatePort(string newPort) {
+        Port = newPort;
+    }
+
+    public void UpdateName(string newName) {
+        Name = newName;
+    }
+
+    public void UpdateRoom(string newRoom) {
+        Room = newRoom;
     }
 
     public void ShowHowToPlayMenu() {
@@ -108,12 +131,12 @@ public class MainMenuController : MonoBehaviour {
     public void StartSinglePlayerGame() {
         _numberOfPlayers = 1;
         Game.State.Set(_numberOfPlayers, _numberOfAi, _aiDifficulty);
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Offline Game");
     }
 
     public void StartHotSeatGame() {
         Game.State.Set(_numberOfPlayers, _numberOfAi, _aiDifficulty);
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Offline Game");
     }
 
     public void ChangeNumberOfAi() {
