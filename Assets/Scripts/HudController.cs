@@ -119,7 +119,7 @@ public class HudController : MonoBehaviour {
     }
 
     public void SetPlayerName(Player player, string newName) {
-        _playerHuds.Find(p => p.Player == player).SetPlayerName(newName);
+        _playerHuds.Find(p => p.Player == player).SetPlayerName(newName, player.Color);
     }
 
     public void SetWalletAmount(Player player, int newAmount) {

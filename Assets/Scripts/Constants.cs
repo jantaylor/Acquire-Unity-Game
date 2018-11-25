@@ -9,7 +9,7 @@
 
     #region Options
 
-    public const bool DefaultSinglePlayer = false;
+    public const bool DefaultSinglePlayer = true;
 
     #endregion
 

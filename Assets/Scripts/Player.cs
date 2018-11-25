@@ -4,13 +4,13 @@ using UnityEngine;
 /// <summary>
 /// Player class holds the player's information that belongs to them
 /// </summary>
-public class Player {
+public class Player: MonoBehaviour {
 
     #region Class Attributes
 
     private int _id;
     private string _name;
-    private string _color;
+    private Color _color;
     private List<Stock> _stocks = new List<Stock>();
     private List<Tile> _tiles = new List<Tile>();
 
@@ -26,9 +26,18 @@ public class Player {
         set { _name = value; }
     }
 
-    public string Color {
+    public Color Color {
         get { return _color; }
         set { _color = value; }
+    }
+
+    public string ColorHex {
+        get { return CommonFunctions.ColorToHex(_color); }
+        set { _color = CommonFunctions.HexToColor(value);  }
+    }
+
+    public string NameRT {
+        get { return "<color='" + ColorHex + "'>" + Name + "</color>";  }
     }
 
     public List<Stock> Stocks {
@@ -45,10 +54,15 @@ public class Player {
 
     }
 
-    public Player(int id, string name, string color) {
+    public Player(int id, string name, Color color) {
         _id = id;
         _name = name;
         _color = color;
+    }
+
+    public Player(int id, string name, Color color, List<Stock> stocks, List<Tile> tiles) : this(id, name, color) {
+        _stocks = stocks;
+        _tiles = tiles;
     }
 
     ~Player() {

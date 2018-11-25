@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+    public bool isNetworkGame = !Constants.DefaultSinglePlayer;
+
     private Queue<Player> _turnOrder = new Queue<Player>();
     public Player ActivePlayer;
     public string ActivePlayerName;
@@ -45,7 +47,11 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         LoadState();
-        NewGame();
+        if (isNetworkGame) {
+           NewNetworkGame();
+        } else {
+            NewGame();
+        }
     }
 
     private void Update() {
@@ -57,9 +63,15 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     private void LoadState() {
         Game.State.GameLog = GameObject.Find("UI/Canvas/GameLog HUD").GetComponent<GameLog>();
-        NumberOfPlayers = Game.State.NumberOfPlayers;
-        NumberOfAI = Game.State.NumberOfAi;
-        AiDifficulty = Game.State.AiDifficulty;
+        if (isNetworkGame) {
+            // Get players from Network Lobby
+            NumberOfAI = 0;
+            AiDifficulty = 0;
+        } else {
+            NumberOfPlayers = Game.State.NumberOfPlayers;
+            NumberOfAI = Game.State.NumberOfAi;
+            AiDifficulty = Game.State.AiDifficulty;
+        }
     }
 
     // Setup a new game
@@ -69,7 +81,15 @@ public class GameManager : MonoBehaviour {
         StartingHands();
         NextPlayer();
         HudController.ShowNotificationHud();
-        Game.State.Log(ActivePlayer.Name + " goes first!");
+        Game.State.Log(ActivePlayer.NameRT + " goes first!");
+    }
+
+    private void NewNetworkGame() {
+        StartingTiles();
+        StartingHands();
+        NextPlayer();
+        HudController.ShowNotificationHud();
+        Game.State.Log(ActivePlayer.NameRT + " goes first!");
     }
 
     private void StartingTiles() {
@@ -98,7 +118,7 @@ public class GameManager : MonoBehaviour {
     private void PrintTurnOrder() {
         for (int i = 0; i < _turnOrder.Count; ++i) {
             Player player = _turnOrder.Dequeue();
-            Game.State.Log(player.Name + " drew tile "
+            Game.State.Log(player.NameRT + " drew tile "
                 + player.Tiles[0].Number + player.Tiles[0].Letter
                 + " (" + player.Tiles[0].Id + ").");
             _turnOrder.Enqueue(player);
@@ -197,12 +217,12 @@ public class GameManager : MonoBehaviour {
         GameObject newTile = TileController.CreateTileObject(tile, tile.Position);
         BoardController.PlaceTileOnBoard(newTile, true);
         HudController.RemovePlayerTile(player, tile);
-        ++GameManager.Instance.TurnNumber; // We still need to increase the turn order for the history array
+        ++TurnNumber; // We still need to increase the turn order for the history array
     }
 
     public void Endturn() {
         if (TilePlaced) {
-            Game.State.Log("Ending " + ActivePlayer.Name + "'s turn.");
+            Game.State.Log("Ending " + ActivePlayer.NameRT + "'s turn.");
             HudController.HidePlayerHud(GameManager.Instance.ActivePlayer);
             HudController.HideGameLog();
             DrawTile(ActivePlayer);
@@ -211,7 +231,7 @@ public class GameManager : MonoBehaviour {
             NextPlayer();
             HudController.HideBuyStockHud();
             HudController.ShowNotificationHud();
-            Game.State.Log("It's your turn " + ActivePlayer.Name + ".");
+            Game.State.Log("It's your turn " + ActivePlayer.NameRT + ".");
             ++TurnNumber;
 
             // Debugging
@@ -229,7 +249,7 @@ public class GameManager : MonoBehaviour {
                     
         } else {
             // TODO: Maybe make this a notification that shows up and disappears
-            Debug.Log("Can't end your turn before placing a tile!");
+            Game.State.Log("You can't end your turn before placing a tile " + ActivePlayer.NameRT + "!");
         }
     }
 
