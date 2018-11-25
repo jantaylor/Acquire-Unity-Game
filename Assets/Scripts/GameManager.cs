@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -46,12 +48,18 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        LoadState();
-        if (isNetworkGame) {
-           NewNetworkGame();
-        } else {
-            NewGame();
-        }
+        //try {
+            LoadState();
+            if (isNetworkGame) {
+               NewNetworkGame();
+            } else {
+                NewGame();
+            }
+        //} catch (Exception e) {
+        //    Debug.Log("Game Manager Had an Error, sent back to main menu.");
+        //    Debug.Log(e);
+        //    SceneManager.LoadScene(0);
+        //}
     }
 
     private void Update() {
@@ -62,7 +70,7 @@ public class GameManager : MonoBehaviour {
     /// Load the game setup from state
     /// </summary>
     private void LoadState() {
-        Game.State.GameLog = GameObject.Find("UI/Canvas/GameLog HUD").GetComponent<GameLog>();
+        Game.State.GameLog = HudController.GameLogHud.GetComponent<GameLog>();
         if (isNetworkGame) {
             // Get players from Network Lobby
             NumberOfAI = 0;

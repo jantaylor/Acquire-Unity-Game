@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Player class holds the player's information that belongs to them
 /// </summary>
-public class Player: MonoBehaviour {
+public class Player {
 
     #region Class Attributes
 
