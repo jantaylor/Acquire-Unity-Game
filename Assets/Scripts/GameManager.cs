@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
     public int AiDifficulty = Constants.DefaultAiDifficulty;
     public int TurnNumber = 0;
     public bool AllCorporationsOnBoard = false;
+    public bool isGamePaused = false;
 
     public static GameManager Instance = null;
     public PlayerController PlayerController;
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour {
     private void Awake() {
         // Singleton setup for GameManager
         if (Instance == null) {
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject); // comment out singleton to goto menu
             Instance = this;
         } else if (Instance != this) {
             Destroy(gameObject);
@@ -48,22 +49,25 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        //try {
             LoadState();
             if (isNetworkGame) {
                NewNetworkGame();
             } else {
                 NewGame();
             }
-        //} catch (Exception e) {
-        //    Debug.Log("Game Manager Had an Error, sent back to main menu.");
-        //    Debug.Log(e);
-        //    SceneManager.LoadScene(0);
-        //}
     }
 
     private void Update() {
         CheckForAllCorpsOnBoard();
+        if (!isGamePaused && Input.GetKeyDown(KeyCode.Escape)) {
+            isGamePaused = true;
+            return;
+        }
+
+        if (isGamePaused)
+            if (Input.GetKeyDown(KeyCode.Q)) QuitGame();
+            else if (Input.GetKeyDown(KeyCode.M)) QuitToMenu();
+            else if (Input.GetKeyDown(KeyCode.Escape)) HudController.HidePauseMenu();
     }
 
     /// <summary>
@@ -229,6 +233,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void Endturn() {
+        if (isGamePaused) return;
         if (TilePlaced) {
             Game.State.Log("Ending " + ActivePlayer.NameRT + "'s turn.");
             HudController.HidePlayerHud(GameManager.Instance.ActivePlayer);
@@ -238,27 +243,34 @@ public class GameManager : MonoBehaviour {
             StocksPurchased = 0;
             NextPlayer();
             HudController.HideBuyStockHud();
-            HudController.ShowNotificationHud();
+            HudController.ShowNextTurn();
             Game.State.Log("It's your turn " + ActivePlayer.NameRT + ".");
             ++TurnNumber;
-
-            // Debugging
-
-            //foreach (Corporation corp in CorporationController.Corporations) {
-            //    if (corp.TileSize > 0) {
-            //        Debug.Log(corp.Name + " has tiles: ");
-            //        foreach (GameObject tile in corp.Tiles)
-            //            Debug.Log(tile.GetComponent<TileObject>().Tile.Number + tile.GetComponent<TileObject>().Tile.Letter + " ");
-            //    } else {
-            //        Debug.Log(corp.Name + " has no tiles.");
-            //    }
-            //}
-                
-                    
         } else {
             // TODO: Maybe make this a notification that shows up and disappears
             Game.State.Log("You can't end your turn before placing a tile " + ActivePlayer.NameRT + "!");
         }
+    }
+
+    /// <summary>
+    /// Pause the game
+    /// </summary>
+    public void PauseGame() {
+        HudController.ShowPauseMenu();
+    }
+
+    /// <summary>
+    /// Quit Game
+    /// </summary>
+    public void QuitGame() {
+        Application.Quit();
+    }
+
+    /// <summary>
+    /// Go Back To Main Menu
+    /// </summary>
+    public void QuitToMenu() {
+        SceneManager.LoadScene("Main Menu");
     }
 
     #endregion
@@ -266,6 +278,7 @@ public class GameManager : MonoBehaviour {
     #region Stock Related Public
 
     public void BuyStock() {
+        if (isGamePaused) return;
         HudController.ShowBuyStockHUD();
     }
 
