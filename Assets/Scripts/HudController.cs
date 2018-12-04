@@ -16,9 +16,17 @@ public class HudController : MonoBehaviour {
     public GameObject GameLogHud;
     public GameObject BuyStockHud;
     public GameObject GameOptionsHud;
+    public GameObject TurnControlBtn;
+    public GameObject PauseMenuBtn;
 
     void Awake() {
         stockButtons = BuyStockHud.GetComponentsInChildren<Button>();
+    }
+
+    private void Update() {
+        if (GameManager.Instance.isGamePaused) {
+            ShowPauseMenu();
+        }
     }
 
     public void CreatePlayerHuds(List<Player> players) {
@@ -65,6 +73,17 @@ public class HudController : MonoBehaviour {
             _playerHuds.Find(p => p.Player == player).UpdatePlayerHud();
     }
 
+    public void ShowPauseMenu() {
+        ShowNotificationHud();
+        PauseMenuBtn.SetActive(true);
+    }
+
+    public void HidePauseMenu() {
+        HideNotificationHud();
+        PauseMenuBtn.SetActive(false);
+        GameManager.Instance.isGamePaused = false;
+    }
+
     /// <summary>
     /// hide player hud
     /// </summary>
@@ -94,6 +113,7 @@ public class HudController : MonoBehaviour {
     /// </summary>
     public void HideNotificationHud() {
         NotificationHud.SetActive(false);
+        TurnControlBtn.SetActive(false);
     }
 
     /// <summary>
@@ -101,7 +121,12 @@ public class HudController : MonoBehaviour {
     /// </summary> 
     public void ShowNotificationHud () {
         NotificationHud.SetActive(true);
-        NotificationHud.transform.Find("TurnContinueBtn/Title").GetComponentInChildren<Text>().text = GameManager.Instance.ActivePlayer.NameRT + ", it is now your turn.";
+    }
+
+    public void ShowNextTurn() {
+        ShowNotificationHud();
+        TurnControlBtn.SetActive(true);
+        TurnControlBtn.transform.Find("Title").GetComponent<Text>().text = GameManager.Instance.ActivePlayer.NameRT + ", it is now your turn.";
     }
 
     /// <summary>
@@ -185,12 +210,5 @@ public class HudController : MonoBehaviour {
         HideNotificationHud();
         ShowOnlyActivePlayerHud();
         ShowGameLog();
-    }
-
-    /// <summary>
-    /// Quit Game
-    /// </summary>
-    public void QuitGame() {
-        Application.Quit();
     }
 }
