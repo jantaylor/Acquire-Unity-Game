@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
     #region Class Attributes
 
     private List<Player> _players = new List<Player>();
-    enum Colors { red, green, blue, cyan, magenta, yellow };
+    static Color[] Colors = new Color[] { Color.magenta, Color.red, Color.cyan, Color.blue, Color.green, Color.yellow };
 
     #endregion
 
@@ -41,13 +41,8 @@ public class PlayerController : MonoBehaviour {
     /// </summary>
     /// <param name="id">int value</param>
     /// <returns>string value</returns>
-    public string GetColorById(int id) {
-        Colors color = (Colors)id;
-        return color.ToString();
-    }
-
-    public string GetPlayerName(int id) {
-        return _players[id].Name;
+    public Color GetColorById(int id) {
+        return Colors[id];
     }
 
     public string SetPlayerName(int id, string newName) {
@@ -77,6 +72,34 @@ public class PlayerController : MonoBehaviour {
 
     public void RemovePlayerTile(Player player, Tile tile) {
         player.Tiles.Remove(tile);
+    }
+
+    #endregion
+
+    #region NetworkSpecific
+
+    /// <summary>
+    /// For Network Player to set up a new player "locally"
+    /// </summary>
+    /// <param name="playerName">Player's Name from Lobby</param>
+    /// <param name="id">Their ID from lobby</param>
+    /// <param name="color">Their chosen color from lobby for game log box</param>
+    public void SetupLocalPlayer(string playerName, int id, Color color) {
+        _players.Add(new Player(id, playerName, color));
+    }
+
+    /// <summary>
+    /// For Network Player to Start their turn
+    /// </summary>
+    public void TurnStart() {
+        // TODO: Something?
+    }
+
+    /// <summary>
+    /// For Network Player to end their turn
+    /// </summary>
+    public void TurnEnd() {
+        GameManager.Instance.Endturn();
     }
 
     #endregion

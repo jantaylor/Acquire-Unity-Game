@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
+
+    public bool isNetworkGame = !Constants.DefaultSinglePlayer;
 
     private Queue<Player> _turnOrder = new Queue<Player>();
     public Player ActivePlayer;
@@ -15,6 +19,7 @@ public class GameManager : MonoBehaviour {
     public int AiDifficulty = Constants.DefaultAiDifficulty;
     public int TurnNumber = 0;
     public bool AllCorporationsOnBoard = false;
+    public bool isGamePaused = false;
 
     public static GameManager Instance = null;
     public PlayerController PlayerController;
@@ -28,7 +33,7 @@ public class GameManager : MonoBehaviour {
     private void Awake() {
         // Singleton setup for GameManager
         if (Instance == null) {
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject); // comment out singleton to goto menu
             Instance = this;
         } else if (Instance != this) {
             Destroy(gameObject);
@@ -44,22 +49,41 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        LoadState();
-        NewGame();
+            LoadState();
+            if (isNetworkGame) {
+               NewNetworkGame();
+            } else {
+                NewGame();
+            }
     }
 
     private void Update() {
         CheckForAllCorpsOnBoard();
+        if (!isGamePaused && Input.GetKeyDown(KeyCode.Escape)) {
+            isGamePaused = true;
+            return;
+        }
+
+        if (isGamePaused)
+            if (Input.GetKeyDown(KeyCode.Q)) QuitGame();
+            else if (Input.GetKeyDown(KeyCode.M)) QuitToMenu();
+            else if (Input.GetKeyDown(KeyCode.Escape)) HudController.HidePauseMenu();
     }
 
     /// <summary>
     /// Load the game setup from state
     /// </summary>
     private void LoadState() {
-        Game.State.GameLog = GameObject.Find("UI/Canvas/GameLog HUD").GetComponent<GameLog>();
-        NumberOfPlayers = Game.State.NumberOfPlayers;
-        NumberOfAI = Game.State.NumberOfAi;
-        AiDifficulty = Game.State.AiDifficulty;
+        Game.State.GameLog = HudController.GameLogHud.GetComponent<GameLog>();
+        if (isNetworkGame) {
+            // Get players from Network Lobby
+            NumberOfAI = 0;
+            AiDifficulty = 0;
+        } else {
+            NumberOfPlayers = Game.State.NumberOfPlayers;
+            NumberOfAI = Game.State.NumberOfAi;
+            AiDifficulty = Game.State.AiDifficulty;
+        }
     }
 
     // Setup a new game
@@ -69,7 +93,15 @@ public class GameManager : MonoBehaviour {
         StartingHands();
         NextPlayer();
         HudController.ShowNotificationHud();
-        Game.State.Log(ActivePlayer.Name + " goes first!");
+        Game.State.Log(ActivePlayer.NameRT + " goes first!");
+    }
+
+    private void NewNetworkGame() {
+        StartingTiles();
+        StartingHands();
+        NextPlayer();
+        HudController.ShowNotificationHud();
+        Game.State.Log(ActivePlayer.NameRT + " goes first!");
     }
 
     private void StartingTiles() {
@@ -98,7 +130,7 @@ public class GameManager : MonoBehaviour {
     private void PrintTurnOrder() {
         for (int i = 0; i < _turnOrder.Count; ++i) {
             Player player = _turnOrder.Dequeue();
-            Game.State.Log(player.Name + " drew tile "
+            Game.State.Log(player.NameRT + " drew tile "
                 + player.Tiles[0].Number + player.Tiles[0].Letter
                 + " (" + player.Tiles[0].Id + ").");
             _turnOrder.Enqueue(player);
@@ -197,12 +229,13 @@ public class GameManager : MonoBehaviour {
         GameObject newTile = TileController.CreateTileObject(tile, tile.Position);
         BoardController.PlaceTileOnBoard(newTile, true);
         HudController.RemovePlayerTile(player, tile);
-        ++GameManager.Instance.TurnNumber; // We still need to increase the turn order for the history array
+        ++TurnNumber; // We still need to increase the turn order for the history array
     }
 
     public void Endturn() {
+        if (isGamePaused) return;
         if (TilePlaced) {
-            Game.State.Log("Ending " + ActivePlayer.Name + "'s turn.");
+            Game.State.Log("Ending " + ActivePlayer.NameRT + "'s turn.");
             HudController.HidePlayerHud(GameManager.Instance.ActivePlayer);
             HudController.HideGameLog();
             DrawTile(ActivePlayer);
@@ -210,27 +243,34 @@ public class GameManager : MonoBehaviour {
             StocksPurchased = 0;
             NextPlayer();
             HudController.HideBuyStockHud();
-            HudController.ShowNotificationHud();
-            Game.State.Log("It's your turn " + ActivePlayer.Name + ".");
+            HudController.ShowNextTurn();
+            Game.State.Log("It's your turn " + ActivePlayer.NameRT + ".");
             ++TurnNumber;
-
-            // Debugging
-
-            //foreach (Corporation corp in CorporationController.Corporations) {
-            //    if (corp.TileSize > 0) {
-            //        Debug.Log(corp.Name + " has tiles: ");
-            //        foreach (GameObject tile in corp.Tiles)
-            //            Debug.Log(tile.GetComponent<TileObject>().Tile.Number + tile.GetComponent<TileObject>().Tile.Letter + " ");
-            //    } else {
-            //        Debug.Log(corp.Name + " has no tiles.");
-            //    }
-            //}
-                
-                    
         } else {
             // TODO: Maybe make this a notification that shows up and disappears
-            Debug.Log("Can't end your turn before placing a tile!");
+            Game.State.Log("You can't end your turn before placing a tile " + ActivePlayer.NameRT + "!");
         }
+    }
+
+    /// <summary>
+    /// Pause the game
+    /// </summary>
+    public void PauseGame() {
+        HudController.ShowPauseMenu();
+    }
+
+    /// <summary>
+    /// Quit Game
+    /// </summary>
+    public void QuitGame() {
+        Application.Quit();
+    }
+
+    /// <summary>
+    /// Go Back To Main Menu
+    /// </summary>
+    public void QuitToMenu() {
+        SceneManager.LoadScene("Main Menu");
     }
 
     #endregion
@@ -238,6 +278,7 @@ public class GameManager : MonoBehaviour {
     #region Stock Related Public
 
     public void BuyStock() {
+        if (isGamePaused) return;
         HudController.ShowBuyStockHUD();
     }
 

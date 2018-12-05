@@ -53,13 +53,14 @@ public class PlayerHud : MonoBehaviour {
     }
 
     public void UpdatePlayerHud() {
-        SetPlayerName(Player.Name);
+        SetPlayerName(Player.Name, Player.Color);
         SetWalletAmount(GameManager.Instance.MoneyController.PlayerAmount(Player));
         UpdatePlayerStocks(Player.Stocks);
     }
 
-    public void SetPlayerName(string newName) {
+    public void SetPlayerName(string newName, Color color) {
         PlayerNameText.text = newName;
+        PlayerNameText.color = color;
     }
 
     public void SetWalletAmount(int newAmount) {

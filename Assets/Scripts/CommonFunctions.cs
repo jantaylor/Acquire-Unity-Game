@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine;
 
 /// <summary>
 /// Static class of common functions to be used throughout the game
@@ -46,5 +47,28 @@ public static class CommonFunctions {
             }
         }
         return localIP;
+    }
+
+    /// <summary>
+    /// Converts Unity Color to Hex with leading #
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns>#Hex Color</returns>
+    public static string ColorToHex(Color32 color) {
+        string hex = color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2");
+        return "#" + hex;
+    }
+
+    /// <summary>
+    /// http://wiki.unity3d.com/index.php?title=HexConverter
+    /// </summary>
+    /// <param name="hex"></param>
+    /// <returns></returns>
+    public static Color32 HexToColor(string hex) {
+        if (hex[0].Equals("#")) hex = hex.Remove(0);
+        byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+        byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+        byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+        return new Color32(r, g, b, 255);
     }
 }
