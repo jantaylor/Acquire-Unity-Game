@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour {
         StartingTiles();
         StartingHands();
         NextPlayer();
-        HudController.ShowNotificationHud();
+        HudController.ShowNextTurn();
         Game.State.Log(ActivePlayer.NameRT + " goes first!");
     }
 
@@ -235,7 +235,7 @@ public class GameManager : MonoBehaviour {
     public void Endturn() {
         if (isGamePaused) return;
         if (TilePlaced) {
-            Game.State.Log("Ending " + ActivePlayer.NameRT + "'s turn.");
+            Game.State.Log(ActivePlayer.NameRT + " has finished their turn.");
             HudController.HidePlayerHud(GameManager.Instance.ActivePlayer);
             HudController.HideGameLog();
             DrawTile(ActivePlayer);

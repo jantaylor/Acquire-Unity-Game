@@ -124,9 +124,9 @@ public class HudController : MonoBehaviour {
     }
 
     public void ShowNextTurn() {
+        NotificationHud.transform.Find("TurnContinueBtn/Title").GetComponentInChildren<Text>().text = GameManager.Instance.ActivePlayer.NameRT + ", it is now your turn.";
         ShowNotificationHud();
         TurnControlBtn.SetActive(true);
-        TurnControlBtn.transform.Find("Title").GetComponent<Text>().text = GameManager.Instance.ActivePlayer.NameRT + ", it is now your turn.";
     }
 
     /// <summary>
