@@ -80,10 +80,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf6ced06bccd07b4da3bb7e2e6001ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isNetworkGame: 0
+  ActivePlayer: {fileID: 0}
   ActivePlayerName: 
   TilePlaced: 0
   StocksPurchased: 0
-  NumOfPlayers: 2
+  NumberOfPlayers: 2
+  NumberOfAI: 1
+  AiDifficulty: 1
   TurnNumber: 0
   AllCorporationsOnBoard: 0
   PlayerController: {fileID: 0}
@@ -93,7 +97,6 @@ MonoBehaviour:
   BoardController: {fileID: 0}
   HudController: {fileID: 0}
   MainMenuController: {fileID: 0}
-  Game: {fileID: 0}
 --- !u!114 &114607635783833614
 MonoBehaviour:
   m_ObjectHideFlags: 1

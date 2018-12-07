@@ -16,7 +16,7 @@ public class GameLog : MonoBehaviour {
     private string logText = "";
 
     private void Start() {
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     /// <summary>
